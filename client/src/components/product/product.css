@@ -62,8 +62,10 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     font-weight: 400;
+    text-align: center;
 }
 .product__price {
+    text-align: center;
     font-size: 15px;
     letter-spacing: 2px;
     text-transform: capitalize;

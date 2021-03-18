@@ -7,7 +7,7 @@
     height: 100%;
     margin: auto;
     width: 1150px;
-    background: url('../../assets/images/hero_img.jpg') no-repeat;
+    background: url('../../assets/images/hero_image2.jpg') no-repeat;
     background-position: center;
     background-size: cover;
 }
@@ -29,7 +29,7 @@
 .cup__img{
     height: 500px;
     width: 500px;
-    background: url('../../assets/images/coffee_cup_black.jpg') no-repeat;
+    background: url('../../assets/images/coffee_cup_black2.jpg') no-repeat;
     background-position: center;
     background-size: contain;
     opacity: 0;
@@ -93,7 +93,7 @@
     bottom: -24px;
     display: flex;
     overflow-x: scroll;
-    padding: 50px 0 40px;
+    padding: 120px 0 40px;
     background-color: white;
 }
 
@@ -108,25 +108,25 @@
     font-size: 14px;
 }
 .home .btn-shopall{
-    color: var(--clr-sec);
-    padding: 14px 80px;
+    color: white;
+    padding: 10px 20px;
     border-radius: 50px;
     border: 2px solid var(--clr-sec);
     text-align: center;
-    background-color: white;
+    background-color: var(--clr-sec);
     
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 2px;
     /* display: block; */
-    margin: 60px 0 20px;
+    margin: 35px 0 20px;
     transition: background-color 300ms,
                 color 300ms;
 }
 .home .btn-shopall:hover{
-   background-color: var(--clr-sec);
-   color: white;
+   background-color: white;
+   color:  var(--clr-sec);
 }
 .home__stores{
     width: 100%;
@@ -381,7 +381,7 @@
     .hero__img{
         height: 70%;
         width: 380px;
-        background: url('../../assets/images/hero_image_small.jpg') no-repeat;
+        background: url('../../assets/images/hero_image_small2.jpg') no-repeat;
         background-size: contain;
     }
     .cup__img{
@@ -392,11 +392,14 @@
         margin: 0 0 20px 0;
     }
     .slider__products .product{
-        /* width: 45%;
-        margin-right: 10%; */
-        width: 80%;
-        margin-left: 10%;
+        width: 45%;
         margin-right: 10%;
+        /* width: 80%;
+        margin-left: 10%;
+        margin-right: 10%; */
+    }
+    .slider__products .product:nth-last-child(1){
+        padding-right: 10%;
     }
     .home .slider__products{
         padding: 20px 0 40px;

@@ -56,7 +56,7 @@ const Home = () => {
                 </div>
                 <div className="slider__hidden">
                     <div className="center">
-                        <h1 className="slider__head">featured products</h1>
+                        {/* <h1 className="slider__head">featured products</h1> */}
                         <div className="slider__wrapper">
                             <div className="slider__products ">
                                 {featuredProducts.length ? featuredProducts.map(product =>{
