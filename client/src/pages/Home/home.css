@@ -398,6 +398,9 @@
         margin-left: 10%;
         margin-right: 10%;
     }
+    .home .slider__products{
+        padding: 20px 0 40px;
+    }
 }
 /* .home__intro{
     height: 100vh;
