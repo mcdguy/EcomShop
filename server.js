@@ -7,7 +7,8 @@ const app = express();
 
 mongoose.connect(process.env.MONGODB_URI,{useUnifiedTopology: true,useNewUrlParser:true,useFindAndModify: false})
     .then(()=>{
-        app.listen(process.env.PORT || 5000);
+        console.log(process.env.PORT || 4000);
+        app.listen(process.env.PORT || 4000);
     })
     .catch(err => console.log(err));
 
@@ -32,5 +33,8 @@ app.use((req,res)=>{
 })
 
 if(process.env.NODE_ENV === 'production'){
-    app.use(express.static('client/build'));3
+    app.use(express.static('client/build'));
+    app.get('*',function(req,res){
+        res.sendFile(path.join(__dirname,'client/build','index.html'));
+    })
 }
