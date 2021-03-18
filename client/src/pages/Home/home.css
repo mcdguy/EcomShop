@@ -75,6 +75,14 @@
     width: var(--wdth);
     max-width: var(--mx-wdth);
 } */
+.slider__hidden .slider__head{
+    text-align: center;
+    font-weight: 400;
+    font-size: 34px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 40px;
+}
 .home .slider__wrapper{
     height: 90%;
     overflow: hidden;
@@ -85,7 +93,7 @@
     bottom: -24px;
     display: flex;
     overflow-x: scroll;
-    padding: 140px 0 40px;
+    padding: 50px 0 40px;
     background-color: white;
 }
 

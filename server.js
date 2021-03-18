@@ -8,8 +8,7 @@ const app = express();
 
 mongoose.connect(process.env.MONGODB_URI,{useUnifiedTopology: true,useNewUrlParser:true,useFindAndModify: false})
     .then(()=>{
-        console.log(process.env.PORT || 4000);
-        app.listen(process.env.PORT || 4000);
+        app.listen(process.env.PORT || 5000);
     })
     .catch(err => console.log(err));
 
