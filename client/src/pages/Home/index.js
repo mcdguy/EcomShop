@@ -58,8 +58,9 @@ const Home = () => {
                 </div>
                 <div className="slider__hidden">
                     <div className="center">
-                        {/* <h1 className="slider__head">featured products</h1> */}
+                        <h1 className="slider__head">featured products</h1>
                             <div>
+                                {/* <h1 className="slider__">featured products</h1> */}
                                 <div className="slider__wrapper">
                                     <span onClick={()=>{productsRef.current.scrollLeft -=250}} className="prev"><GrPrevious/></span>
                                         <div ref={productsRef} className="slider__products ">
