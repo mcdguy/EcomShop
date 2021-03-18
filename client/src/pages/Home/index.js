@@ -21,7 +21,7 @@ const Home = () => {
                     }
                 }
             })
-        },{threshold: 0.8})
+        },{threshold: 0.6})
         sliderObserver.observe(sliderRef.current);
     },[]);
 
