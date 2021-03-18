@@ -7,7 +7,7 @@ const Navbar = () => {
     return (
         <nav className="nav">
             <div className="nav__center center">
-                <a href="/" className="nav__logo">baksh</a>
+                <a href="/" className="nav__logo">bakhsh</a>
                 
                 <ul onClick={()=>setOpenMenu(false)} className={`${openMenu?'nav__links open':'nav__links'}`}>
                     <li>

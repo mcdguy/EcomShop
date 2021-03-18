@@ -5,11 +5,13 @@ import { useGlobalContext } from '../../context';
 import Product from '../../components/product';
 import {FaFacebookSquare,FaInstagramSquare,FaTwitterSquare} from "react-icons/fa";
 import {stores} from '../../data.js';
+import {GrPrevious,GrNext} from "react-icons/gr";
 
 const Home = () => {
     const [currentImage,setCurrentImage] = useState(0);
     const {featuredProducts} = useGlobalContext();
     const sliderRef = useRef(null);
+    const productsRef = useRef(null)
     useEffect(()=>{
         const sliderObserver = new IntersectionObserver((entries,sliderObserver)=>{
             entries.forEach(entry=>{
@@ -57,13 +59,17 @@ const Home = () => {
                 <div className="slider__hidden">
                     <div className="center">
                         {/* <h1 className="slider__head">featured products</h1> */}
-                        <div className="slider__wrapper">
-                            <div className="slider__products ">
-                                {featuredProducts.length ? featuredProducts.map(product =>{
-                                    return <Product key={product._id} {...product}></Product>
-                                }):null}
+                            <div>
+                                <div className="slider__wrapper">
+                                    <span onClick={()=>{productsRef.current.scrollLeft -=250}} className="prev"><GrPrevious/></span>
+                                        <div ref={productsRef} className="slider__products ">
+                                            {featuredProducts.length ? featuredProducts.map(product =>{
+                                                return <Product key={product._id} {...product}></Product>
+                                            }):null}
+                                        </div>
+                                    <span onClick={()=>{productsRef.current.scrollLeft +=250}} className="next"><GrNext/></span>
+                                </div>
                             </div>
-                        </div>
                         <div className="btn-wrapper">
                                 <Link className="btn-shopall btn" to="/shop">shop all</Link>
                             </div>

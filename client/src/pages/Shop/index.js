@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react';
 import { useGlobalContext } from '../../context';
 import './shop.css';
 import Product from '../../components/product';
+import {BsFilterRight} from "react-icons/bs";
 
 const Shop = () => {
     const {products,filterName,setFilterName} = useGlobalContext();
@@ -25,13 +26,13 @@ const Shop = () => {
             {filteredProducts.length?
                 <div className="shop">
                         <div className="shop__filter center">
-                            <span className={`${filterName==='none'?'shop__filter__indicator':'shop__filter__indicator show'}`}>1</span>
-                            <span onClick={()=>setShowFilters(!showFilters)}>filter</span>
+                            <span className={`${filterName==='none'?'shop__filter__indicator':'shop__filter__indicator show'}`}></span>
+                            <span onClick={()=>setShowFilters(!showFilters)}><BsFilterRight/></span>
                             <div className={`${showFilters?'filter__options show': 'filter__options'}`}>
                                 <span onClick={()=>setFilter('none')}>none</span>
-                                <span onClick={()=>setFilter('coffee')}>coffee</span>
-                                <span onClick={()=>setFilter('brewing equipment')}>brewing equipment</span>
-                                <span onClick={()=>setFilter('accompaniment')}>accompaniment</span>
+                                <span className={`${filterName==='coffee'?'active':null}`} onClick={()=>setFilter('coffee')}>coffee</span>
+                                <span className={`${filterName==='brewing equipment'?'active':null}`} onClick={()=>setFilter('brewing equipment')}>brewing equipment</span>
+                                <span className={`${filterName==='accompaniment'?'active':null}`} onClick={()=>setFilter('accompaniment')}>accompaniment</span>
                             </div>
                             <div className="filter__click__handler"></div>
                         </div>

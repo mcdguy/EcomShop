@@ -22,16 +22,19 @@
 .shop__filter > span{
     cursor: pointer;
 }
+.shop__filter > span svg{
+    font-size: 30px;
+}
 .shop__filter__indicator{
-    width: 18px;
-    height: 18px;
+    width: 10px;
+    height: 10px;
     align-items: center;
     justify-content: center;
     background-color: rgb(255, 166, 0);
     border-radius: 50%;
     position: absolute;
-    right: -10px;
-    top: -9px;
+    right: -2px;
+    top: -2px;
     font-size: 14px;
     color: white;
     display: none;
@@ -45,7 +48,7 @@
     top: 100%;
     right: 0;
     background-color: white;
-    padding: 30px 10px;
+    padding: 10px 10px;
     border-radius: 4px;
     box-shadow: 0 0 2px 1px rgba(230, 229, 229, 0.644);
 }
@@ -54,8 +57,11 @@
     text-transform: capitalize;
     letter-spacing: 1px;
     font-size: 14px;
-    padding: 5px 0;
+    padding: 8px 0;
     cursor: pointer;
+}
+.filter__options span.active{
+    color: orange;
 }
 .filter__options span:hover{
     opacity: .8;

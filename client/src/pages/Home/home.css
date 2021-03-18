@@ -88,6 +88,29 @@
     overflow: hidden;
     position: relative;
 }
+.home .slider__wrapper{
+    position: relative;
+}
+.home .slider__wrapper span{
+    position: absolute;
+    top: 52%;
+    color: white;
+    z-index: 2;
+    background-color: rgba(228, 227, 227, 0.76);
+    padding: 4px 4px;
+    cursor: pointer;
+}
+
+.home .slider__wrapper span.prev{
+    left: 0;
+    border-radius: 0 3px 3px 0;
+}
+.home .slider__wrapper span.next{
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+
 .home .slider__products{
     position: relative;
     bottom: -24px;
@@ -404,271 +427,8 @@
     .home .slider__products{
         padding: 20px 0 40px;
     }
-}
-/* .home__intro{
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--clr-sec);
-}
-.home__intro span{
-    font-size: 300px;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    opacity: .8;
-    color: transparent;
-    background: url('../../assets/images/text-bg.jfif') center;
-    background-clip: text;
-    cursor: default;
-    user-select: none;
-}
-.home__slider{
-    position: relative;
-}
-.home__slider__text{
-    height: 100vh;
-    background-color: var(--clr-sec);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    position: relative;
-    z-index: 1;
-}
-.home__slider__text p{
-    text-align: center;
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    color: transparent;
-    background: url('../../assets/images/text-bg.jfif') center;
-    background-clip: text;
-    cursor: default;
-    opacity: 0.05;
-    transition: 500ms;
-}
-.home__slider__text p:nth-child(1){
-    font-size: 40px;
-}
-.home__slider__text p:nth-child(2){
-    font-size: 400px;
-    line-height: 1;
-}
-.home__slider__text.visible p{
-    opacity: .8;
-    user-select: none;
-}
-.home__slider__hidden{
-    height: 100vh;
-    position: sticky;
-    bottom: 0;
-    background: rgb(255,189,128);
-}
-.home__slider__img{
-    max-width: 800px;
-    height: 100%;
-    background: url('../../assets/images/coffeebags3.jpg') no-repeat;
-    background-size: contain;
-    background-position: center;
-    margin: auto;
-}
-
-.home .btn-shop{
-    color: var(--clr-bg);
-    padding: 14px 90px;
-    border-radius: 50px;
-    border: 2px solid var(--clr-bg);
-    text-align: center;
-    
-    font-size: 14px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    display: block;
-    margin: 60px 0;
-    transition: background-color 300ms,
-                color 300ms;
-}
-.home .btn-shop:hover{
-   background-color: var(--clr-bg);
-   color: var(--clr-sec);
-}
-.home__about{
-    background: rgb(168,204,224);
-}
-.home__about__center{
-    display: flex;
-
-}
-.home__about__info,
-.home__about__imgwrapper{
-    width: 50%;
-    box-sizing: border-box;
-    overflow: hidden;
-}
-.home__about__info{
-    display: flex;
-    align-items: center;
-}
-.home__about__imgwrapper .home__about__img{
-    width: 100%;
-    height: 100%;
-    background: url('../../assets/images/about5.jpg') no-repeat;
-    background-position: center;
-    background-size: contain;
-}
-
-.home__about__info{
-    padding: 100px 40px 100px 0;
-}
-.home__about__info h1{
-    letter-spacing: 2px;
-    font-weight: 500;
-    text-transform: capitalize;
-    font-size: 40px;
-}
-.home__about__info p{
-    line-height: 1.8;
-}
-.home__about__imgwrapper{
-    position:  relative;
-
-}
-.home__footer{
-    background-color: var(--clr-sec);
-    color: white;
-}
-.home__footer .contact{
-    text-align: center;
-    border-top: 1px solid var(--clr-sec);
-    padding: 40px 0;
-}
-.home__footer .contact h1{
-    font-weight: 400;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-.home__footer .contact__gmail,
-.home__footer .contact__no{
-    letter-spacing: 2px;
-    font-weight: 300;
-}
-
-.home__footer .legal a:nth-child(2){
-    margin: 0 20px;
-}
-
-.home__footer .legal a{
-    display: inline-block;
-    color: white;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 2.5;
-    opacity: .6;
-    transition: opacity 300ms;
-}
-.home__footer .legal a:hover{
-    opacity: 1;
-}
-@media screen and (max-width: 1200px){
-    .home__intro span{
-        font-size: 230px;
-    }   
-    .home__slider__text p:nth-child(1){
-        font-size: 35px;
-    }
-    .home__slider__text p:nth-child(2){
-        font-size: 300px;
-        line-height: 1;
+    .home .slider__wrapper span.prev,
+    .home .slider__wrapper span.next{
+        display: none;
     }
 }
-@media screen and (max-width: 900px){
-    .home__intro span{
-        font-size: 160px;
-    }   
-    .home__slider__text p:nth-child(1){
-        font-size: 35px;
-    }
-    .home__slider__text p:nth-child(2){
-        font-size: 210px;
-        line-height: 1;
-    }
-    .home__about__center{
-        flex-direction: column;
-    }
-    .home__about__info,
-    .home__about__imgwrapper{
-        width: 100%;
-    }
-    .home__about__info{
-        text-align: center;
-        padding: 50px 0;
-    }
-    .home__about__imgwrapper{
-        height: 500px;
-    }
-}
-@media screen and (max-width: 700px){
-    .home__intro span{
-        font-size: 120px;
-    }   
-    .home__slider__text p:nth-child(1){
-        font-size: 30px;
-    }
-    .home__slider__text p:nth-child(2){
-        font-size: 160px;
-        line-height: 1;
-    }
-
-}
-@media screen and (max-width: 500px){
-    .home__intro span{
-        font-size: 90px;
-    }   
-    .home__slider__text p:nth-child(1){
-        font-size: 20px;
-    }
-    .home__slider__text p:nth-child(2){
-        font-size: 112px;
-        line-height: 1;
-    }
-    .home__slider__text{
-        height: 100vh;
-    }
-    .home .btn-shop{
-        color: var(--clr-bg);
-        padding: 10px 40px;
-        margin-top: 60px;
-    }
-    .home__slider__hidden{
-        background: rgb(255,255,255);
-    }
-    .home__slider__img{
-        max-width: 500px;
-        background: url('../../assets/images/coffeesm.jfif') no-repeat;
-        background-size: contain;
-        background-position: center;
-    }
-    .home__footer .contact h1{
-        font-size: 20px;
-    }
-    .home__about__imgwrapper{
-        height: 300px;
-    }
-}
-@media screen and (max-width: 320px){
-    .home__intro span{
-        font-size: 80px;
-    }   
-    .home__slider__text p:nth-child(1){
-        font-size: 19px;
-        letter-spacing: 3px;
-    }
-    .home__slider__text p:nth-child(2){
-        font-size: 97px;
-        line-height: 1;
-    }
-} */
