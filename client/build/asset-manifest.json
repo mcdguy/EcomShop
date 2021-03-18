@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.7f331c15.chunk.css",
+    "main.js": "/static/js/main.1359ba5b.chunk.js",
+    "main.js.map": "/static/js/main.1359ba5b.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.248907bc.js",
+    "runtime-main.js.map": "/static/js/runtime-main.248907bc.js.map",
+    "static/js/2.594335b1.chunk.js": "/static/js/2.594335b1.chunk.js",
+    "static/js/2.594335b1.chunk.js.map": "/static/js/2.594335b1.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.7f331c15.chunk.css.map": "/static/css/main.7f331c15.chunk.css.map",
+    "static/js/2.594335b1.chunk.js.LICENSE.txt": "/static/js/2.594335b1.chunk.js.LICENSE.txt",
+    "static/media/home.css": "/static/media/sjb_logo.61160f09.jpg",
+    "static/media/store1.376324c7.jpg": "/static/media/store1.376324c7.jpg",
+    "static/media/store2.486b2f43.jpg": "/static/media/store2.486b2f43.jpg",
+    "static/media/store4.2f691eb2.jpg": "/static/media/store4.2f691eb2.jpg",
+    "static/media/store5.33ba5d1d.jpg": "/static/media/store5.33ba5d1d.jpg",
+    "static/media/store6.2f2c9ceb.jpg": "/static/media/store6.2f2c9ceb.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.248907bc.js",
+    "static/js/2.594335b1.chunk.js",
+    "static/css/main.7f331c15.chunk.css",
+    "static/js/main.1359ba5b.chunk.js"
+  ]
+}

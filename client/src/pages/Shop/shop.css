@@ -1,0 +1,88 @@
+.shop{
+    padding-top: 100px;
+    background-color: var(--clr-bg);
+}
+
+.shop__center{
+    display: flex;
+    /* background-color: yellow; */
+    flex-wrap: wrap;/*using margins instead of justify content because at end last element was wierdly positioned*/
+}
+
+.shop__filter{/*will increase the clickable area of this*/
+    display: flex;
+    justify-content: flex-end;
+    /* background-color: orange; */
+    position: relative;
+    z-index: 9;
+    margin-bottom: 30px;
+    padding-bottom: 5px;
+    /* width: 64%; */
+}
+.shop__filter > span{
+    cursor: pointer;
+}
+.shop__filter__indicator{
+    width: 18px;
+    height: 18px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(255, 166, 0);
+    border-radius: 50%;
+    position: absolute;
+    right: -10px;
+    top: -9px;
+    font-size: 14px;
+    color: white;
+    display: none;
+}
+.shop__filter__indicator.show{
+    display: flex;
+}
+.filter__options{
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    padding: 30px 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 2px 1px rgba(230, 229, 229, 0.644);
+}
+.filter__options span{
+    display: block;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+    font-size: 14px;
+    padding: 5px 0;
+    cursor: pointer;
+}
+.filter__options span:hover{
+    opacity: .8;
+}
+.filter__options.show{
+    display: block;
+}
+
+.shop-empty{
+    height: 100vh;
+    background-color: var(--clr-bg);
+}
+.shop__empty__center{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+.shop__empty__center h1{
+    font-size: 24px;
+    font-weight: 400; 
+}
+
+@media screen and (max-width: 420px){
+    .shop__filter{
+        width: 64%;
+    }
+}
+

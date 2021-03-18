@@ -1,0 +1,46 @@
+.error{
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--clr-bg);
+}
+.error__wrapper{
+    position: relative;
+    height: 100%;
+}
+.error__info{
+    position: absolute;
+    bottom: 15%;
+    left: 0;
+}
+.error__info h1{
+    font-size: 120px;
+    font-weight: normal;
+    text-transform: capitalize;
+    margin: 0;
+}
+/*these button styles should be made global if the button style is same everywhere*/
+.error__btn{
+    color: black;
+    background-color: var(--clr-btn);
+    padding: 8px 30px;
+    border-radius: 50px;
+    text-align: center;
+    position: absolute;
+    bottom: 5%;
+}
+.error__btn:active{
+    background-color: rgb(211, 209, 209);
+}
+
+/*styles from above conmment to here should be made global accordingly*/
+@media screen and (max-width: 420px){
+    .error__info{
+        bottom: 20%;
+    }
+    .error__info h1{
+        font-size: 90px;
+    }
+    .error__btn{
+        bottom: 10%;
+    }
+}
