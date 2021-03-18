@@ -118,7 +118,7 @@
         height: 0;
         transition: height 400ms;
         width: 100%;
-        background-color: rgba(42,43,45,0.99);
+        background-color: rgb(28, 28, 29,.99);
         display: block;
         backdrop-filter: blur(5px);
     }
