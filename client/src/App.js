@@ -8,12 +8,13 @@ import Brew from './pages/Brew';
 import SingleProduct from './pages/SingleProduct';
 import Cart from './pages/Cart';
 import Error from './pages/Error';
-
+import ScrollToTop from './components/scrollToTop';
 
 
 const App = () => {
   return (
     <Router>
+      <ScrollToTop />
       <Navbar></Navbar>
       <Switch>
           <Route path="/" exact>

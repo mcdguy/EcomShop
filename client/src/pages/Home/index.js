@@ -58,7 +58,11 @@ const Home = () => {
                 </div>
                 <div className="slider__hidden">
                     <div className="center">
-                        <h1 className="slider__head">featured products</h1>
+                        <div className="slider__head__wrapper">
+                            <h1 className="slider__head">featured products</h1>
+                            {/* <h1></h1> */}
+                            <Link className="btn-shopall btn" to="/shop">see all</Link>
+                        </div>
                             <div>
                                 {/* <h1 className="slider__">featured products</h1> */}
                                 <div className="slider__wrapper">
@@ -71,9 +75,9 @@ const Home = () => {
                                     <span onClick={()=>{productsRef.current.scrollLeft +=250}} className="next"><GrNext/></span>
                                 </div>
                             </div>
-                        <div className="btn-wrapper">
+                        {/* <div className="btn-wrapper">
                                 <Link className="btn-shopall btn" to="/shop">shop all</Link>
-                            </div>
+                        </div> */}
                     </div>
                 </div>
             </section>

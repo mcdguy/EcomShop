@@ -1,0 +1,99 @@
+/*so i will remove quantity from the item and in the cart i will put another component
+which will be cartItem and will have the quantity state
+so quantity will be 1 by default */
+.cart__empty{
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 1px;
+}
+
+.cart__center{
+    margin-top: 90px;
+}
+.cart__products__number{
+    padding: 15px 10px;
+    background-color: whitesmoke;
+    border-radius: 2px;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    text-transform: capitalize;
+}
+
+.cart__content{
+    display: flex;
+    align-items: flex-start;
+}
+.cart__products{
+    width: 60%;
+    flex-shrink: 0;
+}
+.cart__summary{
+    width: 35%;
+    margin-left: 5%;
+    flex-shrink: 0;
+    padding: 20px 30px;
+    box-sizing: border-box;
+    background-color: rgb(240, 240, 240);
+    /* background-color: rgb(194, 190, 190); */
+    border-radius: 4px;
+    /* color: white; */
+}
+.cart__summary > h1{
+    /* text-align: center; */
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgb(211, 208, 208);
+}
+.cart__summary__info{
+    /* padding: 0 30px; */
+    border-bottom: 1px solid rgb(211, 208, 208);
+
+}
+.cart__summary__details{
+    display: flex;
+    justify-content: space-between;
+}
+.cart__summary__details p{
+    margin: 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+}
+.btn-checkout{
+    color: var(--clr-bg);
+    padding: 7px 12px;
+    border-radius: 50px;
+    border: 2px solid var(--clr-sec);
+    /* text-align: center; */
+    background-color: var(--clr-sec);
+    
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    /* display: block; */
+    margin: 30px 0 20px;
+    /* margin: 60px 0; */
+    transition: background-color 300ms,
+                color 300ms;
+    cursor: pointer;
+    outline: none;
+}
+@media screen and (max-width: 1100px){
+    .cart__content{
+        align-items: stretch;
+        flex-direction: column;
+    }
+    .cart__products{
+        width: 100%
+    }
+    .cart__summary{
+        width: 100%;
+        margin: 40px 0 40px;
+    }
+}

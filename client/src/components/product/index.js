@@ -15,6 +15,7 @@ const Product = ({img,name,price,quantity,_id}) => {
         },{threshold: 0.2})
         productObserver.observe(productRef.current);
     },[])
+    
     return (
         <Link to={`/shop/${_id}`} ref={productRef} className="product">
             <article className="product__content">

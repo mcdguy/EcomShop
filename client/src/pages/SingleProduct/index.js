@@ -2,13 +2,18 @@ import React,{useState,useEffect} from 'react';
 import './singleproduct.css';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useGlobalContext } from '../../context';
+import { Link } from 'react-router-dom';
+
 const SingleProduct = () => {
+    const {addCartItem} = useGlobalContext();   
     const {id} = useParams();
     const [item,setItem] = useState({});
     const [error,setError] = useState({message: '',show: false});
     const [isLoading,setIsLoading] = useState(false);
     const [currentImage,setCurrentImage] = useState(0);
-    const [quantity,setQuantity] = useState(1);
+    // const [quantity,setQuantity] = useState(1);
+    const [showMsg,setShowMsg] = useState(false);
     
     useEffect(()=>{
         setError({...error, message:'',show: false})
@@ -19,12 +24,21 @@ const SingleProduct = () => {
             .catch(err =>{setError({...error, message: err.message,show: true})});
     },[]);
 
-    const decreaseQuantity = () =>{
-        if(quantity === 1){
-            return;
+    useEffect(()=>{
+        let x = setTimeout(()=>{
+            setShowMsg(false);
+        },5000)
+        return ()=>{
+            clearTimeout(x);
         }
-        setQuantity(quantity-1);
-    }
+    },[showMsg])
+
+    // const decreaseQuantity = () =>{
+    //     if(quantity === 1){
+    //         return;
+    //     }
+    //     setQuantity(quantity-1);
+    // }
     // if(isLoading){
     //     return <div className="item-loading"></div>
     // }
@@ -35,6 +49,12 @@ const SingleProduct = () => {
         <> 
             {item.error?<div className="item_error">{item.error}</div>:
                 <div className="item">
+                    <div className={`${showMsg?'item__added show': 'item__added'}`}>
+                        <div className="center">
+                            <span className="msg">item added</span>
+                            <Link to="/cart">preview</Link>
+                        </div>
+                    </div>
                     <div className="item__container center">
                         
                         <div className="item__slider">
@@ -56,18 +76,21 @@ const SingleProduct = () => {
                             <div className="item__info__wrapper">
                                 <p className="item__info__name">{item.name}</p>
                                 <p className="item__info__price">PRICE: &#8377;{item.price}</p>
-                                <p className="item__info__weight">{item.weight}</p>
+                                <p className="item__info__weight">{item.weight==='null'?'':item.weight}</p>
                                 <p className="item__info__desc">{item.description}</p>
                                 {item.quantity?
                                     <>
-                                    <div className="item__qty">
+                                    {/* <div className="item__qty">
                                     <span className='item__qty__inc' onClick={decreaseQuantity}>-</span>     
                                     <span>{quantity}</span>     
                                     <span className='item__qty__dec' onClick={()=>setQuantity(quantity+1)}>+</span>
-                                    </div>
+                                    </div> */}
                                     <div className="btn-wrapper">
-                                    <a>add to cart</a>
+                                        <a onClick={()=>{setShowMsg(true); addCartItem(item._id,1)}}>add to cart</a>
                                     </div>
+                                    {/* <div className={`${showMsg?'alert-wrapper show': 'alert-wrapper'}`}>
+                                        <span>item added</span>
+                                    </div> */}
                                     </>
                                     :<div className="item__outofstock">
                                         this product is currently unavailable.
