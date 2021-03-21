@@ -19,13 +19,16 @@ const Navbar = () => {
                         <Link to="/contact">contact</Link>
                     </li> */}
                     <li>
-                        <Link to="/cart">find a location</Link>
+                        <Link to="/findastore">find a store</Link>
                     </li>
                     <li>
-                        <Link to="/howtobrew">how to brew</Link>
+                        <Link to="/howtobrew">brew guide</Link>
                     </li>
                     <li>
                         <Link to="/cart">cart</Link>
+                    </li>
+                    <li>
+                        <Link to="/signup">sign up</Link>
                     </li>
                 </ul>
             <div onClick={()=>setOpenMenu(!openMenu)} className={`${openMenu?'nav__hamburger open': 'nav__hamburger'}`}>

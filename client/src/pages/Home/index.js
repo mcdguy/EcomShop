@@ -52,7 +52,7 @@ const Home = () => {
                     <div className="cup__wrapper">
                         <div ref={sliderRef} className="cup__img "></div>
                         <div className="btn-wrapper">
-                            <Link className="btn-locate btn" to="/findalocation">find a location</Link>
+                            <Link className="btn-locate btn" to="/findastore">find a store</Link>
                         </div>
                     </div>
                 </div>

@@ -35,10 +35,10 @@ const Shop = () => {
                             <span onClick={()=>setShowFilters(!showFilters)}><BsFilterRight/></span>
                             <div className={`${showFilters?'filter__options show': 'filter__options'}`}>
                                 <span onClick={()=>setFilter('none')}>none</span>
+                                <span className={`${filterName==='featured'?'active':null}`} onClick={()=>setFilter('featured')}>featured</span>
                                 <span className={`${filterName==='coffee'?'active':null}`} onClick={()=>setFilter('coffee')}>coffee</span>
                                 <span className={`${filterName==='brewing equipment'?'active':null}`} onClick={()=>setFilter('brewing equipment')}>brewing equipment</span>
                                 <span className={`${filterName==='accompaniment'?'active':null}`} onClick={()=>setFilter('accompaniment')}>accompaniment</span>
-                                <span className={`${filterName==='featured'?'active':null}`} onClick={()=>setFilter('featured')}>featured</span>
                             </div>
                             <div className="filter__click__handler"></div>
                         </div>
