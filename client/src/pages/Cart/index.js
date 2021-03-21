@@ -3,7 +3,7 @@ import { useGlobalContext } from '../../context';
 import CartItem from '../../components/cartItem';
 import './cart.css';
 import { Link } from 'react-router-dom';
-
+//will have to put an in stock indicator for the cart item
 const Cart = () => {
     const {cart,products,setCartTotalAmount,cartTotalItems,cartTotalAmount} = useGlobalContext();
     const [cartProducts,setCartProducts] = useState([]);
