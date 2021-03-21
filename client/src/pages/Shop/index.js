@@ -17,6 +17,11 @@ const Shop = () => {
             setFilteredProducts(products);
             return;
         }
+        if(filterName === 'featured'){
+            let newProducts = products.filter(product =>product.featured === true);
+            setFilteredProducts(newProducts);
+            return;
+        }
         let newProducts = products.filter(product =>product.category === filterName);
         setFilteredProducts(newProducts);
 
@@ -33,6 +38,7 @@ const Shop = () => {
                                 <span className={`${filterName==='coffee'?'active':null}`} onClick={()=>setFilter('coffee')}>coffee</span>
                                 <span className={`${filterName==='brewing equipment'?'active':null}`} onClick={()=>setFilter('brewing equipment')}>brewing equipment</span>
                                 <span className={`${filterName==='accompaniment'?'active':null}`} onClick={()=>setFilter('accompaniment')}>accompaniment</span>
+                                <span className={`${filterName==='featured'?'active':null}`} onClick={()=>setFilter('featured')}>featured</span>
                             </div>
                             <div className="filter__click__handler"></div>
                         </div>

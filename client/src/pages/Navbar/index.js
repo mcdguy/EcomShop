@@ -1,8 +1,10 @@
 import React, {useState,useEffect} from 'react';
 import {Link} from 'react-router-dom';
+import { useGlobalContext } from '../../context';
 import './navbar.css';
 
 const Navbar = () => {
+    const {setFilterName} = useGlobalContext();
     const [openMenu,setOpenMenu] = useState(false);
     return (
         <nav className="nav">
@@ -11,7 +13,7 @@ const Navbar = () => {
                 
                 <ul onClick={()=>setOpenMenu(false)} className={`${openMenu?'nav__links open':'nav__links'}`}>
                     <li>
-                        <Link to="/shop">shop</Link>
+                        <Link to="/shop" onClick={()=>setFilterName('none')} >shop</Link>
                     </li>
                     {/* <li>
                         <Link to="/contact">contact</Link>

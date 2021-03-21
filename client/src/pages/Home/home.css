@@ -95,7 +95,7 @@
 }
 .home .btn-shopall{
     /* color: white; */
-    color: rgb(109, 218, 245);
+    color: rgb(14, 108, 131);
     padding: 6px 0 6px 8px;
     border-radius: 50px;
     /* border: 2px solid var(--clr-sec); */
@@ -103,7 +103,7 @@
     /* background-color: var(--clr-sec); */
     
     font-size: 12px;
-    font-weight: 400;
+    font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 2px;
     /* margin: 35px 0 20px; */

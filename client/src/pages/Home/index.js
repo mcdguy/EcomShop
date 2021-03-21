@@ -9,7 +9,7 @@ import {GrPrevious,GrNext} from "react-icons/gr";
 
 const Home = () => {
     const [currentImage,setCurrentImage] = useState(0);
-    const {featuredProducts} = useGlobalContext();
+    const {featuredProducts,setFilterName} = useGlobalContext();
     const sliderRef = useRef(null);
     const productsRef = useRef(null)
     useEffect(()=>{
@@ -61,7 +61,7 @@ const Home = () => {
                         <div className="slider__head__wrapper">
                             <h1 className="slider__head">featured products</h1>
                             {/* <h1></h1> */}
-                            <Link className="btn-shopall btn" to="/shop">see all</Link>
+                            <Link onClick={()=>setFilterName('featured')} className="btn-shopall btn" to="/shop">see all</Link>
                         </div>
                             <div>
                                 {/* <h1 className="slider__">featured products</h1> */}
@@ -116,6 +116,7 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+
             <section className="home__logo__display">
                 <div className="logo__img"></div>
             </section>

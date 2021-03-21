@@ -127,9 +127,11 @@
         color: black;
     }
     .cart__item__remove{
-
         height: 20px;
         width: 22px;
 
+    }
+    .cart__item__remove svg path{
+        stroke: rgb(185, 184, 184);
     }
 }
