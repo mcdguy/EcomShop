@@ -32,7 +32,7 @@ if(process.env.NODE_ENV === 'production'){
 app.use('/product',require('./routes/product-route'));
 app.use('/blog',require('./routes/blog-route'));
 
-app.use((req,res)=>{
-    res.json({error: 'page not found'});
-})
+// app.use((req,res)=>{
+//     res.json({error: 'page not found'});
+// })
 
