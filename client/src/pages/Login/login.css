@@ -48,6 +48,7 @@
     font-weight: 300;
     font-size: 14px;
     opacity: 1;/* for firefox */
+    /*this is for firefox*/
 }
 input:focus{
     outline: none;
