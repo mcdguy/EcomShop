@@ -48,6 +48,7 @@ const defaultState = {
     error: {message: '',show: false},
     isLoading: false,
     filterName: 'none',
+    isLoggedin: false,
     featuredProducts: []
 }
 export const AppProvider = ({children}) =>{

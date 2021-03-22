@@ -28,7 +28,7 @@ const Navbar = () => {
                         <Link to="/cart">cart</Link>
                     </li>
                     <li>
-                        <Link to="/signup">sign up</Link>
+                        <Link to="/login">log in</Link>
                     </li>
                 </ul>
             <div onClick={()=>setOpenMenu(!openMenu)} className={`${openMenu?'nav__hamburger open': 'nav__hamburger'}`}>

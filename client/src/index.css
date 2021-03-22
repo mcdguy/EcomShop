@@ -20,6 +20,10 @@ code {
   --clr-bg: rgb(253, 255, 255);
   --clr-sec: rgb(25, 28, 29);
 }
+/*this will stop scrolling when modal is open*/
+.body.no_scroll{
+  overflow: hidden;
+}
 
 .center{
   max-width: var(--mx-wdth);

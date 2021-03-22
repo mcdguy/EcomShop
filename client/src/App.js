@@ -7,6 +7,7 @@ import Contact from './pages/Contact';
 import Brew from './pages/Brew';
 import SingleProduct from './pages/SingleProduct';
 import Cart from './pages/Cart';
+import Login from './pages/Login';
 import Error from './pages/Error';
 import ScrollToTop from './components/scrollToTop';
 
@@ -37,6 +38,10 @@ const App = () => {
 
           <Route path="/cart">
             <Cart/>
+          </Route>
+
+          <Route path="/login">
+            <Login/>
           </Route>
 
           <Route path="*">
