@@ -245,7 +245,7 @@
     }
 }
 
-@media screen and (max-width: 420px){
+@media screen and (max-width: 520px){
     .item__thumb{
         width: 40px;
         height: 40px;

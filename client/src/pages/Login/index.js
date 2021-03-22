@@ -26,7 +26,9 @@ const SignUp = () => {
 
                         {authType==='login'?
                             <div className="auth__toggle">
-                                <span > <button onClick={()=>setAuthType('signup')}>create an account</button> | <button>forgot password?</button></span>
+                                <span > <button onClick={()=>setAuthType('signup')}>create an account</button></span>
+                                <div>or</div>
+                                <div><button>forgot password?</button></div>
                             </div>
                         :
                             <div className="auth__toggle">
