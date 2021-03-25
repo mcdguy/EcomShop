@@ -31,7 +31,10 @@ const Login = () => {
             if(spinnerRef.current) spinnerRef.current.classList.remove('show');
             // const user = res.data;
             // console.log(jwt_token);
-            // setToken(jwt_token);
+            // setToken(jwt_token);'
+            
+
+            //i observed that when user is not logged in or signed in due to any error the spinner will hide but modal will stay open
             if(res.data.errors){
                 setError({email:res.data.errors.email,password: res.data.errors.password});
             }

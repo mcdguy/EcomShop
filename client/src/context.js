@@ -119,7 +119,7 @@ export const AppProvider = ({children}) =>{
         let updatedCart = state.cart.map(item =>{
             // console.log('called');
             if(item.productId === _id){
-                console.log('called');
+                // console.log('called');
                 item.pqty = pqty;
             }
             return item;
