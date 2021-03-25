@@ -13,8 +13,15 @@ const Login = () => {
     const [error,setError] = useState({email: '',password:''});
     const spinnerRef = useRef(null)
 
+    const handleEmail = (e) =>{ 
+        setEmail( e.target.value.trim());//setting email as well as removing whitespace
+        setError({email: '',password:''})
+    }
+
     const handleAuth = (e) =>{
         e.preventDefault();
+        setEmail(email => {return email.replaceAll(" ","")});
+        console.log(email);
         setError({email: '',password:''});
         if(email===''){
             setError(error => {return({...error,email: 'please enter an email'})});
@@ -64,7 +71,7 @@ const Login = () => {
                     <div className="auth__form__wrapper">
                         <form className="auth__form" onSubmit={handleAuth}>
                             <div className="auth__field">
-                                <input value={email} onChange={e=>{setEmail(e.target.value);setError({email: '',password:''})}} autoComplete="off" type="text" id="email" placeholder="Email"/>
+                                <input value={email} onChange={handleEmail} autoComplete="off" type="text" id="email" placeholder="Email"/>
                                 <p className="auth__error">{error.email}</p>
                             </div>
                             <div className="auth__field">
