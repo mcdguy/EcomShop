@@ -37,6 +37,21 @@ const reducer = (oldState,action) =>{
     if(action.type === 'SET_CART_TOTAL_AMOUNT'){
         return({...oldState,cartTotalAmount: action.payload});
     }
+    if(action.type === 'SET_TOKEN'){
+        return({...oldState,token: action.payload});
+    }
+    if(action.type==='SHOW_LOGIN'){
+        return({...oldState,showLogin: true});
+    }
+    if(action.type==='HIDE_LOGIN'){
+        return({...oldState,showLogin: false});
+    }
+    if(action.type === 'LOGIN'){
+        return({...oldState,isLoggedIn: true});
+    }
+    if(action.type === 'LOGOUT'){
+        return({...oldState,isLoggedIn: false});
+    }
     throw new Error('invalid dispatch');
 }
 const defaultState = {
@@ -48,17 +63,34 @@ const defaultState = {
     error: {message: '',show: false},
     isLoading: false,
     filterName: 'none',
-    isLoggedin: false,
-    featuredProducts: []
+    isLoggedIn: false,
+    featuredProducts: [],
+    // token:null,
+    showLoginModal: false,
 }
 export const AppProvider = ({children}) =>{
     const [state,dispatch] = useReducer(reducer,defaultState);
     
+    const setToken = (value) =>{
+        dispatch({type: 'SET_TOKEN',payload: value});
+    }
     const setProducts = (products) =>{
         dispatch({type: 'SET_PRODUCTS',payload: products});
     }
     const setFilterName = (name) =>{
         dispatch({type: 'SET_FILTER',payload: name});
+    }
+    const setShowLoginModal = () =>{
+        dispatch({type: 'SHOW_LOGIN'});
+    }
+    const setHideLoginModal = () =>{
+        dispatch({type: 'HIDE_LOGIN'});
+    }
+    const setLogin = () =>{
+        dispatch({type: 'LOGIN'});
+    }
+    const setLogout = () =>{
+        dispatch({type: 'LOGOUT'});
     }
     const addCartItem = (productId,pqty) =>{
         let alreadyExists = false;
@@ -102,6 +134,19 @@ export const AppProvider = ({children}) =>{
     const setCartTotalAmount = (amount) => {
         dispatch({type: 'SET_CART_TOTAL_AMOUNT',payload: amount})
     }
+    //checking if user is logged in on mount
+    useEffect(()=>{
+        axios('/user/status')
+            .then(res =>{
+                console.log(res.data);
+                if(res.data.error) return;
+                if(res.data.success) setLogin();//if it is success i will set login
+            })
+            .catch(err => console.log(err));
+    },[]);
+
+
+    //setting the cart
     useEffect(()=>{
         localStorage.setItem('cart',JSON.stringify(state.cart));
         let totalItems = 0;
@@ -112,6 +157,7 @@ export const AppProvider = ({children}) =>{
         
     },[state.cart])
 
+    //setting the products
     useEffect(()=>{
         axios('/product')
             .then(res=>{
@@ -127,7 +173,7 @@ export const AppProvider = ({children}) =>{
         dispatch({type:'SET_FEATURED',payload: featured})
     },[state.products]);
 
-    return <AppContext.Provider value={{...state,addCartItem,setCartTotalAmount,updateCartItem,removeCartItem,setFilterName,setProducts}}>
+    return <AppContext.Provider value={{...state,setShowLoginModal,setLogin,setLogout,setHideLoginModal,addCartItem,setToken,setCartTotalAmount,updateCartItem,removeCartItem,setFilterName,setProducts}}>
         {children}
     </AppContext.Provider>
 }

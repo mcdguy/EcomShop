@@ -7,7 +7,7 @@ import Contact from './pages/Contact';
 import Brew from './pages/Brew';
 import SingleProduct from './pages/SingleProduct';
 import Cart from './pages/Cart';
-import Login from './pages/Login';
+import Login from './components/login';
 import Error from './pages/Error';
 import ScrollToTop from './components/scrollToTop';
 
@@ -17,6 +17,7 @@ const App = () => {
     <Router>
       <ScrollToTop />
       <Navbar></Navbar>
+      <Login></Login>
       <Switch>
           <Route path="/" exact>
             <Home/>
@@ -40,9 +41,9 @@ const App = () => {
             <Cart/>
           </Route>
 
-          <Route path="/login">
+          {/* <Route path="/signin">
             <Login/>
-          </Route>
+          </Route> */}
 
           <Route path="*">
             <Error/>

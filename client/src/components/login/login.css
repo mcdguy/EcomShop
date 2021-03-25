@@ -1,23 +1,33 @@
-.auth__center{
-    min-height: 100vh;
+.auth_wrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 8;
+    background-color: rgba(0, 0, 0, 0.596);
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.auth__container{
-    max-width: 360px;
-    width:100%;
-    /* background-color: white;
-    background: url('../../assets/images/form_bg.jpg') no-repeat;
-    background-size: cover; 
-    background-position: center; */
-    padding-bottom: 40px;
+.auth{
+    width: 80%;
+    max-width: 320px;
+    background-color: white;
+    border-radius: 4px;
+    padding: 30px 25px;
+    position: relative;
+    box-sizing: border-box;
 }
-
-.auth__form__wrapper{
+/* .auth__form__wrapper{
     padding: 20px 20px 20px;
+} */
+.auth__close{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
 }
-
 .auth__headers h1{
     cursor: default;
     text-align: center;
@@ -115,4 +125,29 @@ input:focus{
     background-color: inherit;
     cursor: pointer;
     letter-spacing: 1px;
+}
+.auth__spinner{
+    text-align: center;
+    padding: 4px;
+    font-size: 24px;
+}
+.auth__spinner svg{
+    opacity: 0;
+}
+.auth__spinner.show svg{
+    animation: spin 1.2s infinite;
+    opacity: 1;
+}
+@keyframes spin{
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+@media screen and (max-width: 420px){
+    .auth{
+        padding: 20px 20px;
+    }   
 }

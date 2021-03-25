@@ -1,8 +1,10 @@
 //only created procfile and added start script in package.json
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 require('dotenv').config();
+
 
 const app = express();
 
@@ -19,14 +21,18 @@ mongoose.connect(process.env.MONGODB_URI,{useUnifiedTopology: true,useNewUrlPars
 //     })
 //     .catch(err => console.log(err));
 
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));  
-
+app.use(cookieParser());
 app.use('/images',express.static('images'));
 
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build'));
 }
+
+
+app.use('/user',require('./routes/auth-route'));
 
 
 app.use('/product',require('./routes/product-route'));
