@@ -4,6 +4,29 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const requireAuth = require('../middleware/auth-middleware');
+const { Mongoose } = require('mongoose');
+
+
+const checkUser =  (token) =>{
+    // const token = req.cookies.jwt;
+    let id = null
+    if(token){
+        jwt.verify(token,process.env.AUTH_SECRET,(err,decodedToken)=>{
+            if(err){
+                console.log('token is not valid');
+                return null;
+            }
+            else{
+                 id = decodedToken.id;
+                 //dunno why but returning id here was giving undefined so i created a variable
+            }
+        })
+    }
+    else{
+        return null
+    }
+    return id;
+}
 
 const handleErrors = (err) =>{
     let errors = {email: '',password: ''};
@@ -11,11 +34,12 @@ const handleErrors = (err) =>{
         errors.email = 'email already exists';
         return errors;
     }
+    console.log(err)
     if(err.message.includes('User validation failed')){
         Object.values(err.errors).forEach(error=>{
             errors[error.properties.path] = error.properties.message;
         })
-    } 
+    }
     return errors;
 }
 
@@ -74,4 +98,78 @@ router.get('/logout',(req,res)=>{
     res.json({success: 'user logged out'});
 })
 
+//merging cart on login
+
+router.post('/mergecart',requireAuth,(req,res)=>{
+    const token = req.cookies.jwt;
+    const id = checkUser(token);
+    const frontendCart = req.body.cart;
+    User.findById(id)
+        .then(user =>{
+            const backendCart = user.cart;
+            const newCart = [...frontendCart,...backendCart];
+            //this is cart productId without duplicates
+            const uniqueCartItems = [...new Set(newCart.map(i=>i.productId))];
+            // console.log(newCart);
+            // console.log(uniqueCartItems);
+            let updatedCart = [];
+            
+            for(let i=0;i<uniqueCartItems.length;i++){
+                let productId = newCart[i].productId;
+                let pqty = 0;
+                for(let k=0;k<newCart.length;k++){
+                    if(newCart[i].productId === uniqueCartItems[k]){
+                        pqty+=newCart[k].pqty;
+                    }
+                }//here cart item has been compared with all items in newCart
+                updatedCart.push({productId,pqty});
+            }
+            // console.log(updatedCart);
+            return User.findByIdAndUpdate(id,{cart: updatedCart},{new:true})        
+        })
+        .then(result=>res.json(result.cart))
+        .catch(err => res.json({error: 'could not update cart'}));
+})
+
+
+//setting cart on change
+router.post('/cart',requireAuth, (req,res)=>{
+    const token = req.cookies.jwt;
+    const id = checkUser(token);
+    const cart = req.body.cart;
+    // console.log(cart);
+    // console.log(id);
+    if(!id){
+        res.json({error: 'could not find user'});
+        return;
+    }
+
+    User.findByIdAndUpdate(id,{cart},{new:true})
+        .then(result=>{
+            res.json(result);
+        })
+        .catch(err =>res.json({error: 'an error occured while updating cart'}));
+})
+
+
+//getting cart
+router.get('/cart',requireAuth, (req,res)=>{
+    const token = req.cookies.jwt;
+    const id = checkUser(token);
+    
+    if(!id){
+        res.json([]);//sending empty array
+        // res.json({error: 'could not find user'});
+        return;
+    }
+
+    User.findById(id)
+        .then(result=>{
+            console.log(result.cart)
+            res.json({success:'user found',cart:result.cart});
+        })
+        .catch(err =>{
+                res.json([]);//still sending an empty cart maybe i can send error
+            });
+})
 module.exports = router;

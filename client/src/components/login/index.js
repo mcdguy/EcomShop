@@ -6,7 +6,7 @@ import {GrClose} from "react-icons/gr";
 import {BiLoaderAlt} from "react-icons/bi";
 
 const Login = () => {
-    const {setToken,isLoggedIn,setLogin,showLogin,setHideLoginModal}= useGlobalContext();
+    const {setCart,cart,isLoggedIn,setLogin,showLogin,setHideLoginModal}= useGlobalContext();
     const [authType,setAuthType] = useState('login');
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
@@ -21,7 +21,6 @@ const Login = () => {
     const handleAuth = (e) =>{
         e.preventDefault();
         setEmail(email => {return email.replaceAll(" ","")});
-        console.log(email);
         setError({email: '',password:''});
         if(email===''){
             setError(error => {return({...error,email: 'please enter an email'})});
@@ -36,27 +35,28 @@ const Login = () => {
         .then(res=>{ 
             console.log(res.data);
             if(spinnerRef.current) spinnerRef.current.classList.remove('show');
-            // const user = res.data;
-            // console.log(jwt_token);
-            // setToken(jwt_token);'
-            
-
             //i observed that when user is not logged in or signed in due to any error the spinner will hide but modal will stay open
             if(res.data.errors){
                 setError({email:res.data.errors.email,password: res.data.errors.password});
             }
             if(res.data.success){
                 setHideLoginModal();
+                //if user is logged in i will merge localstorage cart with db one and then fetch the new cart and replace the localstorage one
+                
+                axios.post('/user/mergecart',{cart})
+                .then(res => setCart(res.data))
+                .catch(err => console.log(err));
+                
                 //if this is success that means user must have entered valid credentials and jwt is sent back(either he is logged in or he is signed in)
                 setLogin();
             }
             //here i would like to do different things depending on the auth type
         })
         .catch(err =>
-            {
+        {
                 if(spinnerRef.current) spinnerRef.current.classList.remove('show');
                 console.log(err)
-            });
+        });
     }
     return (
         <>
@@ -84,8 +84,6 @@ const Login = () => {
                         {authType==='login'?
                             <div className="auth__toggle">
                                 <span > <button onClick={()=>setAuthType('signup')}>create an account</button> | <button>forgot password?</button></span>
-                                {/* <div>or</div>
-                                <div></div> */}
                             </div>
                         :
                             <div className="auth__toggle">

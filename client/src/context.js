@@ -9,7 +9,7 @@ const getLocalStorage = () =>{
         return JSON.parse(cart);
     }else{
         return [];
-    }
+    }  
 }
 
 const reducer = (oldState,action) =>{
@@ -54,6 +54,7 @@ const reducer = (oldState,action) =>{
     }
     throw new Error('invalid dispatch');
 }
+
 const defaultState = {
     products: [],
     cart: getLocalStorage(),
@@ -65,15 +66,11 @@ const defaultState = {
     filterName: 'none',
     isLoggedIn: false,
     featuredProducts: [],
-    // token:null,
     showLoginModal: false,
 }
 export const AppProvider = ({children}) =>{
     const [state,dispatch] = useReducer(reducer,defaultState);
     
-    const setToken = (value) =>{
-        dispatch({type: 'SET_TOKEN',payload: value});
-    }
     const setProducts = (products) =>{
         dispatch({type: 'SET_PRODUCTS',payload: products});
     }
@@ -92,12 +89,16 @@ export const AppProvider = ({children}) =>{
     const setLogout = () =>{
         dispatch({type: 'LOGOUT'});
     }
+    //replacing cart with new one
+    const setCart = (newCart) =>{
+        dispatch({type: 'SET_CART_ITEM',payload: newCart})
+    }
     const addCartItem = (productId,pqty) =>{
         let alreadyExists = false;
         let newCart = [];
-        if(state.cart.length){//if the item already exists i only update qty and wont add it again
+        if(state.cart.length){
             newCart = state.cart.map(cartItem=>{
-                if(cartItem.productId === productId){
+                if(cartItem.productId === productId){//if the item already exists i only update qty and wont add it again
                     cartItem.pqty +=pqty;
                     alreadyExists = true;
                 }
@@ -112,7 +113,6 @@ export const AppProvider = ({children}) =>{
                 newCart = [{productId,pqty}];
             }
         }
-        // console.log(newCart);
         dispatch({type: 'SET_CART_ITEM',payload: newCart});
     }
     const updateCartItem = (pqty,_id) =>{
@@ -134,6 +134,7 @@ export const AppProvider = ({children}) =>{
     const setCartTotalAmount = (amount) => {
         dispatch({type: 'SET_CART_TOTAL_AMOUNT',payload: amount})
     }
+
     //checking if user is logged in on mount
     useEffect(()=>{
         axios('/user/status')
@@ -146,7 +147,7 @@ export const AppProvider = ({children}) =>{
     },[]);
 
 
-    //setting the cart
+    //setting the cart in localStorage
     useEffect(()=>{
         localStorage.setItem('cart',JSON.stringify(state.cart));
         let totalItems = 0;
@@ -154,8 +155,54 @@ export const AppProvider = ({children}) =>{
             totalItems +=item.pqty;
         })
         dispatch({type: 'SET_CART_TOTAL_ITEMS',payload: totalItems})
-        
+        if(state.isLoggedIn){
+            axios.post('/user/cart',{cart:state.cart})
+                        .then(res =>{
+                            //basically i don't need to do anything here or i can see if user is logged out i can set loggedout here
+                            console.log('updated cart');
+                        })
+                        .catch(err => console.log(err));
+        }
     },[state.cart])
+
+
+    // useEffect(()=>{
+    //     localStorage.setItem('cart',JSON.stringify(state.cart));
+    //     let totalItems = 0;
+    //     state.cart.forEach(item =>{
+    //         totalItems +=item.pqty;
+    //     })
+    //     dispatch({type: 'SET_CART_TOTAL_ITEMS',payload: totalItems})
+        
+    //     //if user is logged in the i will set the cart in db as well
+    //     if(state.isLoggedIn){
+    //         axios.post('/user/cart',{cart:state.cart})
+    //             .then(res =>{
+    //                 //basically i don't need to do anything here or i can see if user is logged out i can set loggedout here
+    //                 // console.log(res.data);
+    //             })
+    //             .catch(err => console.log(err));
+    //     }
+
+    // },[state.cart,state.isLoggedIn])
+
+    //loading cart when user logs in
+
+    // useEffect(()=>{
+    //     axios.get('/user/cart')
+    //         .then(res=>{
+    //             // console.log(res.data)
+    //             if(res.data.success === 'user found'){
+    //                 // console.log(...res.data.cart)
+    //                 // console.log(...state.cart)
+    //                 //copying the frontend cart before backend cart
+    //                 let cart = [...state.cart,...res.data.cart];
+    //                 let newCart = [...new Set(cart.map(i=>i.productId))];
+    //                 console.log('new cart',newCart);
+    //                 // setCart(newCart);
+    //             }
+    //         })
+    // },[state.isLoggedIn])
 
     //setting the products
     useEffect(()=>{
@@ -173,7 +220,7 @@ export const AppProvider = ({children}) =>{
         dispatch({type:'SET_FEATURED',payload: featured})
     },[state.products]);
 
-    return <AppContext.Provider value={{...state,setShowLoginModal,setLogin,setLogout,setHideLoginModal,addCartItem,setToken,setCartTotalAmount,updateCartItem,removeCartItem,setFilterName,setProducts}}>
+    return <AppContext.Provider value={{...state,setShowLoginModal,setLogin,setCart,setLogout,setHideLoginModal,addCartItem,setCartTotalAmount,updateCartItem,removeCartItem,setFilterName,setProducts}}>
         {children}
     </AppContext.Provider>
 }

@@ -38,6 +38,22 @@ app.use('/user',require('./routes/auth-route'));
 app.use('/product',require('./routes/product-route'));
 app.use('/blog',require('./routes/blog-route'));
 
+
+
+// app.get('*', function (req, res) { // This wildcard method handles all requests
+
+//     Router.run(routes, req.path, function (Handler, state) {
+//         var element = React.createElement(Handler);
+//         var html = React.renderToString(element);
+//         res.render('main', { content: html });
+//     });
+// });
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+ });
+
+
 app.use((req,res)=>{
     res.json({error: 'page not found'});
 })

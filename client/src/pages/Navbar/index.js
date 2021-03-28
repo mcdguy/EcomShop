@@ -5,7 +5,7 @@ import './navbar.css';
 import axios from 'axios';
 
 const Navbar = () => {
-    const {setFilterName,setLogout,isLoggedIn,setShowLoginModal} = useGlobalContext();
+    const {setFilterName,setLogout,setCart,isLoggedIn,setShowLoginModal} = useGlobalContext();
     const [openMenu,setOpenMenu] = useState(false);
     const handleLogout = () =>{
         //here i would like to send req to backend to logout
@@ -14,6 +14,7 @@ const Navbar = () => {
             .then(res =>{
                 console.log(res.data);
                 setLogout();   
+                setCart([]);
             })
             .catch(err => console.log(err));
         

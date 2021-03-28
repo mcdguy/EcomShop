@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const cartItemSchema = new Schema({
     productId:String,
     pqty: Number
-})
+},{ _id : false })//this will ensure no id is created and i can directly use array in frontend
 
 const addressSchema = new Schema({
     state:{
@@ -54,13 +54,13 @@ const userSchema = new Schema({
     //     type: String,
     //     enum: [['user','admin'],'incorrect user type']
     // },
-    address: {
-        type: addressSchema,
-        default: {}
-    },
+    // address: {
+    //     type: addressSchema,
+    //     default: {}
+    // },
     cart: {
         type: [cartItemSchema],
-        default: []
+        default: () => ([])
     },
  });
 
