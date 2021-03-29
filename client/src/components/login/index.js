@@ -44,7 +44,17 @@ const Login = () => {
                 //if user is logged in i will merge localstorage cart with db one and then fetch the new cart and replace the localstorage one
                 
                 axios.post('/user/mergecart',{cart})
-                .then(res => setCart(res.data))
+                .then(res => {
+                    // console.log(res.data);
+                    if(res.data.cart){
+                        alert("inside the you know");
+                      
+                        console.log('cart',res.data.cart);
+                        setCart(res.data.cart);
+                    }else{
+                        console.log('cart not received');
+                    }
+                })
                 .catch(err => console.log(err));
                 
                 //if this is success that means user must have entered valid credentials and jwt is sent back(either he is logged in or he is signed in)

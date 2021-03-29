@@ -107,11 +107,13 @@ router.post('/mergecart',requireAuth,(req,res)=>{
     User.findById(id)
         .then(user =>{
             const backendCart = user.cart;
+            console.log('frontend',frontendCart);
+            console.log('backend',backendCart);
             const newCart = [...frontendCart,...backendCart];
             //this is cart productId without duplicates
             const uniqueCartItems = [...new Set(newCart.map(i=>i.productId))];
-            // console.log(newCart);
-            // console.log(uniqueCartItems);
+            console.log(newCart);
+            console.log(uniqueCartItems);
             let updatedCart = [];
             
             for(let i=0;i<uniqueCartItems.length;i++){
@@ -124,10 +126,14 @@ router.post('/mergecart',requireAuth,(req,res)=>{
                 }//here cart item has been compared with all items in newCart
                 updatedCart.push({productId,pqty});
             }
-            // console.log(updatedCart);
-            return User.findByIdAndUpdate(id,{cart: updatedCart},{new:true})        
+            console.log(updatedCart);
+            // return User.findByIdAndUpdate(id,{cart: updatedCart},{new:true})        
+            User.findByIdAndUpdate(id,{$set: {cart: updatedCart}},{new:true})
+                .then(result=>{
+                    console.log('cart',result.cart);
+                    res.json({cart:result.cart});
+                })
         })
-        .then(result=>res.json(result.cart))
         .catch(err => res.json({error: 'could not update cart'}));
 })
 

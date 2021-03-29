@@ -145,7 +145,7 @@ export const AppProvider = ({children}) =>{
             })
             .catch(err => console.log(err));
     },[]);
-
+ 
 
     //setting the cart in localStorage
     useEffect(()=>{

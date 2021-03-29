@@ -7,7 +7,7 @@ const fs = require('fs');
 
 //getting all products
 router.get('/',(req,res)=>{
-    console.log('getting all products');
+    // console.log('getting all products');
     Product.find()
         .then((result)=>{
             res.json(result)
@@ -20,7 +20,7 @@ router.get('/',(req,res)=>{
 
 //getting a single product
 router.get('/shop/:id',(req,res)=>{
-    console.log('getting single product');
+    // console.log('getting single product');
     const {id} = req.params;
     Product.findById(id)
     .then(result => res.json(result))
@@ -32,7 +32,7 @@ router.get('/shop/:id',(req,res)=>{
 
 //getting a single product from product id 
 router.get('/find/',(req,res,next)=>{
-    console.log('in find');
+    // console.log('in find');
     console.log(req.query.p);
     const {p} = req.query;
     //if i don't pass query this will run page not found middleware in app.js
@@ -52,7 +52,7 @@ router.get('/find/',(req,res,next)=>{
 
 //creating a new product
 router.post('/',upload.array('img',6),(req,res)=>{//setting max count to 6
-    console.log('creating new product');
+    // console.log('creating new product');
     const product = req.body;
     product.img = req.files.map(img => `images/${img.filename}`);
     

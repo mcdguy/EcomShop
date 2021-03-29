@@ -9,7 +9,7 @@ const requireAuth = (req,res,next) =>{
                 res.json({error: 'user not logged in'});
             }
             else{
-                console.log(decodedToken);
+                // console.log(decodedToken);
                 next();
             }
         })
