@@ -12,7 +12,7 @@ const Navbar = () => {
         //and after the success of the request
         axios('/user/logout')
             .then(res =>{
-                console.log(res.data);
+                // console.log(res.data);
                 setLogout();   
                 setCart([]);
             })

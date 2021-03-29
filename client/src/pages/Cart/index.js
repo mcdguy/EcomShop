@@ -8,6 +8,7 @@ const Cart = () => {
     const {cart,products,setCartTotalAmount,cartTotalItems,cartTotalAmount} = useGlobalContext();
     const [cartProducts,setCartProducts] = useState([]);
     useEffect(()=>{
+        // setCartProducts([]);
         if(cart.length){//if cart has something only then i need to run this
             let newCartProducts= cart.map(item=>{
                 let newItem = null;// in case item id doesnot match with any product (which will happen if someone deltes the product from database and when product is not fetched but local storage has items)
@@ -15,7 +16,6 @@ const Cart = () => {
                 for(let i=0;i<products.length;i++){//now i will check if any product id matches with this cart item
                     if(products[i]._id === productId){
                         newItem = {...products[i],pqty};
-                        // console.log(newItem);
                         break;//to use break i will use normal for loop
                     }
                 }
@@ -34,6 +34,7 @@ const Cart = () => {
         })
         setCartTotalAmount(totalAmount);
     },[cartProducts]);
+
     if(!cart.length){
         return(
             <div className="cart__empty">

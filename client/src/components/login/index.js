@@ -33,7 +33,7 @@ const Login = () => {
         spinnerRef.current.classList.add('show');
         axios.post(`/user/${authType}`,{email,password})
         .then(res=>{ 
-            console.log(res.data);
+            // console.log(res.data);
             if(spinnerRef.current) spinnerRef.current.classList.remove('show');
             //i observed that when user is not logged in or signed in due to any error the spinner will hide but modal will stay open
             if(res.data.errors){
@@ -47,7 +47,7 @@ const Login = () => {
                 .then(res => {
                     // console.log(res.data);
                     if(res.data.cart){
-                        alert("inside the you know");
+                        // alert("inside the you know");
                       
                         console.log('cart',res.data.cart);
                         setCart(res.data.cart);
@@ -55,17 +55,15 @@ const Login = () => {
                         console.log('cart not received');
                     }
                 })
-                .catch(err => console.log(err));
-                
+                .catch(err => console.log(err));           
                 //if this is success that means user must have entered valid credentials and jwt is sent back(either he is logged in or he is signed in)
                 setLogin();
             }
             //here i would like to do different things depending on the auth type
         })
-        .catch(err =>
-        {
+        .catch(err =>{
                 if(spinnerRef.current) spinnerRef.current.classList.remove('show');
-                console.log(err)
+                console.log(err);
         });
     }
     return (

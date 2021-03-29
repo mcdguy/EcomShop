@@ -25,6 +25,9 @@ const reducer = (oldState,action) =>{
     if(action.type === 'SET_CART_ITEM'){
         return({...oldState,cart: action.payload});
     }
+    if(action.type === 'SET_CART'){
+        return({...oldState,cart: action.payload});
+    }
     if(action.type === 'UPDATE_CART_ITEM'){
         return({...oldState,cart: action.payload});
     }
@@ -58,6 +61,7 @@ const reducer = (oldState,action) =>{
 const defaultState = {
     products: [],
     cart: getLocalStorage(),
+    // cart: [],
     cartTotalItems: 0,
     cartTotalAmount: 0,
     filter: 'none',
@@ -91,7 +95,8 @@ export const AppProvider = ({children}) =>{
     }
     //replacing cart with new one
     const setCart = (newCart) =>{
-        dispatch({type: 'SET_CART_ITEM',payload: newCart})
+        // console.log('hello');
+        dispatch({type: 'SET_CART',payload: newCart})
     }
     const addCartItem = (productId,pqty) =>{
         let alreadyExists = false;
@@ -117,9 +122,7 @@ export const AppProvider = ({children}) =>{
     }
     const updateCartItem = (pqty,_id) =>{
         let updatedCart = state.cart.map(item =>{
-            // console.log('called');
             if(item.productId === _id){
-                // console.log('called');
                 item.pqty = pqty;
             }
             return item;
@@ -157,52 +160,14 @@ export const AppProvider = ({children}) =>{
         dispatch({type: 'SET_CART_TOTAL_ITEMS',payload: totalItems})
         if(state.isLoggedIn){
             axios.post('/user/cart',{cart:state.cart})
-                        .then(res =>{
-                            //basically i don't need to do anything here or i can see if user is logged out i can set loggedout here
-                            console.log('updated cart');
-                        })
-                        .catch(err => console.log(err));
+                .then(res =>{
+                    //basically i don't need to do anything here or i can see if user is logged out i can set loggedout here
+                    console.log('updated cart');
+                })
+                .catch(err => console.log(err));
         }
     },[state.cart])
 
-
-    // useEffect(()=>{
-    //     localStorage.setItem('cart',JSON.stringify(state.cart));
-    //     let totalItems = 0;
-    //     state.cart.forEach(item =>{
-    //         totalItems +=item.pqty;
-    //     })
-    //     dispatch({type: 'SET_CART_TOTAL_ITEMS',payload: totalItems})
-        
-    //     //if user is logged in the i will set the cart in db as well
-    //     if(state.isLoggedIn){
-    //         axios.post('/user/cart',{cart:state.cart})
-    //             .then(res =>{
-    //                 //basically i don't need to do anything here or i can see if user is logged out i can set loggedout here
-    //                 // console.log(res.data);
-    //             })
-    //             .catch(err => console.log(err));
-    //     }
-
-    // },[state.cart,state.isLoggedIn])
-
-    //loading cart when user logs in
-
-    // useEffect(()=>{
-    //     axios.get('/user/cart')
-    //         .then(res=>{
-    //             // console.log(res.data)
-    //             if(res.data.success === 'user found'){
-    //                 // console.log(...res.data.cart)
-    //                 // console.log(...state.cart)
-    //                 //copying the frontend cart before backend cart
-    //                 let cart = [...state.cart,...res.data.cart];
-    //                 let newCart = [...new Set(cart.map(i=>i.productId))];
-    //                 console.log('new cart',newCart);
-    //                 // setCart(newCart);
-    //             }
-    //         })
-    // },[state.isLoggedIn])
 
     //setting the products
     useEffect(()=>{
@@ -227,3 +192,6 @@ export const AppProvider = ({children}) =>{
 export const useGlobalContext = () =>{
     return useContext(AppContext);
 }
+
+//commented cart get local storage in state
+//also commenting set local storage in useEffect
