@@ -8,7 +8,7 @@ const Cart = () => {
     const {cart,products,setCartTotalAmount,cartTotalItems,cartTotalAmount} = useGlobalContext();
     const [cartProducts,setCartProducts] = useState([]);
     useEffect(()=>{
-        // setCartProducts([]);
+        setCartProducts([]);
         if(cart.length){//if cart has something only then i need to run this
             let newCartProducts= cart.map(item=>{
                 let newItem = null;// in case item id doesnot match with any product (which will happen if someone deltes the product from database and when product is not fetched but local storage has items)
