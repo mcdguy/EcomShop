@@ -113,14 +113,15 @@ router.post('/mergecart',requireAuth,(req,res)=>{
             //this is cart productId without duplicates
             const uniqueCartItems = [...new Set(newCart.map(i=>i.productId))];
             // console.log(newCart);
-            // console.log(uniqueCartItems);
+            console.log(uniqueCartItems);
             let updatedCart = [];
             
             for(let i=0;i<uniqueCartItems.length;i++){
-                let productId = newCart[i].productId;
+                // let productId = newCart[i].productId;
+                let productId = uniqueCartItems[i];
                 let pqty = 0;
                 for(let k=0;k<newCart.length;k++){
-                    if(newCart[i].productId === uniqueCartItems[k]){
+                    if(uniqueCartItems[i] === newCart[k].productId){
                         pqty+=newCart[k].pqty;
                     }
                 }//here cart item has been compared with all items in newCart

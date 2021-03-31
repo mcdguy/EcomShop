@@ -150,22 +150,57 @@ export const AppProvider = ({children}) =>{
     },[]);
  
 
-    //setting the cart in localStorage
+    //every time cart changes set the cart in localStorage or in db if user is logged in
+    //but cart might also change if user refresh the db but there is no real change in cart 
+    // at that time we will fetch cart from db because other device might have made a change to the db and refreshing this page will revert that change so sessions will never sync
+    //because every session will try to replace db cart with localstorage
+    // useEffect(()=>{
+    //     let localCart = getLocalStorage();
+    //     // console.log(JSON.stringify(localCart),JSON.stringify(state.cart));
+    //     //using stringify because i need to compare objects and there order wont change on refresh
+    //     if(JSON.stringify(localCart) === JSON.stringify(state.cart)){
+    //         console.log('looks like page is refreshed');
+    //         axios.get('/user/cart')
+    //             .then(res => {
+    //                 if(res.data.cart){
+    //                     setCart(res.data.cart);
+    //                     localStorage.setItem('cart',[]);
+    //                 }
+    //             })
+    //             .catch(err => console.log(err));
+    //     }else{
+    //         localStorage.setItem('cart',JSON.stringify(state.cart));
+    //         let totalItems = 0;
+    //         state.cart.forEach(item =>{
+    //             totalItems +=item.pqty;
+    //         })
+    //         dispatch({type: 'SET_CART_TOTAL_ITEMS',payload: totalItems})
+    //         if(state.isLoggedIn){
+    //             axios.post('/user/cart',{cart:state.cart})
+    //                 .then(res =>{
+    //                     //basically i don't need to do anything here or i can see if user is logged out i can set loggedout here
+    //                     console.log('updated cart');
+    //                 })
+    //                 .catch(err => console.log(err));
+    //         }
+    //     }
+    // },[state.cart])
     useEffect(()=>{
-        localStorage.setItem('cart',JSON.stringify(state.cart));
-        let totalItems = 0;
-        state.cart.forEach(item =>{
-            totalItems +=item.pqty;
-        })
-        dispatch({type: 'SET_CART_TOTAL_ITEMS',payload: totalItems})
-        if(state.isLoggedIn){
-            axios.post('/user/cart',{cart:state.cart})
-                .then(res =>{
-                    //basically i don't need to do anything here or i can see if user is logged out i can set loggedout here
-                    console.log('updated cart');
-                })
-                .catch(err => console.log(err));
-        }
+            localStorage.setItem('cart',JSON.stringify(state.cart));
+            let totalItems = 0;
+            state.cart.forEach(item =>{
+                totalItems +=item.pqty;
+            })
+            dispatch({type: 'SET_CART_TOTAL_ITEMS',payload: totalItems})
+            if(state.isLoggedIn){
+                axios.post('/user/cart',{cart:state.cart})
+                    .then(res =>{
+                        //basically i don't need to do anything here or i can see if user is logged out i can set loggedout here
+                        console.log('updated cart');
+                    })
+                    .catch(err => console.log(err));
+            }
+        
     },[state.cart])
 
 

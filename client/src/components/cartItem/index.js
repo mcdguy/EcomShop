@@ -6,18 +6,22 @@ import {FaMinus,FaPlus} from "react-icons/fa";
 import {BiMinus,BiPlus} from "react-icons/bi";
 import { Link } from 'react-router-dom';
 
-const CartItem = ({img,name,price,pqty,_id}) => {
+const CartItem = ({img,name,price,pqty,_id,cartProducts}) => {
     const {updateCartItem,removeCartItem} = useGlobalContext();
     const [quantity,setQuantity] = useState(0);//setting this to 0 because it will get updated in useEffect and i don't want the other useEffect to run when quantity is 0
+    
+    
     const decreaseQuantity = () =>{
+        //quantity can't be 0
         if(quantity === 1){
             return;
         }
         setQuantity(quantity-1);
     }
+    
     useEffect(()=>{
         setQuantity(pqty);
-    },[]);//not passing any dependency as it is dependent on cartItem which will re render itself on any change
+    },[cartProducts]);
     
     useEffect(()=>{
         if(quantity>0){//without this condition all the quantity in cart will become 0 because of initial value of quantity
