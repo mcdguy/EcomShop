@@ -16,14 +16,19 @@ const CartItem = ({img,name,price,pqty,_id,cartProducts}) => {
         if(quantity === 1){
             return;
         }
-        setQuantity(quantity-1);
+        setQuantity(quantity => {return(quantity-1)});
     }
-    
+    const increaseQuantity = () =>{
+        if(false){//quantity should be compared with db quantity maybe i need to change property name to stock
+            return
+        }
+        setQuantity(quantity => {return(quantity+1)})
+    }
     useEffect(()=>{
         setQuantity(pqty);
     },[cartProducts]);
     
-    useEffect(()=>{
+    useEffect(()=>{//any change in qty will be pushed to cart
         if(quantity>0){//without this condition all the quantity in cart will become 0 because of initial value of quantity
             updateCartItem(quantity,_id);
         }
@@ -39,7 +44,7 @@ const CartItem = ({img,name,price,pqty,_id,cartProducts}) => {
                 <span className="cart__item__qty">
                         <span className='cart__item__qty__inc' onClick={decreaseQuantity}><BiMinus/></span>     
                         <span>{quantity}</span>     
-                        <span className='cart__item__qty__dec' onClick={()=>setQuantity(quantity+1)}><BiPlus/></span>
+                        <span className='cart__item__qty__dec' onClick={increaseQuantity}><BiPlus/></span>
                 </span>
             </div>
             <button className="cart__item__remove" onClick={()=>removeCartItem(_id)}><GrClose/><span className="cart__item__tooltip">remove</span></button>

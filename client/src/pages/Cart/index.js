@@ -8,7 +8,7 @@ const Cart = () => {
     const {cart,products,setCartTotalAmount,cartTotalItems,cartTotalAmount} = useGlobalContext();
     const [cartProducts,setCartProducts] = useState([]);
     useEffect(()=>{
-        setCartProducts([]);//for that weird error we spent two days on (frontend cart was different from mongodb)
+        setCartProducts([]);
         if(cart.length){//if cart has something only then i need to run this
             let newCartProducts= cart.map(item=>{
                 let newItem = null;// in case item id doesnot match with any product (which will happen if someone deltes the product from database and when product is not fetched but local storage has items)
