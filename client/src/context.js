@@ -1,4 +1,4 @@
-import React, {useState,useEffect,useReducer,useContext} from 'react';
+import React, {useEffect,useReducer,useContext} from 'react';
 import axios from 'axios';
 
 const AppContext = React.createContext();
@@ -34,15 +34,6 @@ const reducer = (oldState,action) =>{
     if(action.type === 'REMOVE_CART_ITEM'){
         return({...oldState,cart: action.payload});
     }
-    if(action.type === 'SET_CART_TOTAL_ITEMS'){
-        return({...oldState,cartTotalItems: action.payload});
-    }
-    if(action.type === 'SET_CART_TOTAL_AMOUNT'){
-        return({...oldState,cartTotalAmount: action.payload});
-    }
-    if(action.type === 'SET_TOKEN'){
-        return({...oldState,token: action.payload});
-    }
     if(action.type==='SHOW_LOGIN'){
         return({...oldState,showLogin: true});
     }
@@ -61,9 +52,6 @@ const reducer = (oldState,action) =>{
 const defaultState = {
     products: [],
     cart: getLocalStorage(),
-    // cart: [],
-    cartTotalItems: 0,
-    cartTotalAmount: 0,
     filter: 'none',
     error: {message: '',show: false},
     isLoading: false,
@@ -132,10 +120,6 @@ export const AppProvider = ({children}) =>{
     const removeCartItem = (_id) =>{
         let newCart = state.cart.filter(item => item.productId !== _id);
         dispatch({type: 'REMOVE_CART_ITEM',payload: newCart});
-    }
-
-    const setCartTotalAmount = (amount) => {
-        dispatch({type: 'SET_CART_TOTAL_AMOUNT',payload: amount})
     }
 
     //checking if user is logged in on mount
@@ -208,10 +192,7 @@ export const AppProvider = ({children}) =>{
 
     useEffect(()=>{
             localStorage.setItem('cart',JSON.stringify(state.cart));
-            let totalItems = 0;
-            state.cart.forEach(item =>{
-                totalItems +=item.pqty;
-            })
+            
             // if (window.performance) {
             //     if (performance.navigation.type == 1) {
             //       alert( "This page is reloaded" );
@@ -219,7 +200,6 @@ export const AppProvider = ({children}) =>{
             //       alert( "This page is not reloaded");
             //     }
             // }
-            dispatch({type: 'SET_CART_TOTAL_ITEMS',payload: totalItems})
             if(state.isLoggedIn){
                 axios.post('/user/cart',{cart:state.cart})
                     .then(res =>{
@@ -342,13 +322,22 @@ export const AppProvider = ({children}) =>{
         dispatch({type:'SET_FEATURED',payload: featured})
     },[state.products]);
 
-    return <AppContext.Provider value={{...state,setShowLoginModal,setLogin,setCart,setLogout,setHideLoginModal,addCartItem,setCartTotalAmount,updateCartItem,removeCartItem,setFilterName,setProducts}}>
+    return <AppContext.Provider value={{
+            ...state,
+            setShowLoginModal,
+            setLogin,
+            setCart,
+            setLogout,
+            setHideLoginModal,
+            addCartItem,
+            updateCartItem,
+            removeCartItem,
+            setFilterName,
+            setProducts}
+        }>
         {children}
     </AppContext.Provider>
 }
 export const useGlobalContext = () =>{
     return useContext(AppContext);
 }
-
-//commented cart get local storage in state
-//also commenting set local storage in useEffect

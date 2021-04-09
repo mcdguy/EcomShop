@@ -1,0 +1,190 @@
+.account__notLogged{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    letter-spacing: 1px;
+    font-size: 20px;
+}
+.address__center{
+  padding-top: 100px;
+}
+
+/*to hide increment decrement*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+.address__header{
+  /* background-color: rgb(240, 240, 240); */
+  background-color: rgb(240, 240, 240);
+  padding: 10px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  /* text-transform: capitalize; */
+  font-weight: 400;
+}
+.address__header > p > span{
+  font-weight: 500;
+}
+.address__header p{
+  margin: 0;
+  /* letter-spacing: 1px; */
+  /* text-align: center; */
+}
+.save__address__prompt{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* background-color: rgb(240, 240, 240); */
+  background-color: rgb(240, 240, 240);
+  padding: 10px 10px;
+
+}
+
+.save__address__prompt span{
+  text-transform: capitalize;
+  line-height: 1.5;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+.save__address__prompt button{
+  color: white;
+  background-color: rgb(75, 197, 245);
+  padding: 5px 15px;
+  border-radius: 50px;
+  text-transform: capitalize;
+  letter-spacing: 2px;
+  font-size: 14px;
+  outline:none;
+  border: none;
+  cursor: pointer;
+}
+.address__form{
+  background-color: rgb(240, 240, 240);/*these two properties repeat*/
+  padding: 10px 10px;
+  /*above one and this one */
+}
+.address__form input{
+  padding: 8px 8px;
+  width: 100%;
+  margin: 10px 0;
+  border: 2px solid rgb(160, 156, 156);
+  box-sizing: border-box;
+  border-radius: 3px;
+}
+.address__form input::placeholder{
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.address__form input:focus{
+  border: 2px solid black;
+}
+
+.address__form__row > div{
+  width: 48%;
+}
+.address__form__row{
+  display: flex;
+  justify-content: space-between;
+}
+.address__input__error{
+  /* width: 100%; */
+  margin: 0;
+}
+.save__address__btn,
+.edit__address__btn,
+.save__edit__btn,
+.cancel__edit__btn{
+  color: var(--clr-bg);
+  padding: 5px 7px;
+  /* border-radius: 50px; */
+  border-radius: 3px;
+  border: 2px solid var(--clr-sec);
+  /* text-align: center; */
+  background-color: var(--clr-sec);
+  
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: inline-block;
+  margin: 10px 0;
+  /* margin: 60px 0; */
+  transition: background-color 300ms,
+              color 300ms;
+  cursor: pointer;
+  outline: none;
+}
+.save__edit__btn{
+  margin-left: 10px;
+}
+.address__details{
+  background-color: rgb(240, 240, 240);
+  padding: 10px 10px;
+  border-radius: 4px;
+}
+.account__address__text > div{
+  margin: 8px 0;
+}
+.account__address__edit form > div{
+  margin: 8px 0;
+}
+/* .account__address__edit{
+  background-color: rgb(253, 252, 252);
+  padding: 10px 10px;
+} */
+
+.address__text__head{
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+  width: 20%;
+  display: inline-block;
+  padding: 2px 4px;
+  /* background-color: white;; */
+}
+.address__text__desc{
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: capitalize; 
+  /* letter-spacing: 1px;
+  color: rgb(78, 78, 78); */
+}
+.edit__address__wrapper{
+  display: flex;
+  justify-content: flex-end;
+}
+.address__input__error{
+  font-size: 12px;
+  font-weight: 500;
+  color: rgb(248, 79, 79);
+  letter-spacing: 1px;
+  /* padding: 3px 0; */
+}
+.account__address__edit input{
+  padding: 2px 4px;
+  letter-spacing: 2px;
+  /* background-color: ; */
+  border: none;
+  /* border-bottom: 2px solid; */
+}
+@media screen and (max-width:768px){
+  .address__text__head{
+    width: 40%;
+  }
+}

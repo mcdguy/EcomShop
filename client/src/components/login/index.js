@@ -10,34 +10,40 @@ const Login = () => {
     const [authType,setAuthType] = useState('login');
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
-    const [error,setError] = useState({email: '',password:''});
+    const [username,setUsername] = useState('');
+    const [error,setError] = useState({email: '',password:'',username:''});
     const spinnerRef = useRef(null)
 
     const handleEmail = (e) =>{ 
         setEmail( e.target.value.trim());//setting email as well as removing whitespace
-        setError({email: '',password:''})
+        setError({email: '',password:'',username:''})
     }
 
     const handleAuth = (e) =>{
         e.preventDefault();
         setEmail(email => {return email.replaceAll(" ","")});
-        setError({email: '',password:''});
+        setError({email: '',password:'',username:''});
         if(email===''){
             setError(error => {return({...error,email: 'please enter an email'})});
+            return;
         }
         if(password === ''){
             setError(error => {return({...error,password: 'please enter a password'})});
             return;
         }
+        // if(username === ''){
+        //     setError(error => {return({...error,username: 'please enter a username'})});
+        //     return;
+        // }
         //only if the fields have something i will show spinner
         spinnerRef.current.classList.add('show');
-        axios.post(`/user/${authType}`,{email,password})
+        axios.post(`/user/${authType}`,{email,password,username})//sending username for login too which is empty for login but i will not destructure it on backend
         .then(res=>{ 
             // console.log(res.data);
             if(spinnerRef.current) spinnerRef.current.classList.remove('show');
             //i observed that when user is not logged in or signed in due to any error the spinner will hide but modal will stay open
             if(res.data.errors){
-                setError({email:res.data.errors.email,password: res.data.errors.password});
+                setError({email:res.data.errors.email,password: res.data.errors.password, username: res.data.errors.username});
             }
             if(res.data.success){
                 setHideLoginModal();
@@ -78,12 +84,17 @@ const Login = () => {
 
                     <div className="auth__form__wrapper">
                         <form className="auth__form" onSubmit={handleAuth}>
+                            {authType==='signup'?<div className="auth__field">
+                                <input value={username} onChange={e=>{setUsername(e.target.value);setError({email: '',password:'',username: ''})}} autoComplete="off" type="text" id="username" placeholder="Username"/>
+                                <p className="auth__error">{error.username}</p>
+                            </div>
+                            :null}
                             <div className="auth__field">
                                 <input value={email} onChange={handleEmail} autoComplete="off" type="text" id="email" placeholder="Email"/>
                                 <p className="auth__error">{error.email}</p>
                             </div>
                             <div className="auth__field">
-                                <input value={password} onChange={e=>{setPassword(e.target.value);setError({email: '',password:''})}} autoComplete="off"  type="password" placeholder="Password"/>
+                                <input value={password} onChange={e=>{setPassword(e.target.value);setError({email: '',password:'',username: ''})}} autoComplete="off"  type="password" placeholder="Password"/>
                                 <p className="auth__error">{error.password}</p>
                             </div>
                             <button type="submit">{`${authType==='signup'?'sign up': 'login'}`}</button>

@@ -10,7 +10,7 @@ const productSchema = new Schema({
         type: Number,
         required: [true, 'please enter the price of product']
     },
-    quantity: {
+    stock: {
         type: Number,
         required: [true, "quantity can not be empty"]
     },

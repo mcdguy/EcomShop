@@ -1,8 +1,9 @@
 import React,{useEffect,useRef} from 'react'
 import './product.css';
 import { Link } from 'react-router-dom';
- 
-const Product = ({img,name,price,quantity,_id}) => {
+import {formatPrice} from '../../utils/formatPrice';
+
+const Product = ({img,name,price,stock,_id}) => {
     const productRef = useRef(null);
     useEffect(()=>{
         const productObserver = new IntersectionObserver((entries,productObserver)=>{
@@ -21,7 +22,7 @@ const Product = ({img,name,price,quantity,_id}) => {
             <article className="product__content">
                 <div className="product__img__container">
                     <img className="product__img" src={`/${img[0]}`} alt={name}/>
-                    {!quantity?<div className="product__outofstock"><p>out of stock</p></div>:null}
+                    {!stock?<div className="product__outofstock"><p>out of stock</p></div>:null}
                 </div>
                 <div className="product__info">
                     <h1 className="product__name">{name}</h1>

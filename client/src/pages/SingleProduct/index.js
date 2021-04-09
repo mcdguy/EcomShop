@@ -78,7 +78,7 @@ const SingleProduct = () => {
                                 <p className="item__info__price">PRICE: &#8377;{item.price}</p>
                                 <p className="item__info__weight">{item.weight==='null'?'':item.weight}</p>
                                 <p className="item__info__desc">{item.description}</p>
-                                {item.quantity?
+                                {item.stock?
                                     <>
                                     {/* <div className="item__qty">
                                     <span className='item__qty__inc' onClick={decreaseQuantity}>-</span>     

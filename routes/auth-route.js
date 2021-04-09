@@ -3,45 +3,25 @@ const router = express.Router();
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const {handleAuthErrors} = require('../utils/handleAuthErrors');
+const {handleAddressError} = require('../utils/handleAddressError');
+const {checkUser} = require('../utils/userDetails');
 const requireAuth = require('../middleware/auth-middleware');
-const { Mongoose } = require('mongoose');
 
-
-const checkUser =  (token) =>{
-    // const token = req.cookies.jwt;
-    let id = null
-    if(token){
-        jwt.verify(token,process.env.AUTH_SECRET,(err,decodedToken)=>{
-            if(err){
-                console.log('token is not valid');
-                return null;
-            }
-            else{
-                 id = decodedToken.id;
-                 //dunno why but returning id here was giving undefined so i created a variable
-            }
-        })
-    }
-    else{
-        return null
-    }
-    return id;
-}
-
-const handleErrors = (err) =>{
-    let errors = {email: '',password: ''};
-    if(err.code === 11000){
-        errors.email = 'email already exists';
-        return errors;
-    }
-    console.log(err)
-    if(err.message.includes('User validation failed')){
-        Object.values(err.errors).forEach(error=>{
-            errors[error.properties.path] = error.properties.message;
-        })
-    }
-    return errors;
-}
+// const handleErrors = (err) =>{
+//     let errors = {email: '',password: ''};
+//     if(err.code === 11000){
+//         errors.email = 'email already exists';
+//         return errors;
+//     }
+//     // console.log(err);
+//     if(err.message.includes('User validation failed')){
+//         Object.values(err.errors).forEach(error=>{
+//             errors[error.properties.path] = error.properties.message;
+//         })
+//     }
+//     return errors;
+// }
 
 const maxAge = 3 * 24 * 60 * 60; //3 days in seconds
 const createToken = (id) =>{
@@ -50,19 +30,31 @@ const createToken = (id) =>{
 
 //creating a user in db
 router.post('/signup',async (req,res)=>{
-    let {email,password} = req.body;
+    let {email,password,username} = req.body;
+    let errors = handleAuthErrors(email,password,username);
+    // console.log(errors)
+    if(errors.email !=='' || errors.password !=='' || errors.username !==''){
+        res.json({errors});
+        return;
+    }
     const salt = await bcrypt.genSalt();
     password = await bcrypt.hash(password,salt);
     
-    User.create({email,password})
+    User.create({email,password,username})
         .then(result=>{
             const token = createToken(result._id);
             res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true})
             res.send({success: 'user created successfully'});
+            
         })
         .catch(err =>{
-            const errors = handleErrors(err);
-            console.log(errors);
+            //this is checking unique error
+            // const errors = handleErrors(err);
+            // console.log(errors);
+            let errors = {email: '',password: ''};
+            if(err.code === 11000){
+                errors.email = 'email already exists';
+            }
             res.json({errors}); 
         })
 })
@@ -129,7 +121,7 @@ router.post('/mergecart',requireAuth,(req,res)=>{
             }
             // console.log(updatedCart);
             // return User.findByIdAndUpdate(id,{cart: updatedCart},{new:true})        
-            User.findByIdAndUpdate(id,{$set: {cart: updatedCart}},{new:true})
+            User.findByIdAndUpdate(id,{cart: updatedCart},{new:true})
                 .then(result=>{
                     console.log('cart',result.cart);
                     res.json({cart:result.cart});
@@ -179,4 +171,54 @@ router.get('/cart',requireAuth, (req,res)=>{
                 res.json([]);//still sending an empty cart maybe i can send error
             });
 })
+
+
+//now handling address request
+//getting address
+router.get('/account/address',requireAuth,(req,res)=>{
+    // we are here that means user is logged in
+    const token = req.cookies.jwt;
+    const id = checkUser(token);
+    if(!id){
+        res.json({error: 'could not find user'});
+        return;
+    }
+    User.findById(id)
+        .then(result =>{
+            res.json({address: result.address,email: result.email,username: result.username});
+        })
+        .catch(err => res.json({error: 'something went wrong'}));
+});
+
+//updating address
+router.post('/account/address',requireAuth,(req,res)=>{
+    const token = req.cookies.jwt;
+    const id = checkUser(token);
+    if(!id){
+        res.json({error: 'could not find user'});
+        return;
+    }
+    const {addressLine,state,city,pin,contact} = req.body.address;
+    // console.log(req.body.address);
+    const errors = handleAddressError(addressLine,state,city,pin,contact);
+    console.log(errors);
+    if(errors.addressLine !=='' || errors.state !=='' || errors.city !== '' || errors.pin !=='' ||errors.contact !==''){
+        res.json({errors});
+        return;
+    }
+    // console.log(addressLine,state,city,pin,contact);
+    User.findByIdAndUpdate(id,{address:req.body.address},{new:true})
+        .then(result=>{
+            res.json(result);
+        })
+        .catch(err =>res.json({error: 'an error occured while updating address'}));
+})
+
+// //one more route for updating - not required
+// router.patch('/account/address',requireAuth,(req,res)=>{
+//     const token = req.cookies.jwt;
+//     const userId = checkUser(token);
+// })
+
+
 module.exports = router;

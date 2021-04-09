@@ -6,7 +6,10 @@ const path = require('path');
 require('dotenv').config();
 
 
+
 const app = express();
+
+
 
 mongoose.connect(process.env.MONGODB_URI,{useUnifiedTopology: true,useNewUrlParser:true,useFindAndModify: false})
     .then(()=>{
@@ -33,22 +36,11 @@ if(process.env.NODE_ENV === 'production'){
 
 
 app.use('/user',require('./routes/auth-route'));
-
-
 app.use('/product',require('./routes/product-route'));
 app.use('/blog',require('./routes/blog-route'));
-
-
-
-// app.get('*', function (req, res) { // This wildcard method handles all requests
-
-//     Router.run(routes, req.path, function (Handler, state) {
-//         var element = React.createElement(Handler);
-//         var html = React.renderToString(element);
-//         res.render('main', { content: html });
-//     });
-// });
-
+// app.use('/info',require('./routes/address-route'));
+app.use(require('./routes/payment-route'));
+//for 404 error on refresh we will serve index.html
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname+'/client/build/index.html'));
  });

@@ -2,14 +2,12 @@ import React,{useState,useEffect} from 'react';
 import { useGlobalContext } from '../../context';
 import './cartItem.css';
 import {GrClose} from "react-icons/gr";
-import {FaMinus,FaPlus} from "react-icons/fa";
 import {BiMinus,BiPlus} from "react-icons/bi";
 import { Link } from 'react-router-dom';
 
-const CartItem = ({img,name,price,pqty,_id,cartProducts}) => {
+const CartItem = ({img,name,price,pqty,_id,cartProducts,stock}) => {
     const {updateCartItem,removeCartItem} = useGlobalContext();
     const [quantity,setQuantity] = useState(0);//setting this to 0 because it will get updated in useEffect and i don't want the other useEffect to run when quantity is 0
-    
     
     const decreaseQuantity = () =>{
         //quantity can't be 0
@@ -19,12 +17,21 @@ const CartItem = ({img,name,price,pqty,_id,cartProducts}) => {
         setQuantity(quantity => {return(quantity-1)});
     }
     const increaseQuantity = () =>{
-        if(false){//quantity should be compared with db quantity maybe i need to change property name to stock
-            return
+        // if(quantity === stock){//quantity should be compared with db quantity maybe i need to change property name to stock
+        //     return
+        // }
+        if(quantity >= stock){
+            setQuantity(stock);
+            return;
         }
         setQuantity(quantity => {return(quantity+1)})
     }
     useEffect(()=>{
+        //checking at the time of initializing that if the quantity is less than the purchase quantity
+        if(pqty>stock){
+            setQuantity(stock);
+            return;
+        }
         setQuantity(pqty);
     },[cartProducts]);
     

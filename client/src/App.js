@@ -10,8 +10,8 @@ import Cart from './pages/Cart';
 import Login from './components/login';
 import Error from './pages/Error';
 import ScrollToTop from './components/scrollToTop';
-
-
+import Account from './pages/Account';
+import Checkout from './pages/Checkout';
 const App = () => {
   return (
     <Router>
@@ -41,6 +41,13 @@ const App = () => {
             <Cart/>
           </Route>
 
+          <Route path="/account">
+            <Account/>
+          </Route>
+
+          <Route path="/checkout">
+            <Checkout/>
+          </Route>
           {/* <Route path="/signin">
             <Login/>
           </Route> */}
