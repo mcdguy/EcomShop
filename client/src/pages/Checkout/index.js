@@ -5,7 +5,7 @@ import BillingAddress from '../../components/billingAddress';
 import ShippingAddress from '../../components/shippingAddress';
 import { useCheckoutContext } from '../../checkoutContext';
 import CartSummary from '../../components/cartSummary';
-
+import CartComponent from '../../components/cartComponent';
 const Checkout = () => {
     const { showShipping,showShippingAddress,hideShippingAddress,makePayment,user,handleUserDetails,userError} = useCheckoutContext();
     const {isLoggedIn} = useGlobalContext();
@@ -64,7 +64,11 @@ const Checkout = () => {
                         </div>}
                         <div className="btn__wrapper"><button className="checkout__btn" onClick={makePayment}>make payment</button></div>
                 </div>
-                <CartSummary source={'checkout'}/>
+                <div className="checkout__sidebar">
+                    <CartComponent/>
+                    <CartSummary source={'checkout'}/>
+                    
+                </div>
             </div>
         </div>
 

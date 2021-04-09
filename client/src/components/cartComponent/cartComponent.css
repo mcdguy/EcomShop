@@ -1,0 +1,10 @@
+.cart__products{
+    width: 60%;
+    flex-shrink: 0;
+}
+
+@media screen and (max-width: 1100px){
+    .cart__products{
+        width: 100%
+    }
+}
