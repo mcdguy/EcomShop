@@ -5,6 +5,7 @@ const Product = require('../models/product');
 const uuid = require('uuid');
 const {handleOrderError} = require('../utils/handleOrderError');
 const Order = require('../models/order');
+const crypto = require('crypto');
 
 const instance = new razorpay({
     key_id:process.env.KEY_ID,
@@ -81,7 +82,7 @@ router.post('/makepayment',(req,res)=>{
                 })
             })
             // console.log('amount',amount);
-            instance.orders.create({amount,currency: 'INR',receipt},(error,order)=>{
+            instance.orders.create({amount,currency: 'INR',receipt,payment_capture:1},(error,order)=>{
                 if(error){
                     res.status(500).json(error);
                     return;
@@ -128,6 +129,31 @@ router.delete('/deleteorder',(req,res)=>{
 });
 
 router.post('/verify',(req,res)=>{
+    const {order_id,payment_id,payment_sign} = req.body;
 
+    const digest = crypto
+        .createHmac("sha256", process.env.KEY_SECRET)
+        .update(`${order_id}|${payment_id}`)
+        .digest("hex");
+
+    // comaparing our digest with the actual signature
+    if (digest !== payment_sign){
+        Order.findOneAndDelete({orderId:order_id})
+        .then(res => {
+            // console.log('deleted');
+            return res.status(400).json({ msg: "Transaction not legit!" });
+            // res.json({success: 'order deleted successfully'});
+            // return;
+        })
+        .catch(err =>{
+            return res.status(400).json({error: 'could not delete order'});
+        })
+    }
+    
+    Order.findOneAndUpdate({orderId:order_id},{pending:false},{new:true})
+    .then((result)=>{
+        return res.json({success:'singature matched, updated record'});
+    })
+    .catch((err)=>{res.json({error: err})});
 })
 module.exports = router;

@@ -10,7 +10,7 @@ import CartSummary from '../../components/cartSummary';
 
 const Cart = () => {
     const {cart} = useGlobalContext();
-    const {cartProducts,cartTotalItems,cartTotalAmount} = useCartContext();
+    const {cartProducts} = useCartContext();
 
     if(!cart.length){
         return(
@@ -24,14 +24,7 @@ const Cart = () => {
         <div className="cart">
             <div className="cart__center center">
                     <div className="cart__content">
-                        <CartComponent/>
-                        {/* <div className="cart__products">
-                            {cartProducts.length ? cartProducts.map(item=>{
-                                return(
-                                    <CartItem key={item._id} cartProducts={cartProducts} {...item}/>//passing cart products to make it a dependency in useEffect
-                                )
-                            }):null}
-                        </div> */}
+                        <CartComponent cartProducts={cartProducts} source={'cart'}/>
                         <CartSummary source={'cart'}/>
                     </div>
                 

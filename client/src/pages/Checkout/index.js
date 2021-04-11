@@ -7,10 +7,12 @@ import { useCheckoutContext } from '../../checkoutContext';
 import CartSummary from '../../components/cartSummary';
 import CartComponent from '../../components/cartComponent';
 import OrderModal from '../../components/orderModal';
+import { useCartContext } from '../../cartContext';
 
 
 const Checkout = () => {
     const { showShipping,showShippingAddress,hideShippingAddress,makePayment,user,handleUserDetails,userError,orderAlert,hideOrderAlert} = useCheckoutContext();
+    const {cartProducts} = useCartContext();
     const {isLoggedIn} = useGlobalContext();
 
     const handleCheckbox = (e) =>{
@@ -31,11 +33,11 @@ const Checkout = () => {
     //         </div>
     //     </div>
     // }
-    
+
     return (
         <div className="checkout">
-            {orderAlert.show && <OrderModal {...orderAlert} hideOrderAlert={hideOrderAlert}/>}
             <div className="center">
+            {orderAlert.show && <OrderModal {...orderAlert} hideOrderAlert={hideOrderAlert}/>}
                 <div className="checkout__form">
                         <div className="user__wrapper">
                             <h1 className="form__type">user details</h1>
@@ -70,7 +72,8 @@ const Checkout = () => {
                         <div className="btn__wrapper"><button className="checkout__btn" onClick={makePayment}>make payment</button></div>
                 </div>
                 <div className="checkout__sidebar">
-                    <CartComponent/>
+                    {/* passing source to hide checkbox in checkout form */}
+                    <CartComponent cartProducts={cartProducts} source={'checkout'}/>
                     <CartSummary source={'checkout'}/>
                     
                 </div>

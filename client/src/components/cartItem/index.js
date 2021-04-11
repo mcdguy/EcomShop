@@ -4,8 +4,10 @@ import './cartItem.css';
 import {GrClose} from "react-icons/gr";
 import {BiMinus,BiPlus} from "react-icons/bi";
 import { Link } from 'react-router-dom';
+import { useCartContext } from '../../cartContext';
 
-const CartItem = ({img,name,price,pqty,_id,cartProducts,stock}) => {
+const CartItem = ({img,name,price,pqty,_id,cartProducts,stock,source,checked}) => {
+    const {toggleCheck} = useCartContext();
     const {updateCartItem,removeCartItem} = useGlobalContext();
     const [quantity,setQuantity] = useState(0);//setting this to 0 because it will get updated in useEffect and i don't want the other useEffect to run when quantity is 0
     
@@ -42,6 +44,7 @@ const CartItem = ({img,name,price,pqty,_id,cartProducts,stock}) => {
     },[quantity]);
     return (
         <div className="cart__item">
+            <div className="check__item__wrapper"><input type="checkbox" onChange={()=>toggleCheck(_id)} checked={checked}/></div>
             <Link to={`/shop/${_id}`}>
                 <img src={img[0]} alt=""/>
             </Link>

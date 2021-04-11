@@ -6,7 +6,6 @@ import axios from 'axios';
 import { useCartContext } from './cartContext';
 import { handleUserError } from './utils/handleUserError';
 
-
 const CheckoutContext = React.createContext();
 // getting shipping address from local storage
 const getsiad = () =>{
@@ -28,14 +27,11 @@ export const CheckoutProvider = ({children}) =>{
     const {cartProducts} = useCartContext();
     const [showShipping,setShowShipping] = useState(false);
     const [user,setUser] = useState({name:'',email:''});
-    const [orderAlert,setOrderAlert] = useState({msg:'',type:'',show:false});
+    const [orderAlert,setOrderAlert] = useState({id:'',email:'',show:false});
     const [userError,setUserError] = useState({name:'',email:''});
 
     const hideOrderAlert = () =>{
         setOrderAlert(OrderAlert=>{return({...OrderAlert,show: false})});
-    }
-    const showOrderAlert = (msg,type) =>{
-        setOrderAlert(OrderAlert=>{return({...OrderAlert,msg,type,show: true})});
     }
     const showShippingAddress = () =>{
         setShowShipping(true);
@@ -158,11 +154,17 @@ export const CheckoutProvider = ({children}) =>{
                 // "image": "https://example.com/your_logo",
                 "order_id": res.data.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
                 "handler": function (response){
-                    alert(response.razorpay_payment_id);
-                    alert(response.razorpay_order_id);
-                    alert(response.razorpay_signature);
+                    // alert(response.razorpay_payment_id);
+                    // alert(response.razorpay_order_id);
+                    // alert(response.razorpay_signature);
                     axios.post('/verify',{order_id:res.data.id,payment_id:response.razorpay_payment_id,payment_sign:response.razorpay_signature})
-                        .then(res => console.log(res.data))
+                        .then(res => {
+                            if(res.data.success){
+                                setOrderAlert(alert => {
+                                    return({...alert,show:true,id:response.razorpay_payment_id,email: user.email})
+                                })
+                            }
+                        })
                         .catch(err => console.log(err));
                 },
                 "modal": {
@@ -188,13 +190,17 @@ export const CheckoutProvider = ({children}) =>{
         var rzp1 = new window.Razorpay(options);
         rzp1.open();
         rzp1.on('payment.failed', function (response){
-                alert(response.error.code);
-                alert(response.error.description);
-                alert(response.error.source);
-                alert(response.error.step);
-                alert(response.error.reason);
-                alert(response.error.metadata.order_id);
-                alert(response.error.metadata.payment_id);
+                alert('payment failed');
+                // axios.delete('/deleteorder',{data:{order_id:res.data.id}})
+                //     .then(res => console.log(res.data))
+                //     .catch(err => console.log(err));
+                // alert(response.error.code);
+                // alert(response.error.description);
+                // alert(response.error.source);
+                // alert(response.error.step);
+                // alert(response.error.reason);
+                // alert(response.error.metadata.order_id);
+                // alert(response.error.metadata.payment_id);
         });
             })
             .catch(err => console.log(err));

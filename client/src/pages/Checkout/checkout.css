@@ -9,6 +9,7 @@
     padding-top: 80px;
     display: flex;
     align-items: flex-start;
+    position: relative;
 }
 .checkout__form{
     width: 60%;
