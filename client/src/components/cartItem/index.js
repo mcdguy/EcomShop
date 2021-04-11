@@ -11,6 +11,28 @@ const CartItem = ({img,name,price,pqty,_id,cartProducts,stock,source,checked}) =
     const {updateCartItem,removeCartItem} = useGlobalContext();
     const [quantity,setQuantity] = useState(0);//setting this to 0 because it will get updated in useEffect and i don't want the other useEffect to run when quantity is 0
     
+    const cartItem = () =>{
+        return (
+            <div className="cart__item">
+                {/* {source === 'cart'?
+                    <div className="check__item__wrapper"><input type="checkbox" onChange={()=>toggleCheck(_id)} checked={checked}/></div>
+                :null} */}
+                <Link to={`/shop/${_id}`}>
+                    <img src={img[0]} alt=""/>
+                </Link>
+                <div className="cart__item__info">
+                    <p className="cart__item__name">{name}</p>
+                    <p className="cart__item__price">&#8377; {price}</p>
+                    <span className="cart__item__qty">
+                            <span className='cart__item__qty__inc' onClick={decreaseQuantity}><BiMinus/></span>     
+                            <span>{quantity}</span>     
+                            <span className='cart__item__qty__dec' onClick={increaseQuantity}><BiPlus/></span>
+                    </span>
+                </div>
+                <button className="cart__item__remove" onClick={()=>removeCartItem(_id)}><GrClose/><span className="cart__item__tooltip">remove</span></button>
+            </div>
+        );
+    }
     const decreaseQuantity = () =>{
         //quantity can't be 0
         if(quantity === 1){
@@ -42,25 +64,36 @@ const CartItem = ({img,name,price,pqty,_id,cartProducts,stock,source,checked}) =
             updateCartItem(quantity,_id);
         }
     },[quantity]);
+
     return (
-        <div className="cart__item">
-            {source === 'cart'?
-                <div className="check__item__wrapper"><input type="checkbox" onChange={()=>toggleCheck(_id)} checked={checked}/></div>
-            :null}
-            <Link to={`/shop/${_id}`}>
-                <img src={img[0]} alt=""/>
-            </Link>
-            <div className="cart__item__info">
-                <p className="cart__item__name">{name}</p>
-                <p className="cart__item__price">&#8377; {price}</p>
-                <span className="cart__item__qty">
-                        <span className='cart__item__qty__inc' onClick={decreaseQuantity}><BiMinus/></span>     
-                        <span>{quantity}</span>     
-                        <span className='cart__item__qty__dec' onClick={increaseQuantity}><BiPlus/></span>
-                </span>
-            </div>
-            <button className="cart__item__remove" onClick={()=>removeCartItem(_id)}><GrClose/><span className="cart__item__tooltip">remove</span></button>
-        </div>
+        <>
+            {cartItem()}
+            {/* {source === 'checkout'?(checked?<>{cartItem()}</>:<>{console.log('hello')}</>):<>{cartItem()}</>} */}
+        </>
+        // <>
+        // {(source === 'checkout' && !checked)
+        //     ?<>{console.log('hello')}</>
+        //     :<>{cartItem()}</>
+        //     // :<div className="cart__item">
+        //     //     {source === 'cart'?
+        //     //         <div className="check__item__wrapper"><input type="checkbox" onChange={()=>toggleCheck(_id)} checked={checked}/></div>
+        //     //     :null}
+        //     //     <Link to={`/shop/${_id}`}>
+        //     //         <img src={img[0]} alt=""/>
+        //     //     </Link>
+        //     //     <div className="cart__item__info">
+        //     //         <p className="cart__item__name">{name}</p>
+        //     //         <p className="cart__item__price">&#8377; {price}</p>
+        //     //         <span className="cart__item__qty">
+        //     //                 <span className='cart__item__qty__inc' onClick={decreaseQuantity}><BiMinus/></span>     
+        //     //                 <span>{quantity}</span>     
+        //     //                 <span className='cart__item__qty__dec' onClick={increaseQuantity}><BiPlus/></span>
+        //     //         </span>
+        //     //     </div>
+        //     //     <button className="cart__item__remove" onClick={()=>removeCartItem(_id)}><GrClose/><span className="cart__item__tooltip">remove</span></button>
+        //     // </div>
+        // }
+        // </>
 
     )
 }

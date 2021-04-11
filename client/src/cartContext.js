@@ -21,6 +21,7 @@ export const CartProvider = ({children})=>{
         });
     }
     useEffect(()=>{
+        console.log('im running');
         setCartProducts([]);
         if(cart.length){//if cart has something only then i need to run this
             let newCartProducts= cart.map(item=>{

@@ -24,7 +24,7 @@ const Cart = () => {
         <div className="cart">
             <div className="cart__center center">
                     <div className="cart__content">
-                        <CartComponent cartProducts={cartProducts} source={'cart'}/>
+                        <CartComponent source={'cart'}/>
                         <CartSummary source={'cart'}/>
                     </div>
                 

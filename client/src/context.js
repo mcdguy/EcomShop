@@ -192,7 +192,7 @@ export const AppProvider = ({children}) =>{
 
     useEffect(()=>{
             localStorage.setItem('cart',JSON.stringify(state.cart));
-            
+            console.log(state.cart);
             // if (window.performance) {
             //     if (performance.navigation.type == 1) {
             //       alert( "This page is reloaded" );

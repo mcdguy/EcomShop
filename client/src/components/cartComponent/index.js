@@ -3,7 +3,8 @@ import './cartComponent.css';
 import CartItem from '../cartItem';
 import { useCartContext } from '../../cartContext';
 
-const CartComponent = ({cartProducts,source}) => {
+const CartComponent = ({source}) => {
+    const {cartProducts} = useCartContext();
     return (
         <div className="cart__products">
              {cartProducts.length ? cartProducts.map(item=>{
