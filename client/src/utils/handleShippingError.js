@@ -19,7 +19,7 @@ export const handleShippingError = (shippingAddress,shippingError,setShippingErr
         return false;
     }
     if(shippingAddress.shippingpin.toString().length !== 6){
-        setShippingError(shippingError =>{return{...shippingError,sContact: 'pin must be of 6 digits'}});
+        setShippingError(shippingError =>{return{...shippingError,sPin: 'pin must be of 6 digits'}});
         return false;
     }
     return true;

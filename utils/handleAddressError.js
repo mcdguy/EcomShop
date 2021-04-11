@@ -20,11 +20,12 @@ const handleAddressError = (addressLine,state,city,pin,contact) =>{
         errors.contact = 'this field is required';
         return errors;
     }
-    if(contact.length !== 10){
+    //have converted  contact to string to find length
+    if(contact.toString().length !== 10){
         errors.contact = 'number not valid';
         return errors;
     }
-    if(pin.length !== 6){
+    if(pin.toString().length !== 6){
         errors.pin = 'pin must have 6 digits';
         return errors;
     }

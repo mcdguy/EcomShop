@@ -6,8 +6,11 @@ import ShippingAddress from '../../components/shippingAddress';
 import { useCheckoutContext } from '../../checkoutContext';
 import CartSummary from '../../components/cartSummary';
 import CartComponent from '../../components/cartComponent';
+import OrderModal from '../../components/orderModal';
+
+
 const Checkout = () => {
-    const { showShipping,showShippingAddress,hideShippingAddress,makePayment,user,handleUserDetails,userError} = useCheckoutContext();
+    const { showShipping,showShippingAddress,hideShippingAddress,makePayment,user,handleUserDetails,userError,orderAlert,hideOrderAlert} = useCheckoutContext();
     const {isLoggedIn} = useGlobalContext();
 
     const handleCheckbox = (e) =>{
@@ -28,8 +31,10 @@ const Checkout = () => {
     //         </div>
     //     </div>
     // }
+    
     return (
         <div className="checkout">
+            {orderAlert.show && <OrderModal {...orderAlert} hideOrderAlert={hideOrderAlert}/>}
             <div className="center">
                 <div className="checkout__form">
                         <div className="user__wrapper">

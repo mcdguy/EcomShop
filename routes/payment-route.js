@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const razorpay = require('razorpay');
 const Product = require('../models/product');
+const uuid = require('uuid');
+const {handleOrderError} = require('../utils/handleOrderError');
+const Order = require('../models/order');
 
 const instance = new razorpay({
     key_id:process.env.KEY_ID,
@@ -9,38 +12,122 @@ const instance = new razorpay({
 })
 
 router.post('/makepayment',(req,res)=>{
-    const cartProducts = req.body.cartProducts;
+    // console.log(req.body)
+    const {cartProducts,billingAddress,shippingAddress,user,showShipping} = req.body;
+    //this can be manipulated like someone can send an id of cheap item and name and product id of expensive item and since price
+    //is calculated using id he can successfully cheat us
+    // so where i am calculating the cart total, i should create this orderItems there only i should trust id and pqty only and fetch productId, price and name from backend i dont need to do anything just create this variable and fill it in the nested loop 
+    let orderItems = cartProducts.map(item => {
+        return(
+            {
+                itemId:item._id,
+                productId: item.productId,
+                name: item.name,
+                price: item.price,//this price is the purchase price
+                pqty: item.pqty
+            }
+        );//this map method reduces the item to required properties only
+    })
+    const newOrder ={
+        buyer:{
+            name:user.name,
+            email:user.email,
+            contact:billingAddress.billingcontact
+        },
+        billingAddress: {
+            addressLine: billingAddress.billingaddressLine,
+            state: billingAddress.billingstate,
+            city: billingAddress.billingcity,
+            pin: billingAddress.billingpin
+        },
+        orderItems,
+        pending: true,
+        isAddressSame:!showShipping,
+    }
+    //this means shipping and billing address are different and i will add billing address
+    if(showShipping){
+        newOrder.shippingAddress = {
+            addressLine: shippingAddress.shippingaddressLine,
+            state: shippingAddress.shippingstate,
+            city: shippingAddress.shippingcity,
+            pin: shippingAddress.shippingpin,
+
+        }
+    }
+    // console.log(newOrder);
+    let orderError = handleOrderError(newOrder);
+    // console.log('order error',orderError);
+    //if there is a validation error code must return
+    if(orderError !== ''){
+        res.status(422).json({error:'details not provided'});
+        return;
+    }
     if(!cartProducts){
-        res.json({error:'no products found'});
+        res.status(404).json({error:'no products found'});
         return;
     }
     productIds = cartProducts.map(item=>{return item._id});
     let amount = 0;
-    const receipt = 'receipt#123';
-    const notes = {desc: 'making payment to baksh'};
-    const currency = 'INR';
+    let receipt = uuid.v4();
     //now i want to find all cart documents at once
     Product.find({'_id' : {$in: productIds} })
         .then(result=>{
             result.forEach(item=>{
-                //nested loops because i want the purchase qty after finding items
+                //nested loops because i want the purchase qty after finding items and the order in which items come back is not same
                 cartProducts.forEach(cartItem=>{
                     if(item._id == cartItem._id){
                         amount += item.price*cartItem.pqty;
                     }
                 })
             })
-            console.log('amount',amount);
-            instance.orders.create({amount,currency,receipt,notes},(error,order)=>{
+            // console.log('amount',amount);
+            instance.orders.create({amount,currency: 'INR',receipt},(error,order)=>{
                 if(error){
-                    res.json(error);
+                    res.status(500).json(error);
                     return;
                 }
-                return res.json(order);
-            });
+                // console.log(order)
+                newOrder.amount = order.amount;
+                newOrder.receipt = order.receipt;
+                newOrder.orderId = order.id;
+                // console.log(newOrder);
+                // console.log(order);
+                // return res.json(order);
 
+                Order.create(newOrder)
+                    .then(result =>{
+                        res.json(order);
+                            return;
+                    })
+                    .catch(err =>{
+                        return res.status(500).json({error: 'could not save order'});
+                    })
+            });
         })
         .catch(err => console.log(err));
 })
 
+router.delete('/deleteorder',(req,res)=>{
+    console.log(req.body)
+    const {order_id} = req.body;
+    if(!order_id){
+        res.status(400).json({error: 'could not find order'});
+        return;
+        console.log(order_id);
+    }
+    Order.findOneAndDelete({orderId:order_id})
+        .then(res => {
+            console.log('deleted');
+            res.json({success: 'order deleted successfully'});
+            return;
+        })
+        .catch(err =>{
+            res.status(400).json({error: 'could not delete order'});
+            return;
+        })
+});
+
+router.post('/verify',(req,res)=>{
+
+})
 module.exports = router;

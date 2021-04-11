@@ -4,7 +4,6 @@
 export const handleBillingError=(billingAddress, billingError,setBillingError)=>{
     // console.log(billingAddress, billingError,setBillingError);
     if(billingAddress.billingaddressLine === ''){
-        console.log(true)
         setBillingError(billingError =>{return{...billingError,bAddressLine: 'this field is required'}});
         return false;
     }
@@ -25,7 +24,7 @@ export const handleBillingError=(billingAddress, billingError,setBillingError)=>
         return false;
     }
     if(billingAddress.billingpin.toString().length !== 6){
-        console.log(billingAddress.billingpin);
+        // console.log(billingAddress.billingpin);
         setBillingError(billingError =>{return{...billingError,bPin: 'pin must be of 6 digits'}});
         return false;
     }
