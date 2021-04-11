@@ -44,7 +44,9 @@ const CartItem = ({img,name,price,pqty,_id,cartProducts,stock,source,checked}) =
     },[quantity]);
     return (
         <div className="cart__item">
-            <div className="check__item__wrapper"><input type="checkbox" onChange={()=>toggleCheck(_id)} checked={checked}/></div>
+            {source === 'cart'?
+                <div className="check__item__wrapper"><input type="checkbox" onChange={()=>toggleCheck(_id)} checked={checked}/></div>
+            :null}
             <Link to={`/shop/${_id}`}>
                 <img src={img[0]} alt=""/>
             </Link>
