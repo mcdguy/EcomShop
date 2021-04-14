@@ -32,7 +32,7 @@ export const AddressProvider = ({children}) =>{
         if(isLoggedIn){
             axios.get('/user/account/address')
                 .then(res =>{
-                    console.log(res.data);
+                    // console.log(res.data);
                     //this is error which comes from jwt
                     if(res.data.error==='user not logged in'){//this means user is not logged in and state is manipulated
                         //i can even set logout here specifically if error message is could not find user

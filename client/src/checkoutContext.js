@@ -5,6 +5,7 @@ import {handleShippingError} from './utils/handleShippingError';
 import axios from 'axios';
 import { useCartContext } from './cartContext';
 import { handleUserError } from './utils/handleUserError';
+import { useGlobalContext } from './context';
 
 const CheckoutContext = React.createContext();
 // getting shipping address from local storage
@@ -25,10 +26,12 @@ const getsiad = () =>{
 export const CheckoutProvider = ({children}) =>{
     const {address,setAddress,saveAddress,error,setError,editMode,setEditMode} = useAddressContext();
     const {cartProducts} = useCartContext();
+    const {getProducts} = useGlobalContext();
     const [showShipping,setShowShipping] = useState(false);
     const [user,setUser] = useState({name:'',email:''});
     const [orderAlert,setOrderAlert] = useState({id:'',email:'',show:false});
     const [userError,setUserError] = useState({name:'',email:''});
+    const [showAlert,setShowAlert] = useState(false);
 
     const hideOrderAlert = () =>{
         setOrderAlert(OrderAlert=>{return({...OrderAlert,show: false})});
@@ -107,21 +110,20 @@ export const CheckoutProvider = ({children}) =>{
     const handleUserDetails = (e) =>{
         setUserError(userError=>{return{...userError,name:'',email:''}});
         setUser(user=>{
-            return({
-                ...user,
-                [e.target.name]:e.target.value
-            })
+            if(e.target.name==='email'){
+                return({
+                    ...user,
+                    [e.target.name]:e.target.value.trim().toLowerCase()//this trims whitespace and makes letter lowercase
+                })
+            }else{
+                return({
+                    ...user,
+                    [e.target.name]:e.target.value
+                })
+            }
         })
     }
-    const displayRazorpay = () =>{
 
-    }
-    const loadRazorpay = () =>{
-        const script = document.createElement('script');
-        script.src = "https://checkout.razorpay.com/v1/checkout.js";
-        document.body.appendChild(script);
-        script.onload = displayRazorpay;
-    }
     const makePayment = async () =>{
         // console.log(showShipping);
         let succeed = false;
@@ -141,6 +143,14 @@ export const CheckoutProvider = ({children}) =>{
         //only proceed if there is no error in above functions
         axios.post('/makepayment',{cartProducts,billingAddress,shippingAddress,user,showShipping})
             .then(res =>{
+                if(res.data.mismatch){
+                    //now i should update cart
+                    //will create a popup informing user about this now
+                    console.log('need to update cart');
+                    getProducts();
+                    setShowAlert(true);
+                    return;
+                }
                 console.log(res.data);
                  if(res.status !==200){
                     return;
@@ -150,6 +160,7 @@ export const CheckoutProvider = ({children}) =>{
                 "amount": res.data.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                 "currency": "INR",
                 "name": "bakhsh",
+                "timeout": 600,
                 "description": "payment for beans",
                 // "image": "https://example.com/your_logo",
                 "order_id": res.data.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
@@ -168,6 +179,7 @@ export const CheckoutProvider = ({children}) =>{
                         .catch(err => console.log(err));
                 },
                 "modal": {
+                    "escape": false,
                     "ondismiss": function(){
                         // alert('modal closed');
                         axios.delete('/deleteorder',{data:{order_id:res.data.id}})
@@ -230,7 +242,9 @@ export const CheckoutProvider = ({children}) =>{
             // setUser,
             userError,
             setUserError,
-            handleUserDetails
+            handleUserDetails,
+            showAlert,
+            setShowAlert
             // callhandleBillingError,
             // callHandleShippingError,
         }}>

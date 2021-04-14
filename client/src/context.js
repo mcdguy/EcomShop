@@ -208,6 +208,8 @@ export const AppProvider = ({children}) =>{
                     })
                     .catch(err => console.log(err));
             }
+
+            //i need to cancel this request before another is made
         
     },[state.cart])
    
@@ -307,14 +309,17 @@ export const AppProvider = ({children}) =>{
     },[]);
 
     //setting the products
-    useEffect(()=>{
+    const getProducts = () =>{
         axios('/product')
-            .then(res=>{
-                setProducts(res.data);
-            })
-            .catch(err => {
-                console.log(err);
-            })
+        .then(res=>{
+            setProducts(res.data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+    useEffect(()=>{
+        getProducts();
     },[]);
 
     useEffect(()=>{
@@ -333,8 +338,9 @@ export const AppProvider = ({children}) =>{
             updateCartItem,
             removeCartItem,
             setFilterName,
-            setProducts}
-        }>
+            setProducts,
+            getProducts
+        }}>
         {children}
     </AppContext.Provider>
 }

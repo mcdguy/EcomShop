@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { useCartContext } from '../../cartContext';
 
 const CartItem = ({img,name,price,pqty,_id,cartProducts,stock,source,checked}) => {
+    const {cart} = useGlobalContext();
     const {toggleCheck} = useCartContext();
     const {updateCartItem,removeCartItem} = useGlobalContext();
     const [quantity,setQuantity] = useState(0);//setting this to 0 because it will get updated in useEffect and i don't want the other useEffect to run when quantity is 0
@@ -44,6 +45,7 @@ const CartItem = ({img,name,price,pqty,_id,cartProducts,stock,source,checked}) =
         // if(quantity === stock){//quantity should be compared with db quantity maybe i need to change property name to stock
         //     return
         // }
+       
         if(quantity >= stock){
             setQuantity(stock);
             return;
@@ -58,8 +60,27 @@ const CartItem = ({img,name,price,pqty,_id,cartProducts,stock,source,checked}) =
         }
         setQuantity(pqty);
     },[cartProducts]);
-    
+
+    //this is introducing a bug which is when i change the page i save data to db because this is triggered so if other session has made a change and i switch page i will overwite it because it triggers on page change
+    //everything works fine if i stay 
     useEffect(()=>{//any change in qty will be pushed to cart
+        //the bug can be stopped by stopping this when page is switched
+        // i need to stop this if qty in cartProducts is same to this quantity
+        
+        //this thing is stopping the cart from triggering again on tab switch
+        // let isUpdated = false;
+        // cart.forEach(item =>{
+        //     if(_id === item.productId){
+        //         if(item.pqty === pqty){
+        //             isUpdated = true;
+        //         }
+        //     }
+        // })
+        // if(isUpdated){
+        //         return;
+        // }
+            
+        // console.log('looks like page is switched');
         if(quantity>0){//without this condition all the quantity in cart will become 0 because of initial value of quantity
             updateCartItem(quantity,_id);
         }
