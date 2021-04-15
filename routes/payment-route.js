@@ -51,7 +51,7 @@ const deleteOrder = (order_id) =>{//this function returns a promise
 // timeout to clean up pending orders
 setInterval(()=>{
     let tenMinutesOld = new Date();
-    tenMinutesOld.setMinutes(tenMinutesOld.getMinutes()-4)
+    tenMinutesOld.setMinutes(tenMinutesOld.getMinutes()-10)
     // console.log(tenMinutesOld);
     Order.find({validity:{$lt:tenMinutesOld}})
         .then((orders)=>{
@@ -75,7 +75,7 @@ setInterval(()=>{
             orders.forEach(item=>{
                 deleteOrder(item.orderId)
                     .then(res =>{
-                        console.log('result',res);
+                        console.log('removed pending orders');
                         // do nothing
                         // console.log('item removed');
                     })
@@ -83,10 +83,10 @@ setInterval(()=>{
                         console.log('failed to remove item');
                     })
             })
-            console.log('removed old items') 
+            // console.log('removed old items') 
         })
         .catch(err => {console.log('failed')});
-},30000);//runs after 2 mins
+},120000);//runs after 2 mins
 
 
 
@@ -207,42 +207,6 @@ router.post('/makepayment',(req,res)=>{
                                     })
                             }
                     })
-                //the order is off i should first resolve the promise and then create the order because in case of negative quantity i will have a dead order in db a
-            //     Order.create(newOrder)
-            //         .then(() =>{
-            //             return Promise.all(stockUpdatePromise);//only after order is created i will save it to backend and then send the order
-            //         })
-            //         .then((result)=>{
-            //             result.forEach(item=>{
-            //                 console.log(item.stock);
-            //                 if(item.stock < 0){
-            //                     mismatch = true;
-            //                 }
-            //             })
-            //             if(mismatch){
-            //                 console.log(mismatch)
-            //                 let rollbackPromise = [];
-            //                 cartProducts.forEach(item =>{
-            //                     let rollPromise = new Promise((resolve,reject)=>{
-            //                         Product.findByIdAndUpdate(item._id,{$inc:{'stock': item.pqty}},{new:true})//quoting stock helps don't know why
-            //                             .then((result)=>{
-            //                                 resolve(result);
-            //                             })
-            //                             .catch((err)=>{
-            //                                 reject(err);
-            //                             })
-            //                     })
-            //                     rollbackPromise.push(rollPromise);
-            //                 })
-            //                 Promise.all(rollbackPromise)
-            //                     .then(result=>{
-            //                         return res.json({mismatch: 'need to update cart'});
-            //                     })
-            //             }
-            //             else{
-            //                 return res.json(order);
-            //             }
-            //         })
                 });         
             })
             .catch(err =>{
@@ -274,8 +238,6 @@ router.post('/webhook',(req,res)=>{
                         console.log('updated');
                     })
                 })
-
-           
         }
     }
     else{
