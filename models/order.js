@@ -85,9 +85,18 @@ const orderSchema = new Schema({
     },
     isAddressSame:{
         type: Boolean
+    },
+    paymentId:{
+        type: String
+    },
+    validity:{
+        type:Date,
+        default: new Date()
+        // default:new Date((Date.now() + 2 * 60 * 1000)),//indexing this property i am 
     }
-
 },{timestamps: true});
+
+orderSchema.index({validity: 1});
 
 const Order = mongoose.model('Order',orderSchema);
 module.exports = Order;

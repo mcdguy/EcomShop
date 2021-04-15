@@ -6,13 +6,13 @@ const uuid = require('uuid');
 const {handleOrderError} = require('../utils/handleOrderError');
 const Order = require('../models/order');
 const crypto = require('crypto');
-
 const instance = new razorpay({
     key_id:process.env.KEY_ID,
     key_secret:process.env.KEY_SECRET
 })
 
-const deleteOrder = (order_id) =>{
+
+const deleteOrder = (order_id) =>{//this function returns a promise
     let stockUpdate = [];
     return new Promise((resolve,reject)=>{
         Order.findOne({orderId:order_id})
@@ -46,9 +46,7 @@ const deleteOrder = (order_id) =>{
                                     })
                             })
                             stockUpdatePromise.push(newPromise);
-                        })
-    
-                        // console.log(stockUpdatePromise);
+                        })    
                         console.log(stockUpdate);
                         return Promise.all(stockUpdatePromise)
                 });
@@ -64,6 +62,30 @@ const deleteOrder = (order_id) =>{
             })
     })
 }
+
+//can this be a cron job?
+// timeout to clean up pending orders
+setInterval(()=>{
+    let tenMinutesOld = new Date();
+    tenMinutesOld.setMinutes(tenMinutesOld.getMinutes()-10)
+    Order.find({validity:{$lt:tenMinutesOld}})
+        .then((result)=>{
+            result.forEach(item=>{
+                deleteOrder(item.orderId)
+                    .then(result =>{
+                        // do nothing
+                        console.log('item removed');
+                    })
+                    .catch(err =>{
+                        console.log('failed to remove item');
+                    })
+            })
+            console.log('removed old items')
+        })
+        .catch(err => {console.log('failed')});
+},120000);//runs after 2 mins
+
+
 
 router.post('/makepayment',(req,res)=>{
     // console.log(req.body)
@@ -155,31 +177,52 @@ router.post('/makepayment',(req,res)=>{
             })
 
             //updating backend
-            Promise.all(stockUpdatePromise)
-                .then(result=>{
-                    instance.orders.create({amount,currency: 'INR',receipt,payment_capture:1},(error,order)=>{
-                        if(error) return res.status(500).json(error);
-
-                        newOrder.orderItems = orderItems;
-                        newOrder.amount = order.amount;
-                        newOrder.receipt = order.receipt;
-                        newOrder.orderId = order.id;
-                        Order.create(newOrder)
-                            .then(result =>{
-                                res.json(order);
-                                    return;
-                            })
-                            .catch(err =>{
-                                return res.status(500).json({error: 'could not save order'});
-                            })
-                    });
+            instance.orders.create({amount,currency: 'INR',receipt,payment_capture:1},(error,order)=>{
+                if(error) return res.status(500).json(error);
+                newOrder.orderItems = orderItems;
+                newOrder.amount = order.amount;
+                newOrder.receipt = order.receipt;
+                newOrder.orderId = order.id;
+                Order.create(newOrder)
+                    .then(() =>{
+                        return Promise.all(stockUpdatePromise);//only after order is created i will save it to backend and then send the order
                     })
-                })
-                .catch(err =>{
-                    return res.status(500).json({error: 'an error occurred'});
-                })
+                    .then(()=>{
+                        return res.json(order);
+                    })
+            });
+            
+            // Promise.all(stockUpdatePromise)
+            //     .then(result=>{
+            //         instance.orders.create({amount,currency: 'INR',receipt,payment_capture:1},(error,order)=>{
+            //             if(error) return res.status(500).json(error);
+
+            //             newOrder.orderItems = orderItems;
+            //             newOrder.amount = order.amount;
+            //             newOrder.receipt = order.receipt;
+            //             newOrder.orderId = order.id;
+            //             Order.create(newOrder)
+            //                 .then(result =>{
+            //                     res.json(order);
+            //                         return;
+            //                 })
+            //                 .catch(err =>{
+            //                     return res.status(500).json({error: 'could not save order'});
+            //                 })
+            //         });
+            //     })
+            })
+            .catch(err =>{
+                return res.status(500).json({error: 'an error occurred'});
+            })
 })
 
+router.post('/webhook',(req,res)=>{
+    res.json({status: 'ok'});
+    console.log(req.body);
+    console.log('webhook running');
+})
+//deleting order
 router.delete('/deleteorder',(req,res)=>{
     const {order_id} = req.body;
 
@@ -197,53 +240,9 @@ router.delete('/deleteorder',(req,res)=>{
         .catch(err => {
             return res.json({success: 'could not delete order'});
         });
-
-    // Order.findOne({orderId:order_id})
-    //     .then(result => {
-    //         productIds = result.orderItems.map(item=>{return item.itemId});
-    //         Product.find({'_id' : {$in: productIds} })//now i have the order and all the item that are in order items
-    //             .then(productItems =>{
-    //                 //here i need to create new array for stock
-    //                 productItems.forEach(item=>{
-    //                     result.orderItems.forEach(orderItem=>{
-    //                         if(item._id == orderItem.itemId){//this also means i  have found the product in db
-    //                             const newStock = {
-    //                                 id: item._id,
-    //                                 stock: item.stock + orderItem.pqty
-    //                             }
-    //                             stockUpdate.push(newStock);
-    //                         }
-    //                     })
-    //                 })
-
-    //                 let stockUpdatePromise = [];
-    //                 stockUpdate.forEach(item=>{
-    //                     let newPromise = new Promise((resolve,reject)=>{
-    //                         Product.findByIdAndUpdate(item.id,{stock:item.stock})
-    //                             .then((result)=>{
-    //                                 resolve(result);
-    //                             })
-    //                             .catch((err)=>{
-    //                                 reject(err);
-    //                             })
-    //                     })
-    //                     stockUpdatePromise.push(newPromise);
-    //                 })
-
-    //                 console.log(stockUpdatePromise);
-    //                 console.log(stockUpdate);
-
-    //                 return Promise.all(stockUpdatePromise)
-    //         });
-    //     })
-    //     .then((result)=>{//this is result from Promise.all
-    //         return res.json({success: 'order deleted successfully'});
-    //     })
-    //     .catch(err =>{
-    //         return res.status(400).json({error: 'could not delete order'});
-    //     })
 });
 
+//verifying order
 router.post('/verify',(req,res)=>{
     const {order_id,payment_id,payment_sign} = req.body;
 
@@ -267,17 +266,9 @@ router.post('/verify',(req,res)=>{
         .catch(err => {
             return res.json({success: 'could not delete order'});
         });
-
-        // Order.findOneAndDelete({orderId:order_id})
-        // .then(res => {
-        //     return res.status(400).json({ msg: "Transaction not legit!" });
-        // })
-        // .catch(err =>{
-        //     return res.status(400).json({error: 'could not delete order'});
-        // })
     }
     
-    Order.findOneAndUpdate({orderId:order_id},{pending:false},{new:true})
+    Order.findOneAndUpdate({orderId:order_id},{pending:false,paymentId:payment_id,$unset: {validity: 1}},{new:true})//deleting the validity key
     .then((result)=>{
         return res.json({success:'singature matched, updated record'});
     })
