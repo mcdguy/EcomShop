@@ -17,25 +17,41 @@ const deleteOrder = (order_id) =>{//this function returns a promise
     return new Promise((resolve,reject)=>{
         Order.findOne({orderId:order_id})
             .then(result => {
-                    let stockUpdatePromise = [];
-                    result.orderItems.forEach(item =>{
-                        let newPromise = new Promise((resolve,reject)=>{
-                            Product.findByIdAndUpdate(item.itemId,{$inc:{'stock': item.pqty}},{new:true})
-                                .then((result)=>{
-                                    resolve(result);
-                                })
-                                .catch((err)=>{
-                                    reject(err);
-                                })
+                productIds = result.orderItems.map(item=>{return item.itemId});
+                Product.find({'_id' : {$in: productIds} })//now i have the order and all the item that are in order items
+                    .then(productItems =>{
+                        //here i need to create new array for stock
+                        productItems.forEach(item=>{
+                            result.orderItems.forEach(orderItem=>{
+                                if(item._id == orderItem.itemId){//this also means i  have found the product in db
+                                    const newStock = {
+                                        id: item._id,
+                                        stock: item.stock + orderItem.pqty
+                                    }
+                                    stockUpdate.push(newStock);
+                                    //i can right away create a promise here
+                                }
+                            })
                         })
-                        stockUpdatePromise.push(newPromise);
-                    })
-                    return Promise.all(stockUpdatePromise)
+    
+                        let stockUpdatePromise = [];
+                        stockUpdate.forEach(item=>{
+                            let newPromise = new Promise((resolve,reject)=>{
+                                Product.findByIdAndUpdate(item.id,{stock:item.stock})
+                                    .then((result)=>{
+                                        resolve(result);
+                                    })
+                                    .catch((err)=>{
+                                        reject(err);
+                                    })
+                            })
+                            stockUpdatePromise.push(newPromise);
+                        })    
+                        console.log(stockUpdate);
+                        return Promise.all(stockUpdatePromise)
+                });
             })
             .then((result)=>{//this is result from Promise.all
-                result.forEach(item=>{
-                    console.log(item.stock);   
-                })
                 return Order.findOneAndDelete({orderId:order_id});
             })
             .then(deletedOrder =>{
@@ -51,50 +67,47 @@ const deleteOrder = (order_id) =>{//this function returns a promise
 // timeout to clean up pending orders
 setInterval(()=>{
     let tenMinutesOld = new Date();
-    tenMinutesOld.setMinutes(tenMinutesOld.getMinutes()-4)
+    tenMinutesOld.setMinutes(tenMinutesOld.getMinutes()-10)
     // console.log(tenMinutesOld);
     Order.find({validity:{$lt:tenMinutesOld}})
         .then((orders)=>{
-
             // i have to resolve promises sequentially otherwise stock will not increase properly as all promises will treat db stock as current stock 
-            //this is irrelevant now since i am using $inc which is atomic and i don't need to worry about data being modified between finding record and updating its stock
             //https://www.youtube.com/watch?v=DK304_E9mVo
-            // const orderIds = orders.map(item => item.orderId);
-            // console.log(orderIds);
-            // const result = orderIds.reduce((prevPromise,currArg)=>{
-            //     return prevPromise
-            //         .then((acc)=> deleteOrder(currArg)
-            //             .then(resp => [...acc,resp])
-            //         );
-            // },Promise.resolve([]));
+            const orderIds = orders.map(item => item.orderId);
+            console.log(orderIds);
+            const result = orderIds.reduce((prevPromise,currArg)=>{
+                return prevPromise
+                    .then((acc)=> deleteOrder(currArg)
+                        .then(resp => [...acc,resp])
+                    );
+            },Promise.resolve([]));
 
-            // result.then(console.log('deleted all pending orders'));
-            
-            // i am using $inc operator to increase quantity so i don't have to find and then update
-            //this $inc operator is atomic and does the job in 1 command(instead of two) so i don't need to worry about sequence
-            orders.forEach(item=>{
-                deleteOrder(item.orderId)
-                    .then(res =>{
-                        console.log('result',res);
-                        // do nothing
-                        // console.log('item removed');
-                    })
-                    .catch(err =>{
-                        console.log('failed to remove item');
-                    })
-            })
-            console.log('removed old items') 
+            result.then(console.log('deleted all pending orders'));
+            // result.forEach(item=>{
+            //     deleteOrder(item.orderId)
+            //         .then(res =>{
+            //             console.log('result',res);
+            //             // do nothing
+            //             // console.log('item removed');
+            //         })
+            //         .catch(err =>{
+            //             console.log('failed to remove item');
+            //         })
+            // })
+            console.log('removed old items')
         })
         .catch(err => {console.log('failed')});
-},30000);//runs after 2 mins
+},120000);//runs after 2 mins
 
 
 
 router.post('/makepayment',(req,res)=>{
+    // console.log(req.body)
     const {cartProducts,billingAddress,shippingAddress,user,showShipping} = req.body;
     //this can be manipulated like someone can send an id of cheap item and name and product id of expensive item and since price is calculated using id he can successfully cheat us
     let orderItems = [];
     let mismatch = false; //this variable will trigger cart refresh if product is out of stock or deleted
+    let stockUpdate = [];
     let amount = 0;
     let receipt = uuid.v4();
 
@@ -126,7 +139,6 @@ router.post('/makepayment',(req,res)=>{
 
     //if there is a validation error code must return
     if(orderError !== '') return res.status(422).json({error:'details not provided'});
-
     if(!cartProducts) return res.status(404).json({error:'no products found'});
     
     productIds = cartProducts.map(item=>{return item._id});
@@ -138,6 +150,14 @@ router.post('/makepayment',(req,res)=>{
                 cartProducts.forEach(cartItem=>{
                     if(item._id == cartItem._id){//this also means i  have found the product in db
                         amount += item.price*cartItem.pqty;
+                        let newStockQty = item.stock - cartItem.pqty;
+                        if(newStockQty < 0){
+                            mismatch = true;
+                        }
+                        const newStock = {//this is the new stock of this item id
+                            id: item._id,
+                            stock: newStockQty
+                        }
                         const singleOrderItem = {
                             itemId:item._id,
                             productId: item.productId,
@@ -145,19 +165,23 @@ router.post('/makepayment',(req,res)=>{
                             price: item.price,//this price is the purchase price
                             pqty: cartItem.pqty
                         }
+                        stockUpdate.push(newStock);
                         orderItems.push(singleOrderItem);
                     }
                 })
             })
+            console.log(stockUpdate);
+            if(mismatch){// i am calling out of stock as mismatch because that will only happen if cart is not in sync with backend
+                return res.json({mismatch: 'need to update cart'});
+            }
 
-            
             //creating array of promise
             let stockUpdatePromise = [];
-            cartProducts.forEach(item =>{
+            stockUpdate.forEach(item=>{
                 let newPromise = new Promise((resolve,reject)=>{
-                    Product.findByIdAndUpdate(item._id,{$inc:{'stock': (-item.pqty)}},{new:true})
-                        .then((updatedProduct)=>{
-                            resolve(updatedProduct);
+                    Product.findByIdAndUpdate(item.id,{stock:item.stock})
+                        .then((result)=>{
+                            resolve(result);
                         })
                         .catch((err)=>{
                             reject(err);
@@ -174,76 +198,15 @@ router.post('/makepayment',(req,res)=>{
                 newOrder.receipt = order.receipt;
                 newOrder.orderId = order.id;
                 newOrder.validity = new Date();
-                Promise.all(stockUpdatePromise)//updating stock after order creation
-                    .then(updatedStock=>{
-                        updatedStock.forEach(item=>{
-                            console.log(item.stock);
-                            if(item.stock < 0){
-                                mismatch = true;
-                            }
-                        })
-                        if(mismatch){
-                                let rollbackPromise = [];
-                                cartProducts.forEach(item =>{
-                                    let rollPromise = new Promise((resolve,reject)=>{
-                                        Product.findByIdAndUpdate(item._id,{$inc:{'stock': item.pqty}},{new:true})//quoting stock helps don't know why
-                                            .then((result)=>{
-                                                resolve(result);
-                                            })
-                                            .catch((err)=>{
-                                                reject(err);
-                                            })
-                                    })
-                                    rollbackPromise.push(rollPromise);
-                                })
-                                Promise.all(rollbackPromise)
-                                    .then(() =>{
-                                        return res.json({mismatch: 'need to update cart'});
-                                    })
-                            }else{
-                                Order.create(newOrder)
-                                    .then(()=>{
-                                        return res.json(order);
-                                    })
-                            }
+                Order.create(newOrder)
+                    .then(() =>{
+                        return Promise.all(stockUpdatePromise);//only after order is created i will save it to backend and then send the order
                     })
-                //the order is off i should first resolve the promise and then create the order because in case of negative quantity i will have a dead order in db a
-            //     Order.create(newOrder)
-            //         .then(() =>{
-            //             return Promise.all(stockUpdatePromise);//only after order is created i will save it to backend and then send the order
-            //         })
-            //         .then((result)=>{
-            //             result.forEach(item=>{
-            //                 console.log(item.stock);
-            //                 if(item.stock < 0){
-            //                     mismatch = true;
-            //                 }
-            //             })
-            //             if(mismatch){
-            //                 console.log(mismatch)
-            //                 let rollbackPromise = [];
-            //                 cartProducts.forEach(item =>{
-            //                     let rollPromise = new Promise((resolve,reject)=>{
-            //                         Product.findByIdAndUpdate(item._id,{$inc:{'stock': item.pqty}},{new:true})//quoting stock helps don't know why
-            //                             .then((result)=>{
-            //                                 resolve(result);
-            //                             })
-            //                             .catch((err)=>{
-            //                                 reject(err);
-            //                             })
-            //                     })
-            //                     rollbackPromise.push(rollPromise);
-            //                 })
-            //                 Promise.all(rollbackPromise)
-            //                     .then(result=>{
-            //                         return res.json({mismatch: 'need to update cart'});
-            //                     })
-            //             }
-            //             else{
-            //                 return res.json(order);
-            //             }
-            //         })
-                });         
+                    .then(()=>{
+                        return res.json(order);
+                    })
+            });
+            
             })
             .catch(err =>{
                 return res.status(500).json({error: 'an error occurred'});
