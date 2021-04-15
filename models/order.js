@@ -91,8 +91,7 @@ const orderSchema = new Schema({
     },
     validity:{
         type:Date,
-        default: new Date()
-        // default:new Date((Date.now() + 2 * 60 * 1000)),//indexing this property i am 
+        // default: (new Date().getTime())
     }
 },{timestamps: true});
 

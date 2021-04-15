@@ -68,18 +68,32 @@ const deleteOrder = (order_id) =>{//this function returns a promise
 setInterval(()=>{
     let tenMinutesOld = new Date();
     tenMinutesOld.setMinutes(tenMinutesOld.getMinutes()-10)
+    // console.log(tenMinutesOld);
     Order.find({validity:{$lt:tenMinutesOld}})
-        .then((result)=>{
-            result.forEach(item=>{
-                deleteOrder(item.orderId)
-                    .then(result =>{
-                        // do nothing
-                        console.log('item removed');
-                    })
-                    .catch(err =>{
-                        console.log('failed to remove item');
-                    })
-            })
+        .then((orders)=>{
+            // i have to resolve promises sequentially otherwise stock will not increase properly as all promises will treat db stock as current stock 
+            //https://www.youtube.com/watch?v=DK304_E9mVo
+            const orderIds = orders.map(item => item.orderId);
+            console.log(orderIds);
+            const result = orderIds.reduce((prevPromise,currArg)=>{
+                return prevPromise
+                    .then((acc)=> deleteOrder(currArg)
+                        .then(resp => [...acc,resp])
+                    );
+            },Promise.resolve([]));
+
+            result.then(console.log('deleted all pending orders'));
+            // result.forEach(item=>{
+            //     deleteOrder(item.orderId)
+            //         .then(res =>{
+            //             console.log('result',res);
+            //             // do nothing
+            //             // console.log('item removed');
+            //         })
+            //         .catch(err =>{
+            //             console.log('failed to remove item');
+            //         })
+            // })
             console.log('removed old items')
         })
         .catch(err => {console.log('failed')});
@@ -183,6 +197,7 @@ router.post('/makepayment',(req,res)=>{
                 newOrder.amount = order.amount;
                 newOrder.receipt = order.receipt;
                 newOrder.orderId = order.id;
+                newOrder.validity = new Date();
                 Order.create(newOrder)
                     .then(() =>{
                         return Promise.all(stockUpdatePromise);//only after order is created i will save it to backend and then send the order
@@ -192,25 +207,6 @@ router.post('/makepayment',(req,res)=>{
                     })
             });
             
-            // Promise.all(stockUpdatePromise)
-            //     .then(result=>{
-            //         instance.orders.create({amount,currency: 'INR',receipt,payment_capture:1},(error,order)=>{
-            //             if(error) return res.status(500).json(error);
-
-            //             newOrder.orderItems = orderItems;
-            //             newOrder.amount = order.amount;
-            //             newOrder.receipt = order.receipt;
-            //             newOrder.orderId = order.id;
-            //             Order.create(newOrder)
-            //                 .then(result =>{
-            //                     res.json(order);
-            //                         return;
-            //                 })
-            //                 .catch(err =>{
-            //                     return res.status(500).json({error: 'could not save order'});
-            //                 })
-            //         });
-            //     })
             })
             .catch(err =>{
                 return res.status(500).json({error: 'an error occurred'});
@@ -219,8 +215,35 @@ router.post('/makepayment',(req,res)=>{
 
 router.post('/webhook',(req,res)=>{
     res.json({status: 'ok'});
-    console.log(req.body);
-    console.log('webhook running');
+    const digest = crypto
+    .createHmac("sha256", process.env.WH_KEY)
+    .update(JSON.stringify(req.body))
+    .digest("hex");
+
+    if(digest === req.headers['x-razorpay-signature']){
+        if(req.body.event === 'payment.authorized'){
+            const order_id = req.body.payload.payment.entity.order_id;
+            const payment_id = req.body.payload.payment.entity.id;
+            console.log('webhook running');
+            Order.findOne({orderId:order_id})
+                .then(result =>{
+                    //before updating i can check if order exists and if not it means timer deleted it and this is late authorization so i should issue refund
+                    // if(!result){
+                        //issue refund
+                    //     return;
+                    // }
+                    Order.findOneAndUpdate({orderId:order_id},{pending:false,paymentId:payment_id,$unset: {validity: 1}},{new:true})
+                    .then((result)=>{
+                        console.log('updated');
+                    })
+                })
+
+           
+        }
+    }
+    else{
+        //fake request
+    }
 })
 //deleting order
 router.delete('/deleteorder',(req,res)=>{
@@ -267,7 +290,7 @@ router.post('/verify',(req,res)=>{
             return res.json({success: 'could not delete order'});
         });
     }
-    
+    //instead of updating order here i can leave that on webhook and just send success so that order alert popup shows up 
     Order.findOneAndUpdate({orderId:order_id},{pending:false,paymentId:payment_id,$unset: {validity: 1}},{new:true})//deleting the validity key
     .then((result)=>{
         return res.json({success:'singature matched, updated record'});
