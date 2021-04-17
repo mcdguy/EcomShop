@@ -155,7 +155,7 @@
 }
 @media screen and (max-width:768px){/*should be 768px*/
     .map__center{
-        flex-direction: column;
+        flex-direction: column-reverse;
     }
     .map__info,
     #mapid{

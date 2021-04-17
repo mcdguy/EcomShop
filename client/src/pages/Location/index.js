@@ -61,8 +61,9 @@ const Location = () => {
     },[queryLocation,locations]);
 
     if(!locations.length){
-        return null
+        return null;
     }
+    
     return (
         <div>
             <div className="map__center center">
