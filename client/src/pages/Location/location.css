@@ -154,6 +154,13 @@
     color: rgb(100, 97, 97);
 }
 @media screen and (max-width:768px){/*should be 768px*/
+    #mapid{
+        height: 70vh;
+    }
+    .leaflet-container{
+        height: 90%;
+        
+    }
     .map__center{
         flex-direction: column-reverse;
     }
