@@ -245,7 +245,7 @@
     }
 }
 
-@media screen and (max-width: 520px){
+@media screen and (max-width: 520px){/*this should be 900 as per my comment in navbar.css but i am leaving it here rn*/
     .item__thumb{
         width: 40px;
         height: 40px;

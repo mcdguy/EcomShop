@@ -42,6 +42,7 @@ app.use('/product',require('./routes/product-route'));
 app.use('/blog',require('./routes/blog-route'));
 // app.use('/info',require('./routes/address-route'));
 app.use(require('./routes/payment-route'));
+app.use(require('./routes/location-route'));
 //for 404 error on refresh we will serve index.html
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname+'/client/build/index.html'));

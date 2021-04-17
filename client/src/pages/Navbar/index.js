@@ -31,9 +31,9 @@ const Navbar = () => {
                     {/* <li>
                         <Link to="/contact">contact</Link>
                     </li> */}
-                    {/* <li>
+                    <li>
                         <Link to="/findastore">find a store</Link>
-                    </li> */}
+                    </li>
                     {/* <li>
                         <Link to="/howtobrew">brew guide</Link>
                     </li> */}

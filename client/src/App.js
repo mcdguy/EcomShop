@@ -12,6 +12,7 @@ import Error from './pages/Error';
 import ScrollToTop from './components/scrollToTop';
 import Account from './pages/Account';
 import Checkout from './pages/Checkout';
+import Location from './pages/Location';
 const App = () => {
   return (
     <Router>
@@ -47,6 +48,10 @@ const App = () => {
 
           <Route path="/checkout">
             <Checkout/>
+          </Route>
+
+          <Route path="/findastore">
+            <Location/>
           </Route>
           {/* <Route path="/signin">
             <Login/>

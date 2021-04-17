@@ -41,7 +41,7 @@
     padding: 10px 0px;
     color: white;
     font-size: 12px;
-    margin-left: 30px;
+    margin-left: 15px;
     font-weight: 600;
     letter-spacing: 2px;
     transition: opacity 300ms;
@@ -137,7 +137,7 @@
     }
 } */
 
-@media screen and (max-width: 520px){/*if i change this then in singleproduct.css i need to change the media query value for item added*/
+@media screen and (max-width: 900px){/*if i change this then in singleproduct.css i need to change the media query value for item added*/
     .nav__hamburger{
         display: block;
     }
