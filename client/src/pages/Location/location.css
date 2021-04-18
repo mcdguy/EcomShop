@@ -162,7 +162,7 @@
         
     }
     .map__center{
-        flex-direction: column-reverse;
+        flex-direction: column;
     }
     .map__info,
     #mapid{
