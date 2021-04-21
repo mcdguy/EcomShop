@@ -1,0 +1,33 @@
+.delete__modal__wrapper{
+    width: calc(100% - 250px);
+    height: 100%;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.541);
+    top: 0;
+    left: 250px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+.delete__modal{
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.delete__modal .btn__delete{
+    background-color: whitesmoke;
+    color: black;
+}
+.delete__modal .btn__delete:hover{
+    background-color: rgb(240, 240, 240);
+}
+.delete__modal p{
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 500;
+    margin: 10px 0 30px;
+}

@@ -11,3 +11,113 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.page{
+  margin-left: 250px;
+  padding: 30px;
+  min-height: 100vh;
+}
+.btn-wrapper{
+  text-align: center;
+}
+.btn{
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  padding: 6px 12px;
+  color: white;
+  background-color: rgb(44, 170, 192);
+  text-decoration: none;
+  border-radius: 4px;
+  text-transform: uppercase;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 12px;
+  border: none;
+  margin: 0 5px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+.btn:hover{
+  background-color: rgb(62, 192, 209);
+}
+.btn:active{
+  background-color: rgb(97, 214, 230);
+}
+.controls{
+  margin: 25px 0 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.read-data,
+.edit-data{
+  background-color: rgb(252, 252, 252);
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 4px;
+  border: 1px solid rgb(214, 212, 212);
+}
+
+.action__read,
+.action__edit{
+  position: relative;
+  margin-top: 60px;
+}
+.control__nav{
+  position: fixed;
+  top: 0;
+  width: calc(100% - 250px);
+  left: 250px;
+  z-index: 10;
+  background-color: white;
+  border-bottom: 1px solid rgb(231, 231, 231);
+  padding: 15px 20px;
+}
+
+
+/*table styles*/
+.read__table{
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 14px;
+  width: 100%;
+  table-layout: fixed;
+  white-space: nowrap;
+}
+
+.read__table td div,
+.read__table th div{
+  overflow: hidden;
+}
+.read__table td{
+  font-weight: normal;
+}
+.read__table__show{
+  width: 150px;
+}
+.read__table__edit{
+  width: 70px;
+}
+.read__table__delete{
+  width: 100px;
+} 
+.read__table th{
+  /* background-color: blue; */
+  /* color: white; */
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.read__table th,
+.read__table td{
+  padding: 13px 8px;
+}
+.read__table tr{
+  background-color: rgb(253, 253, 253);
+  border-bottom: 1px solid rgb(230, 227, 227);
+}

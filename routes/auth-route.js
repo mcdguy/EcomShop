@@ -8,25 +8,32 @@ const {handleAddressError} = require('../utils/handleAddressError');
 const {checkUser} = require('../utils/userDetails');
 const requireAuth = require('../middleware/auth-middleware');
 
-// const handleErrors = (err) =>{
-//     let errors = {email: '',password: ''};
-//     if(err.code === 11000){
-//         errors.email = 'email already exists';
-//         return errors;
-//     }
-//     // console.log(err);
-//     if(err.message.includes('User validation failed')){
-//         Object.values(err.errors).forEach(error=>{
-//             errors[error.properties.path] = error.properties.message;
-//         })
-//     }
-//     return errors;
-// }
+//i could have seperated auth routes and user routes
 
 const maxAge = 3 * 24 * 60 * 60; //3 days in seconds
 const createToken = (id) =>{
     return jwt.sign({id},process.env.AUTH_SECRET,{expiresIn:maxAge});
 }
+
+router.get('/',(req,res)=>{
+    User.find()
+        .then(result =>{
+            res.json({users: result});
+        })
+        .catch(err => res.json({error: 'could not get users'}))
+})
+
+router.get('/:id',(req,res)=>{
+    const {id} = req.params;
+    User.findById(id)
+        .then(result=>{
+            if(!result){
+                return res.json({error: 'user not found'});
+            }
+            return res.json({user: result});
+        })
+        .catch(err => res.json({error: 'an error occured'}));
+})
 
 //creating a user in db
 router.post('/signup',async (req,res)=>{

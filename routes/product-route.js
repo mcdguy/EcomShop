@@ -73,9 +73,9 @@ router.delete('/:id',(req,res)=>{
                     fs.unlink(`./${image}`,(err)=>console.log(err));
                 }
             });
-            res.json({msg: 'blog deleted successfully'});
+            res.json({success: 'product deleted successfully'});
         })
-        .catch(err => res.json({error: 'can not delete this product'}));
+        .catch(err => res.json({error: 'could not delete product'}));
 })
 
 //updating a product

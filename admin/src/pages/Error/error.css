@@ -1,0 +1,37 @@
+.error{
+    height: 100vh;
+    overflow: hidden;
+    margin-left: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error h1{
+    font-size: 40px;
+    font-weight: normal;
+    text-transform: capitalize;
+    margin: 0;
+}
+.btn__wrapper{
+    text-align: center;
+    margin: 20px 0;
+}
+/*these button styles should be made global if the button style is same everywhere*/
+.error__btn{
+    text-align: center;
+    padding: 5px 10px;
+    color: white;
+    background-color: rgb(124, 90, 121);
+    text-decoration: none;
+    border-radius: 4px;
+}
+.error__btn:hover{
+    background-color: rgb(150, 109, 146);
+}
+.error__btn:active{
+    background-color: rgb(211, 209, 209);
+}
+
+/*styles from above conmment to here should be made global accordingly*/
+

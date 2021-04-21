@@ -1,0 +1,44 @@
+/* .view__order{
+    background-color: rgb(252, 252, 252);
+    border-radius: 3px;
+    padding: 0 10px;
+} */
+.view__order .view__order__table{
+    table-layout: fixed;
+    width: 100%;
+    background-color: rgb(252, 252, 252);
+    padding: 10px;
+    border-radius: 4px;
+    border: 2px solid rgb(243, 243, 243);
+    margin: 10px 0;
+}
+.view__order__head{
+    margin-top: 50px;
+    letter-spacing: 1px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+.view__order .view__order__table td{
+    padding: 10px 8px;
+}
+.view__order .view__order__table tr td>div{
+    overflow: hidden;
+    white-space: nowrap;
+}
+.view__order .view__order__table tr td:nth-child(1){
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    width: 20%;
+    white-space: nowrap;
+}
+.view__order__items .read__table tr{
+    background-color: transparent;
+}
+.view__order__items .read__table{
+    background-color: rgb(252, 252, 252);
+    padding: 10px;
+    border: 2px solid rgb(243, 243, 243);
+    margin: 10px 0;
+}
+
