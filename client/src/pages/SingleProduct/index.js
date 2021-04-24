@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useGlobalContext } from '../../context';
 import { Link } from 'react-router-dom';
-
+import {formatPrice} from '../../utils/formatPrice';
 const SingleProduct = () => {
     const {addCartItem} = useGlobalContext();   
     const {id} = useParams();
@@ -12,9 +12,7 @@ const SingleProduct = () => {
     const [error,setError] = useState({message: '',show: false});
     const [isLoading,setIsLoading] = useState(false);
     const [currentImage,setCurrentImage] = useState(0);
-    // const [quantity,setQuantity] = useState(1);
     const [showMsg,setShowMsg] = useState(false);
-    
     useEffect(()=>{
         setError({...error, message:'',show: false})
         axios.get(`/product/shop/${id}`)
@@ -75,7 +73,7 @@ const SingleProduct = () => {
                         <div className="item__info">
                             <div className="item__info__wrapper">
                                 <p className="item__info__name">{item.name}</p>
-                                <p className="item__info__price">PRICE: &#8377;{item.price}</p>
+                                <p className="item__info__price">PRICE: {formatPrice(item.price)}</p>
                                 <p className="item__info__weight">{item.weight==='null'?'':item.weight}</p>
                                 <p className="item__info__desc">{item.description}</p>
                                 {item.stock?

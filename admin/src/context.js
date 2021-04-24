@@ -9,7 +9,15 @@ export const AppProvider = ({children}) => {
     const [location,setLocation] = useState([]);
     const [order,setOrder]=useState([]);
     const [product,setProduct]=useState([]);
-    
+    const [coupon,setCoupon]=useState([]);
+
+    useEffect(()=>{
+        axios('/coupon')
+            .then(res =>{
+                setCoupon(res.data.coupon);
+            })
+            .catch(err => console.log(err));
+    })
     useEffect(()=>{
         axios('/product')
         .then(res=>{
@@ -56,6 +64,7 @@ export const AppProvider = ({children}) => {
                 product,
                 location,
                 order,
+                coupon
             }}>
             {children}
         </AppContext.Provider>

@@ -2,6 +2,7 @@ import React from 'react';
 import { useCartContext } from '../../cartContext';
 import './cartSummary.css';
 import { Link } from 'react-router-dom';
+import {formatPrice} from '../../utils/formatPrice';
 
 const CartSummary = ({source}) => {
     const {cartProducts,cartTotalItems,cartTotalAmount} = useCartContext();
@@ -15,7 +16,7 @@ const CartSummary = ({source}) => {
                 </div>
                 <div className="cart__summary__details">
                     <p>amount</p>
-                    <p>&#8377; {cartTotalAmount}</p>
+                    <p>{formatPrice(cartTotalAmount)}</p>
                 </div>
             </div>
             {source==='cart'?

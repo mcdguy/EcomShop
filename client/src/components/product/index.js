@@ -26,7 +26,7 @@ const Product = ({img,name,price,stock,_id}) => {
                 </div>
                 <div className="product__info">
                     <h1 className="product__name">{name}</h1>
-                    <h2 className="product__price">PRICE: &#8377;{price}</h2>
+                    <h2 className="product__price">PRICE: {formatPrice(price)}</h2>
                 </div>
             </article>
         </Link>

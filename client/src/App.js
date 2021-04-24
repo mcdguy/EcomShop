@@ -13,6 +13,7 @@ import ScrollToTop from './components/scrollToTop';
 import Account from './pages/Account';
 import Checkout from './pages/Checkout';
 import Location from './pages/Location';
+import About from './pages/About';
 const App = () => {
   return (
     <Router>
@@ -28,6 +29,10 @@ const App = () => {
             <Shop/>
           </Route>
 
+          <Route path="/about" exact>
+            <About/>
+          </Route>
+
           <Route path="/contact" exact>
             <Contact/>
           </Route>
@@ -38,19 +43,19 @@ const App = () => {
 
           <Route path="/shop/:id" children={<SingleProduct/>} exact></Route>
 
-          <Route path="/cart">
+          <Route path="/cart" exact>
             <Cart/>
           </Route>
 
-          <Route path="/account">
+          <Route path="/account" exact>
             <Account/>
           </Route>
 
-          <Route path="/checkout">
+          <Route path="/checkout" exact>
             <Checkout/>
           </Route>
 
-          <Route path="/findastore">
+          <Route path="/findastore" exact>
             <Location/>
           </Route>
           {/* <Route path="/signin">

@@ -121,3 +121,33 @@ code {
   background-color: rgb(253, 253, 253);
   border-bottom: 1px solid rgb(230, 227, 227);
 }
+
+/*create table styles*/
+.action__create{
+  max-width: 600px;
+  margin: auto;
+}
+.action__create .btn-wrapper{
+  padding: 30px 0;
+}
+.create__location__table{
+  table-layout: fixed;
+  width: 100%;
+  white-space: nowrap;
+}
+.create__location__table td{
+  padding: 10px 8px;
+}
+.create__location__table tr td:nth-child(1) div{
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 500;
+  overflow: hidden;
+}
+.create__location__table tr td:nth-child(1){
+  width: 250px;
+}
+.create__location__table input{
+  width: 100%;
+  padding: 7px 10px;
+}

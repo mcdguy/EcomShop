@@ -14,13 +14,20 @@ const EditProduct = ({id}) => {
     // const featuredRef = useRef(null);
 
     useEffect(()=>{
-        axios(`/product/shop/${id}`)
-            .then(res =>{
-                console.log(res.data);
-                setProduct(res.data);
-            })
-            .catch(err => console.log(err));
+        let cancel;
+        axios(`/product/shop/${id}`,{
+            cancelToken: new axios.CancelToken(c=> {cancel =c})
+        })
+        .then(res =>{
+            if(res.data.error) return;
+            console.log(res.data);
+            setProduct(res.data);
+        })
+        .catch(err => console.log(err));
+        
+        return ()=> cancel();
     },[])
+
     return (
         <div className="edit__products action__edit">
              <nav className="users__nav control__nav">

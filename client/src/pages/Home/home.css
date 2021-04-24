@@ -273,7 +273,8 @@
     background-position: center;
     margin: auto;
 }
-.home__footer{
+/*footer*/
+/* .home__footer{
     background-color: var(--clr-sec);
     padding: 50px 0;
 }
@@ -325,7 +326,7 @@
 }
 .footer-col a:hover{
     opacity: .8;
-}
+} */
 
 @media screen and (max-width:1200px){
     .hero__img{
@@ -341,7 +342,7 @@
         margin-right: 11%;
     }
 }
-@media screen and (max-width:820px){
+/* @media screen and (max-width:820px){
     .footer__center{
         flex-direction: column;
         text-align: center;
@@ -383,9 +384,7 @@
     .footer-col .legal__links span{
         margin: 30px 0 0;
     }
-
-
-}
+} */
 @media screen and (max-width: 700px){
     .stores__center{
         flex-direction: column;

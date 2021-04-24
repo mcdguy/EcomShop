@@ -28,11 +28,11 @@ const Navbar = () => {
                     <li>
                         <Link to="/shop" onClick={()=>setFilterName('none')} >shop</Link>
                     </li>
-                    {/* <li>
-                        <Link to="/contact">contact</Link>
-                    </li> */}
                     <li>
                         <Link to="/findastore">find a store</Link>
+                    </li>
+                    <li>
+                        <Link to="/about">about us</Link>
                     </li>
                     {/* <li>
                         <Link to="/howtobrew">brew guide</Link>

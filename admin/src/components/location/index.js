@@ -44,7 +44,7 @@ const Location = () => {
                     <tbody >
                         {location.map(loc=>{
                             return(
-                                    <LocationRow key={loc._id} {...loc}/>
+                                <LocationRow key={loc._id} {...loc}/>
                             )
                         })}
                     </tbody>

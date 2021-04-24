@@ -1,18 +1,45 @@
 import React,{useState,useEffect} from 'react';
 import './deleteModal.css';
+import axios from 'axios';
 
 const DeleteModal = ({id,closeModal,source}) => {
     const handleDelete = () =>{
         if(source === 'location'){
-            console.log(id);
-            //after deletion
-            //closeModal();
+            axios.delete(`/location/${id}`)
+                .then(res => {
+                    if(res.data.success){
+                        closeModal();
+                    }
+                    if(res.data.error){
+                        console.log(res.data.error);
+                    }
+                })
+                .catch(err => console.log(err));
             // i can also trigger rerender of list 
         }
         if(source === 'product'){
-            console.log(id);
-            //after deletion
-            //closeModal();
+            axios.delete(`/product/${id}`)
+                .then(res => {
+                    if(res.data.success){
+                        closeModal();
+                    }
+                    if(res.data.error){
+                        console.log(res.data.error);
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+        if(source === 'coupon'){
+            axios.delete(`coupon/${id}`)
+            .then(res => {
+                if(res.data.success){
+                    closeModal();
+                }
+                if(res.data.error){
+                    console.log(res.data.error);
+                }
+            })
+            .catch(err => console.log(err));
         }
     }
     return (

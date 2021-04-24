@@ -4,6 +4,7 @@ import { useGlobalContext } from '../../context';
 import './edit.css';
 import EditLocation from '../../components/editLocation';
 import EditProduct from '../../components/editProduct';
+import EditCoupon from '../../components/editCoupon.';
 
 const Edit = () => {
     const {id} = useParams();
@@ -19,6 +20,13 @@ const Edit = () => {
         return(
             <div className="edit page">
             <EditLocation id={id}/>
+        </div>
+     )
+    }
+    if(currentTab === 'coupon'){
+        return(
+            <div className="edit page">
+            <EditCoupon id={id}/>
         </div>
      )
     }

@@ -5,6 +5,7 @@ import Product from '../../components/product';
 import Location from '../../components/location';
 import Order from '../../components/order';
 import User from '../../components/user';
+import Coupon from '../../components/coupon';
 
 const Home = () => {
     const {currentTab} = useGlobalContext();
@@ -34,6 +35,13 @@ const Home = () => {
         return (
             <div className="home page">
                 <Location/>
+            </div>
+        )
+    }
+    if(currentTab === 'coupon'){
+        return(
+            <div className="home page">
+                <Coupon/>
             </div>
         )
     }

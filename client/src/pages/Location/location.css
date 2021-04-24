@@ -28,9 +28,9 @@
     z-index: 7;
     box-shadow: 0 0 6px rgb(156, 156, 156);
 }
-.leaflet-control-attribution{
+/* .leaflet-control-attribution{
     display: none;
-}
+} */
 .leaflet-popup-content{
     margin: 20px 18px;
 }

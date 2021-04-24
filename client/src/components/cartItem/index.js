@@ -5,6 +5,7 @@ import {GrClose} from "react-icons/gr";
 import {BiMinus,BiPlus} from "react-icons/bi";
 import { Link } from 'react-router-dom';
 import { useCartContext } from '../../cartContext';
+import {formatPrice} from '../../utils/formatPrice';
 
 const CartItem = ({img,name,price,pqty,_id,cartProducts,stock,source,checked}) => {
     const {cart} = useGlobalContext();
@@ -23,7 +24,7 @@ const CartItem = ({img,name,price,pqty,_id,cartProducts,stock,source,checked}) =
                 </Link>
                 <div className="cart__item__info">
                     <p className="cart__item__name">{name}</p>
-                    <p className="cart__item__price">&#8377; {price}</p>
+                    <p className="cart__item__price">{formatPrice(price)}</p>
                     <span className="cart__item__qty">
                             <span className='cart__item__qty__inc' onClick={decreaseQuantity}><BiMinus/></span>     
                             <span>{quantity}</span>     

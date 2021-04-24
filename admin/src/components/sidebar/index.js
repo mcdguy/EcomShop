@@ -11,6 +11,7 @@ const Sidebar = () => {
         <Link to="/" className={`${currentTab==='order'?'active':'null'}`} onClick={()=>setCurrentTab('order')}>order</Link>
         <Link to="/" className={`${currentTab==='user'?'active':'null'}`} onClick={()=>setCurrentTab('user')}>user</Link>
         <Link to="/" className={`${currentTab==='location'?'active':'null'}`} onClick={()=>setCurrentTab('location')}>location</Link>
+        <Link to="/" className={`${currentTab==='coupon'?'active':'null'}`} onClick={()=>setCurrentTab('coupon')}>coupon</Link>
       </div>
     )
 }

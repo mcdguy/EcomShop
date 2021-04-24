@@ -23,7 +23,11 @@ router.get('/shop/:id',(req,res)=>{
     // console.log('getting single product');
     const {id} = req.params;
     Product.findById(id)
-    .then(result => res.json(result))
+    .then(result => 
+        {
+            if(!result) return res.json({error: 'could not find product'});
+            res.json(result)
+        })
     .catch(err =>{
         console.log(err.message);
         res.json({error: "product doesn't exist"});
@@ -65,17 +69,18 @@ router.post('/',upload.array('img',6),(req,res)=>{//setting max count to 6
 //deleting a product
 router.delete('/:id',(req,res)=>{
     const {id} = req.params;
-    Product.findByIdAndDelete(id)
-        .then(result=>{
-            console.log(result.img);
-            result.img.forEach(image =>{
-                if(fs.existsSync(`./${image}`)){
-                    fs.unlink(`./${image}`,(err)=>console.log(err));
-                }
-            });
-            res.json({success: 'product deleted successfully'});
-        })
-        .catch(err => res.json({error: 'could not delete product'}));
+    console.log(id);
+    // Product.findByIdAndDelete(id)
+    //     .then(result=>{
+    //         console.log(result.img);
+    //         result.img.forEach(image =>{
+    //             if(fs.existsSync(`./${image}`)){
+    //                 fs.unlink(`./${image}`,(err)=>console.log(err));
+    //             }
+    //         });
+    //         res.json({success: 'product deleted successfully'});
+    //     })
+    //     .catch(err => res.json({error: 'could not delete product'}));
 })
 
 //updating a product

@@ -3,10 +3,10 @@ import './home.css';
 import {Link} from 'react-router-dom';
 import { useGlobalContext } from '../../context';
 import Product from '../../components/product';
-import {FaFacebookSquare,FaInstagramSquare,FaTwitterSquare} from "react-icons/fa";
+// import {FaFacebookSquare,FaInstagramSquare,FaTwitterSquare} from "react-icons/fa";
 import {stores} from '../../data.js';
 import {GrPrevious,GrNext} from "react-icons/gr";
-
+import Footer from '../../components/footer';
 const Home = () => {
     const [currentImage,setCurrentImage] = useState(0);
     const {featuredProducts,setFilterName} = useGlobalContext();
@@ -120,8 +120,8 @@ const Home = () => {
             <section className="home__logo__display">
                 <div className="logo__img"></div>
             </section>
-            
-            <footer className="home__footer">
+            <Footer/>
+            {/* <footer className="home__footer">
                 <div className="footer__center center">
                     
                     <div className="footer__legal footer-col">
@@ -154,99 +154,7 @@ const Home = () => {
                     </div>
 
                 </div>
-            </footer>
-            {/* <footer className="home__footer">
-                <div className="footer__content center">
-                    <div className="legal">
-                        <div className="legal__pages">
-                            <Link to="/termsandconditions">terms and conditions</Link>
-                            <Link to="/privacypolicy">privacy policy</Link>
-                            <Link to="/cookie policy">cookie policy</Link>
-                        </div>
-                    </div>
-                    <div className="social">
-                        <div className="social__links">
-                        <Link to="/findalocation">find a location</Link>
-                            <span>follow us on</span>
-                            <div className="social__links__bar">
-                                <a target="_blank" href="https://www.instagram.com/sardarjibakhshcoffee/?hl=en"><FaInstagramSquare/></a>
-                                <a target="_blank" href="https://www.facebook.com/sardarjibakhshcoffee/"><FaFacebookSquare/></a>
-                                
-                            </div>
-                        </div>
-                    </div>
-                    <div className="contact">
-                        <div className="contact__details">
-                            <span>contact us</span>
-                            <span className="contact__email">sardarjibuksh@gmail.com</span>
-                            <span className="contact__no">+911 111111111</span>
-                        </div>
-                        <span>all rights reserved <sup>&#xa9;</sup></span>
-                    </div>
-                </div>
             </footer> */}
-
-
-
-            {/* <footer className="home__footer">
-
-                <div className="footer__legal">
-                    <Link to="/termsandconditions">terms and conditions</Link>
-                    <Link to="/privacypolicy">privacy policy</Link>
-                    <Link to="/cookie policy">cookie policy</Link>
-                </div>
-            </footer> */}
-            {/* <section className="home__intro">
-                <span>beans</span>
-            </section>
-
-            <section className="home__slider">
-                <article ref={sliderRef} className="home__slider__text">
-                    <p>that will drive you</p>
-                    <p>nuts</p>
-                    <Link className="btn-shop btn" to="/shop">shop now</Link>
-                </article>
-                <div className="home__slider__hidden">
-                   <div className="home__slider__img"></div>
-                </div>
-            </section>
-
-            <section className="home__about">
-                <div className="home__about__center center">
-                    <div className="home__about__info">
-                        <div>
-                            <h1> best arabica coffee</h1>
-                            <p>
-                                Serving you the best arabica coffee since 2016
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed sapiente quos ex accusamus fuga, ducimus, eos laboriosam reiciendis sequi aperiam non id ut inventore autem, adipisci sit similique. Incidunt amet neque libero quisquam velit mollitia fugiat quaerat ad, obcaecati itaque!  
-                            </p>
-                        </div>
-                    </div>
-                    <div className="home__about__imgwrapper">
-                        <div className="home__about__img"></div>
-                    </div>
-                </div>
-            </section>
-            <footer className="home__footer">
-                <div className="home__footer__center center">
-                    <div className="contact">
-                        <h1>contact us</h1>
-                        <p className="contact__gmail">
-                            baksh@gmail.com
-                        </p>
-                        <p className="contact__no">+91 82948982234</p>
-                        <div className="legal">
-                            <div>
-                                <Link to="/howtobrew">cookie policy</Link>
-                                <Link to="/howtobrew">privacy policy</Link>
-                            </div>
-                            <Link to="/howtobrew">terms and conditions</Link>
-                        </div>
-
-                    </div>
-                </div>
-            </footer> */}
-
         </div>
     )
 }

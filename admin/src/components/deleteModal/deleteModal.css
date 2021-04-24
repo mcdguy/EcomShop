@@ -24,6 +24,9 @@
 .delete__modal .btn__delete:hover{
     background-color: rgb(240, 240, 240);
 }
+.delete__modal .btn__delete:active{
+    background-color: rgb(218, 212, 212);
+}
 .delete__modal p{
     text-align: center;
     text-transform: uppercase;
