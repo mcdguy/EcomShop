@@ -8,6 +8,9 @@ import Error from './pages/Error';
 import Edit from './pages/Edit';
 import View from './pages/View';
 import Create from './pages/Create';
+// import CreateCoupon from './pages/createCoupon';
+// import CreateLocation from './pages/createLocation';
+// import CreateProduct from '../src/components/createProduct';
 function App() {
   const [currentTab,setCurrentTab] = useState('product');
   return (
@@ -18,9 +21,22 @@ function App() {
           <Home/>
         </Route>
 
-        <Route path="/create" exact>
+        <Route path="/create">
           <Create/>
         </Route>
+        
+
+        {/* <Route path="/product/create" exact>
+          <CreateProduct/>
+        </Route> */}
+        
+        {/* 
+        <Route path="/create/coupon" exact>
+          <CreateCoupon/>
+        </Route>
+        <Route path="/create/location" exact>
+          <CreateLocation/>
+        </Route> */}
 
         <Route path="/edit/:id" children={<Edit/>} exact></Route>
         <Route path="/view/:id" children={<View/>} exact></Route>

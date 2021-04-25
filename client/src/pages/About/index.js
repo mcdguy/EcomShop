@@ -11,11 +11,22 @@ const About = () => {
     return (
         <div className="about">
             <div className="about__hero">
-                <div className="about__hero__cont center">
-                    <div className="about__hero__img__wrapper img-design">
-                        <img src={AboutHero}/>
+                <div className="about__hero__top">
+                    <div className="about__top__center center">
+                        <h1>about us</h1>
                     </div>
                 </div>
+                    <div className="about__bottom__center center">
+                        <div className="about__hero__img__wrapper ">
+                            <div className="img-design">
+                                <img src={AboutHero}/>
+                            </div>
+                        </div>
+                        <div className="about__hero__text">
+                            <p>Sardar-Ji-Bakhsh, founded in 2015 as SardarBuksh Coffee & Coffee, is an Indian specialty coffee brand that aims to cater to every Indian coffee drinker’s taste.</p>
+                            <p>Since renaming the brand and becoming recognised as a specialty café for great coffee, SJB has continued to expand their experience, from their signature coffee to bottled cold brews, and of course expanding to locations around the country.</p>
+                        </div>
+                    </div>
             </div>
             <div className="center">
                 <div className="about__employee">

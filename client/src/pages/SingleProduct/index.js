@@ -30,19 +30,7 @@ const SingleProduct = () => {
             clearTimeout(x);
         }
     },[showMsg])
-
-    // const decreaseQuantity = () =>{
-    //     if(quantity === 1){
-    //         return;
-    //     }
-    //     setQuantity(quantity-1);
-    // }
-    // if(isLoading){
-    //     return <div className="item-loading"></div>
-    // }
-    // if(error){
-    //     return <div className="item-error"></div>
-    // }
+    
     return (
         <> 
             {item.error?<div className="item_error">{item.error}</div>:
@@ -78,22 +66,13 @@ const SingleProduct = () => {
                                 <p className="item__info__desc">{item.description}</p>
                                 {item.stock?
                                     <>
-                                    {/* <div className="item__qty">
-                                    <span className='item__qty__inc' onClick={decreaseQuantity}>-</span>     
-                                    <span>{quantity}</span>     
-                                    <span className='item__qty__dec' onClick={()=>setQuantity(quantity+1)}>+</span>
-                                    </div> */}
                                     <div className="btn-wrapper">
                                         <a onClick={()=>{setShowMsg(true); addCartItem(item._id,1)}}>add to cart</a>
                                     </div>
-                                    {/* <div className={`${showMsg?'alert-wrapper show': 'alert-wrapper'}`}>
-                                        <span>item added</span>
-                                    </div> */}
                                     </>
                                     :<div className="item__outofstock">
                                         this product is currently unavailable.
-                                    </div>
-                                    
+                                    </div>         
                                 }
 
                             </div>

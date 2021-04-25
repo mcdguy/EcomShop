@@ -11,21 +11,11 @@
     justify-content: space-between;
     align-items: center;
 }
-.nav__logo{
-    color: white;
-    padding: 14px 0;
-    font-size: 22px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 600;
-}
-.nav__logo{
-    color: white;
-    padding: 14px 0;
-    font-size: 22px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 600;
+
+.nav__logo img{
+    width: 300px;
+    display: block;
+    padding: 18px 0;
 }
 .nav__links{
     display: flex;
@@ -137,7 +127,7 @@
     }
 } */
 
-@media screen and (max-width: 900px){/*if i change this then in singleproduct.css i need to change the media query value for item added*/
+@media screen and (max-width: 1000px){/*if i change this then in singleproduct.css i need to change the media query value for item added and i think this is only valid if i go below 520px*/
     .nav__hamburger{
         display: block;
     }
@@ -168,5 +158,11 @@
     .nav__links a{
         margin-left: 0;
         font-size: 22px;
+    }
+}
+@media  screen and (max-width: 520px) {
+    .nav__logo img{
+        width: 220px;
+        padding: 12px 0;
     }
 }

@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import { useGlobalContext } from '../../context';
 import './navbar.css';
 import axios from 'axios';
-
+import Logo from '../../assets/images/logo.png';
 const Navbar = () => {
     const {setFilterName,setLogout,setCart,isLoggedIn,setShowLoginModal} = useGlobalContext();
     const [openMenu,setOpenMenu] = useState(false);
@@ -22,7 +22,7 @@ const Navbar = () => {
     return (
         <nav className="nav">
             <div className="nav__center center">
-                <a href="/" className="nav__logo">bakhsh</a>
+                <a href="/" className="nav__logo"><img src={Logo} alt=""/></a>
                 
                 <ul onClick={()=>setOpenMenu(false)} className={`${openMenu?'nav__links open':'nav__links'}`}>
                     <li>

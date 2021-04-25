@@ -13,12 +13,11 @@
     text-transform: capitalize;
     margin: 0;
 }
-.btn__wrapper{
-    text-align: center;
+.error .btn-wrapper{
     margin: 20px 0;
 }
 /*these button styles should be made global if the button style is same everywhere*/
-.error__btn{
+/* .error__btn{
     text-align: center;
     padding: 5px 10px;
     color: white;
@@ -31,7 +30,7 @@
 }
 .error__btn:active{
     background-color: rgb(211, 209, 209);
-}
+} */
 
 /*styles from above conmment to here should be made global accordingly*/
 

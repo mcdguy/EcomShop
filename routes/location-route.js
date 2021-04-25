@@ -3,7 +3,6 @@ const router = express.Router();
 const Location = require('../models/location');
 
 router.get('/',(req,res)=>{
-    console.log('hello')
     Location.find()
         .then(result=>{
             res.json({locations: result});

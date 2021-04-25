@@ -7,8 +7,8 @@ const Error = () => {
         <div className="error">
             <div className="error__wrapper center">
                 <h1>page not found</h1>
-                <div className="btn__wrapper">
-                    <Link className="error__btn btn" to="/">Back To Home</Link>
+                <div className="btn-wrapper">
+                    <Link className="btn" to="/">Back To Home</Link>
                 </div>
             </div>
         </div>

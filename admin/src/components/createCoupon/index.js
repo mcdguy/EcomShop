@@ -28,7 +28,7 @@ const CreateCoupon = () => {
             })
     }
     return (
-        <div className="action__create">
+        <div className="action__create page">
             <form>
                 <table className="create__location__table">
                     <tbody>

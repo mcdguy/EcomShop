@@ -87,6 +87,7 @@
     align-items: center;
     border: 4px solid black;
     border-radius: 4px;
+    justify-content: center;
 }
 .item__info__name{
     text-transform: uppercase;
@@ -232,6 +233,7 @@
         margin: 7px 3px;
     }
     .item__info{
+        /* display: block; */
         width: 100%;
         padding: 20px;
         box-sizing: border-box;

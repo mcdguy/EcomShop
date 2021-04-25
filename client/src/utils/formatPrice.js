@@ -3,6 +3,5 @@ export const formatPrice = (number) =>{
         style: 'currency',
         currency: 'INR'
     }).format(number/100).replace(/\.00$/,'');
-    console.log(typeof(newNumber));
     return newNumber;
 }

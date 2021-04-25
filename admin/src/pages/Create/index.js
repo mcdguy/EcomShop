@@ -26,6 +26,7 @@ const Create = () => {
             </div>
         )
     }
+    return null;
 }
 
 export default Create

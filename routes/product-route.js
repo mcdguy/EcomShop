@@ -57,12 +57,23 @@ router.get('/find/',(req,res,next)=>{
 //creating a new product
 router.post('/',upload.array('img',6),(req,res)=>{//setting max count to 6
     // console.log('creating new product');
-    const product = req.body;
+    const product = {
+        name : req.body.name,
+        price: req.body.price,
+        stock: req.body.stock,
+        productId: req.body.productId,
+        weight: req.body.weight,
+        description: req.body.description,
+        category: req.body.category,
+        featured: req.body.featured
+    };
     product.img = req.files.map(img => `images/${img.filename}`);
-    
+    console.log(product);
     Product.create(product)
-        .then(result=>res.json(result))
-        .catch(err =>{res.json({err: 'an error occured'})});//here i need validation
+        .then(result=>{
+            res.json({success: 'product created successfully'});
+        })
+        .catch(err =>{res.json({error: 'an error occured'})});//here i need validation
 })
 
 
@@ -70,28 +81,47 @@ router.post('/',upload.array('img',6),(req,res)=>{//setting max count to 6
 router.delete('/:id',(req,res)=>{
     const {id} = req.params;
     console.log(id);
-    // Product.findByIdAndDelete(id)
-    //     .then(result=>{
-    //         console.log(result.img);
-    //         result.img.forEach(image =>{
-    //             if(fs.existsSync(`./${image}`)){
-    //                 fs.unlink(`./${image}`,(err)=>console.log(err));
-    //             }
-    //         });
-    //         res.json({success: 'product deleted successfully'});
-    //     })
-    //     .catch(err => res.json({error: 'could not delete product'}));
+    Product.findByIdAndDelete(id)
+        .then(result=>{
+            console.log(result.img);
+            result.img.forEach(image =>{
+                if(fs.existsSync(`./${image}`)){
+                    fs.unlink(`./${image}`,(err)=>console.log(err));
+                }
+            });
+            res.json({success: 'product deleted successfully'});
+        })
+        .catch(err => res.json({error: 'could not delete product'}));
 })
 
 //updating a product
 router.patch('/:id',upload.array('img',6),(req,res)=>{
     const {id} = req.params;
-    let update = req.body;
+    const update = {
+        name : req.body.name,
+        price: req.body.price,
+        stock: req.body.stock,
+        productId: req.body.productId,
+        weight: req.body.weight,
+        description: req.body.description,
+        category: req.body.category,
+        featured: req.body.featured
+    };
     if(req.files.length){
         console.log('in here',req.files);
         update.img = req.files.map(img => `images/${img.filename}`);
     }
-    Product.findById(id)
+    console.log(id,update);
+
+    if(!req.files.length){//if no files are sent update the product
+        Product.findByIdAndUpdate(id,{$set: update},{new:true})
+        .then(result=>{
+            res.json({success: 'product edited successfully'});
+        })
+        .catch(err => res.json({err: 'could not update product'}));
+    }
+    else{//if files are sent delete old files and then upload new ones
+        Product.findById(id)
         .then(result=>{
             result.img.forEach(image =>{
                 if(fs.existsSync(`./${image}`)){
@@ -100,11 +130,13 @@ router.patch('/:id',upload.array('img',6),(req,res)=>{
             });
             return Product.findByIdAndUpdate(id,{$set: update},{new:true});
         })
-        .then(result => res.json(result))
+        .then(result=>{
+            res.json({success: 'product edited successfully'});
+        })
         .catch(err => res.json({err: 'could not update product'}));
+    }
+    
 })
 
-//suggested routes
-//updating quantity only
-//updating single image
+
 module.exports = router;

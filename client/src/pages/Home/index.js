@@ -3,8 +3,12 @@ import './home.css';
 import {Link} from 'react-router-dom';
 import { useGlobalContext } from '../../context';
 import Product from '../../components/product';
-// import {FaFacebookSquare,FaInstagramSquare,FaTwitterSquare} from "react-icons/fa";
+// import {FaFacebook,FaEnvelope,FaInstagram,FaTwitterSquare} from "react-icons/fa";
+// import {SiGmail} from "react-icons/si";
 import {stores} from '../../data.js';
+import Facebook from '../../assets/images/facebook.png';
+import Instagram from '../../assets/images/instagram.png';
+import Gmail from '../../assets/images/gmail.png';
 import {GrPrevious,GrNext} from "react-icons/gr";
 import Footer from '../../components/footer';
 const Home = () => {
@@ -87,8 +91,12 @@ const Home = () => {
                     
                     <div className="stores__text">
                         <div className="text__middle">
-                            <h1>our stores</h1>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum est alias, iure quam numquam qui sit in? Ducimus praesentium nemo esse saepe, sapiente doloribus maiores harum veniam laboriosam, quos dolore a at tempora doloremque vel. Aspernatur, hic magnam. Aliquid, eligendi.</p>
+                            <h1>about us</h1>
+                            <p>Sardar-Ji-Bakhsh, founded in 2015 as SardarBuksh Coffee & Coffee, is an Indian specialty coffee brand that aims to cater to every Indian coffee drinker’s taste.</p>
+                            {/* <p>Since renaming the brand and becoming recognised as a specialty café for great coffee, SJB has continued to expand their experience, from their signature coffee to bottled cold brews, and of course expanding to locations around the country.</p> */}
+                            <div className="about-btn-wrapper">
+                                <Link className="about-btn" to="/about">know more</Link>
+                            </div>
                         </div>
                     </div>
                     
@@ -119,42 +127,16 @@ const Home = () => {
 
             <section className="home__logo__display">
                 <div className="logo__img"></div>
+                <div className="home__logo__socials">
+                    <h1>
+                        Follow us
+                    </h1>
+                    <a href="_blank" href="https://www.facebook.com/sardarjibakhshcoffee/" target="_blank"> <img src={Facebook} alt=""/></a>
+                    <a href="" target="_blank"> <img src={Gmail} alt=""/></a>
+                    <a href="https://www.instagram.com/sardarjibakhshcoffee/?hl=en" target="_blank">  <img src={Instagram} alt=""/></a>
+                </div>
             </section>
             <Footer/>
-            {/* <footer className="home__footer">
-                <div className="footer__center center">
-                    
-                    <div className="footer__legal footer-col">
-                        <span className="legal__head head">legal</span>
-                        <div className="legal__links">
-                            <Link to="/termsandconditions">terms and conditions</Link>
-                            <div>
-                                <Link to="/privacypolicy">privacy policy</Link>
-                                <Link to="/cookiepolicy">cookie policy</Link>
-                            </div>
-                                <span>all right reserved &#169;</span>
-                        </div>
-                    </div>
-                    
-                    <div className="footer__contact footer-col">
-                        <span className="contact__head head">contact</span>
-                        <div className="contact__info">
-                                    <span className="contact__detail__info"> H 8, Opposite NDPL Office, Vijay Nagar, New Delhi</span>
-                                    <span className="contact__detail__info">Ph: +911 11111111</span>
-                                    <span className="contact__detail__info contact__email">sardarjibaksh@gmail.com</span>
-                        </div>
-                    </div>
-
-                    <div className="footer__social footer-col">
-                        <span className="social__head head">follow us on</span>
-                        <div className="social__info">
-                            <a target="_blank" href="https://www.instagram.com/sardarjibakhshcoffee/?hl=en"><FaInstagramSquare/> <span>instagram</span> </a>
-                            <a target="_blank" href="https://www.facebook.com/sardarjibakhshcoffee/"><FaFacebookSquare/> <span>facebook</span> </a>
-                        </div>
-                    </div>
-
-                </div>
-            </footer> */}
         </div>
     )
 }

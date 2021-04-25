@@ -15,7 +15,7 @@ code {
 .page{
   margin-left: 250px;
   padding: 30px;
-  min-height: 100vh;
+  min-height: calc(100vh - 60px);
 }
 .btn-wrapper{
   text-align: center;
@@ -126,6 +126,13 @@ code {
 .action__create{
   max-width: 600px;
   margin: auto;
+  border-radius: 5px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100%;
 }
 .action__create .btn-wrapper{
   padding: 30px 0;
@@ -134,6 +141,8 @@ code {
   table-layout: fixed;
   width: 100%;
   white-space: nowrap;
+  background-color: rgb(253, 253, 253);
+  padding: 20px;
 }
 .create__location__table td{
   padding: 10px 8px;
@@ -150,4 +159,5 @@ code {
 .create__location__table input{
   width: 100%;
   padding: 7px 10px;
+  box-sizing: border-box;
 }
