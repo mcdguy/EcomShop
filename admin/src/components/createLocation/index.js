@@ -42,7 +42,7 @@ const CreateLocation = () => {
                 }
             })
             .catch(err => console.log({error: 'could not save location'}));
-        console.log(newLocation);
+        // console.log(newLocation);
     }
     return (
         <div className="action__create page">

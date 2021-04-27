@@ -6,7 +6,7 @@ import Location from '../../components/location';
 import Order from '../../components/order';
 import User from '../../components/user';
 import Coupon from '../../components/coupon';
-
+import Video from '../../components/video';
 const Home = () => {
     const {currentTab} = useGlobalContext();
     
@@ -45,6 +45,14 @@ const Home = () => {
             </div>
         )
     }
+    if(currentTab === 'gallery'){
+        return(
+            <div className="home page">
+                <Video/>
+            </div>
+        )
+    }
+    return null;
 }
 
 export default Home

@@ -93,6 +93,9 @@
 .nav__hamburger.open .nav__ham__bar{
     background-color: transparent;
 }
+.gallery__link{
+    display: none;
+}
 /* @media screen and (max-width: 900px){
     .nav__hamburger{
         display: block;
@@ -128,6 +131,12 @@
 } */
 
 @media screen and (max-width: 1000px){/*if i change this then in singleproduct.css i need to change the media query value for item added and i think this is only valid if i go below 520px*/
+    .nav__logo img{
+        padding: 8px 0;
+    }
+    .gallery__link{
+        display: block;
+    }
     .nav__hamburger{
         display: block;
     }

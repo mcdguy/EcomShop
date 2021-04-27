@@ -1,0 +1,6 @@
+.text__body{
+    height: 200px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 7px 10px;
+}

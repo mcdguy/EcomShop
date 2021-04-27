@@ -31,8 +31,11 @@ const Navbar = () => {
                     <li>
                         <Link to="/findastore">find a store</Link>
                     </li>
+                    <li className="gallery__link">
+                        <Link to="/gallery">gallery</Link>
+                    </li>
                     <li>
-                        <Link to="/about">about us</Link>
+                        <Link to="/about">about</Link>
                     </li>
                     {/* <li>
                         <Link to="/howtobrew">brew guide</Link>

@@ -41,6 +41,17 @@ const DeleteModal = ({id,closeModal,source}) => {
             })
             .catch(err => console.log(err));
         }
+        if(source === 'gallery'){
+            axios.delete(`gallery/${id}`)
+                .then(res =>{
+                    if(res.data.success){
+                        closeModal();
+                    }
+                    if(res.data.error){
+                        console.log(res.data.error);
+                    }
+                })
+        }
     }
     return (
         <div className="delete__modal__wrapper">

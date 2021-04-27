@@ -86,7 +86,7 @@
     font-weight: 400; 
 }
 
-@media screen and (max-width: 420px){
+@media screen and (max-width: 420px){/*depends on when product goes into 1 in a line*/
     .shop__filter{
         width: 64%;
     }

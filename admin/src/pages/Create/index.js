@@ -3,6 +3,7 @@ import { useGlobalContext } from '../../context'
 import CreateLocation from '../../components/createLocation';
 import CreateProduct from '../../components/createProduct';
 import CreateCoupon from '../../components/createCoupon';
+import CreateVideo from '../../components/createVideo';
 const Create = () => {
     const {currentTab} = useGlobalContext();
     if(currentTab === 'product'){
@@ -23,6 +24,13 @@ const Create = () => {
         return(
             <div className="create page">
                 <CreateCoupon/>
+            </div>
+        )
+    }
+    if(currentTab === 'gallery'){
+        return(
+            <div className="create page">
+                <CreateVideo/>
             </div>
         )
     }

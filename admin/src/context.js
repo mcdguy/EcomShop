@@ -10,6 +10,15 @@ export const AppProvider = ({children}) => {
     const [order,setOrder]=useState([]);
     const [product,setProduct]=useState([]);
     const [coupon,setCoupon]=useState([]);
+    const [videos,setVideos] = useState([]);
+
+    useEffect(()=>{
+        axios('/gallery')
+            .then(res =>{
+                setVideos(res.data.videos);
+            })
+            .catch(err => console.log(err));
+    },[]);
 
     useEffect(()=>{
         axios('/coupon')
@@ -18,6 +27,7 @@ export const AppProvider = ({children}) => {
             })
             .catch(err => console.log(err));
     })
+    
     useEffect(()=>{
         axios('/product')
         .then(res=>{
@@ -64,7 +74,8 @@ export const AppProvider = ({children}) => {
                 product,
                 location,
                 order,
-                coupon
+                coupon,
+                videos
             }}>
             {children}
         </AppContext.Provider>

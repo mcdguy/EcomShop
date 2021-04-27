@@ -46,6 +46,9 @@ const reducer = (oldState,action) =>{
     if(action.type === 'LOGOUT'){
         return({...oldState,isLoggedIn: false});
     }
+    if(action.type === 'SET_VIDEO'){
+        return({...oldState,videos: action.payload})
+    }
     throw new Error('invalid dispatch');
 }
 
@@ -59,6 +62,7 @@ const defaultState = {
     isLoggedIn: false,
     featuredProducts: [],
     showLoginModal: false,
+    videos: []
 }
 export const AppProvider = ({children}) =>{
     const [state,dispatch] = useReducer(reducer,defaultState);
@@ -85,6 +89,9 @@ export const AppProvider = ({children}) =>{
     const setCart = (newCart) =>{
         // console.log('hello');
         dispatch({type: 'SET_CART',payload: newCart})
+    }
+    const setVideos = (videos) =>{
+        dispatch({type: 'SET_VIDEO',payload:videos});
     }
     const addCartItem = (productId,pqty) =>{
         let alreadyExists = false;
@@ -147,59 +154,10 @@ export const AppProvider = ({children}) =>{
     //but cart might also change if user refresh the db but there is no real change in cart 
     // at that time we will fetch cart from db because other device might have made a change to the db and refreshing this page will revert that change so sessions will never sync
     //because every session will try to replace db cart with localstorage
-    // useEffect(()=>{
-    //     let localCart = getLocalStorage();
-    //     // console.log(JSON.stringify(localCart),JSON.stringify(state.cart));
-    //     //using stringify because i need to compare objects and there order wont change on refresh
-    //     console.log(localCart.length === state.cart.length === 0)
-    //     if(!(localCart.length === state.cart.length === 0)){
-    //        console.log('looks like it is happening');
-    //        axios.get('/user/cart')
-    //             .then(res => {
-    //                 if(res.data.cart){
-    //                     setCart(res.data.cart);
-    //                 }
-    //             })
-    //             .catch(err => console.log(err));
-    //     }else if(JSON.stringify(localCart) === JSON.stringify(state.cart) && localCart.length !== 0){
-    //         console.log('looks like page is refreshed');
-    //         axios.get('/user/cart')
-    //             .then(res => {
-    //                 if(res.data.cart){
-    //                     setCart(res.data.cart);
-    //                     localStorage.setItem('cart',[]);
-    //                 }
-    //             })
-    //             .catch(err => console.log(err));
-    //     }else{
-    //         localStorage.setItem('cart',JSON.stringify(state.cart));
-    //         let totalItems = 0;
-    //         state.cart.forEach(item =>{
-    //             totalItems +=item.pqty;
-    //         })
-    //         dispatch({type: 'SET_CART_TOTAL_ITEMS',payload: totalItems})
-    //         if(state.isLoggedIn){
-    //             axios.post('/user/cart',{cart:state.cart})
-    //                 .then(res =>{
-    //                     //basically i don't need to do anything here or i can see if user is logged out i can set loggedout here
-    //                     console.log('updated cart');
-    //                 })
-    //                 .catch(err => console.log(err));
-    //         }
-    //     }
-    // },[state.cart])
-
 
     useEffect(()=>{
             localStorage.setItem('cart',JSON.stringify(state.cart));
             console.log(state.cart);
-            // if (window.performance) {
-            //     if (performance.navigation.type == 1) {
-            //       alert( "This page is reloaded" );
-            //     } else {
-            //       alert( "This page is not reloaded");
-            //     }
-            // }
             if(state.isLoggedIn){
                 axios.post('/user/cart',{cart:state.cart})
                     .then(res =>{
@@ -213,86 +171,15 @@ export const AppProvider = ({children}) =>{
         
     },[state.cart])
    
-    // useEffect(()=>{
-    //         let status = localStorage.getItem('status');
-    //     console.log(status);
-    //         if (status && window.performance) {
-    //             if (performance.navigation.type == 1) {
-    //             //   alert( "This page is reloaded" );
-    //               axios.get('/user/cart')
-    //                 .then(res => {
-    //                     if(res.data.cart){
-    //                         setCart(res.data.cart);
-    //                         // localStorage.setItem('cart',[]);
-    //                     }
-    //                 })
-    //                 .catch(err => console.log(err));
-                  
-    //             } else {
-    //               alert( "This page is not reloaded");
-    //               localStorage.setItem('cart',JSON.stringify(state.cart));
-    //               let totalItems = 0;
-    //               state.cart.forEach(item =>{
-    //                   totalItems +=item.pqty;
-    //               })
-    //               dispatch({type: 'SET_CART_TOTAL_ITEMS',payload: totalItems})
-    //               if(state.isLoggedIn){
-    //                   axios.post('/user/cart',{cart:state.cart})
-    //                       .then(res =>{
-    //                           //basically i don't need to do anything here or i can see if user is logged out i can set loggedout here
-    //                           console.log('updated cart');
-    //                       })
-    //                       .catch(err => console.log(err));
-    //               }
-    //             }
-    //         }else{
-    //             localStorage.setItem('cart',JSON.stringify(state.cart));
-    //             let totalItems = 0;
-    //             state.cart.forEach(item =>{
-    //                 totalItems +=item.pqty;
-    //             })
-    //             dispatch({type: 'SET_CART_TOTAL_ITEMS',payload: totalItems})
-    //             if(state.isLoggedIn){
-    //                 axios.post('/user/cart',{cart:state.cart})
-    //                     .then(res =>{
-    //                         //basically i don't need to do anything here or i can see if user is logged out i can set loggedout here
-    //                         console.log('updated cart');
-    //                     })
-    //                     .catch(err => console.log(err));
-    //             }
-    //         }
-           
-        
-    // },[state.cart])
+    //setting up videos
+    useEffect(()=>{
+        axios('/gallery')
+            .then(res =>{
+                setVideos(res.data.videos);
+            })
+            .catch(err => console.log(err));
+    },[]);
 
-    // const getfullCart = () =>{
-    //     alert('page is refreshed');
-    //     console.log('hey');
-    // }
-    // useEffect(()=>{
-    //     window.addEventListener('beforeunload',getfullCart);
-    //     return () =>{
-    //         window.removeEventListener('beforeunload',getfullCart);
-    //     }
-    // },[]);
-
-    // useEffect(()=>{
-    //     // alert('this effect is running');
-    //     let status = localStorage.getItem('status');
-    //     console.log(status);
-    //     if(status){
-    //         axios.get('/user/cart')
-    //             .then(res => {
-    //                 if(res.data.cart){
-    //                     // console.log(res.data.cart);
-    //                     setCart(res.data.cart);
-    //                     // localStorage.setItem('cart',[]);
-    //                 }
-    //             })
-    //             .catch(err => console.log(err));
-    //     }
-
-    // },[])
 
     useEffect(()=>{
         // alert('running');

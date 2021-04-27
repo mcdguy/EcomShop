@@ -14,6 +14,7 @@ import Account from './pages/Account';
 import Checkout from './pages/Checkout';
 import Location from './pages/Location';
 import About from './pages/About';
+import Gallery from './pages/Gallery';
 const App = () => {
   return (
     <Router>
@@ -37,6 +38,10 @@ const App = () => {
             <Contact/>
           </Route>
 
+          <Route path="/gallery" exact>
+            <Gallery/>
+          </Route>
+          
           <Route path="/howtobrew" exact>
             <Brew/>
           </Route>
