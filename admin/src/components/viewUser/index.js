@@ -5,7 +5,7 @@ import './viewUser.css';
 const ViewUser = ({id}) => {
     const [user,setUser] = useState(null);
     useEffect(()=>{
-        axios.get(`/user/${id}`)
+        axios.get(`/user/find/${id}`)
             .then(res=>{
                 if(res.data.user){
                     setUser(res.data.user);

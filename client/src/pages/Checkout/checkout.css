@@ -31,7 +31,7 @@
     position: relative;
     width: calc(100% - 16px);/*paddin plus border*/
     height: 100%;
-    border: none;
+    /* border: none; */
     border: 3px solid rgb(199, 199, 199);
     border-radius: 4px;
     padding: 0 5px;
@@ -73,6 +73,9 @@
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     display: block;
+}
+.coupon__error{
+   top: calc(100% + 5px); 
 }
 .anim--inp:focus + .anim--inp--label,
 .anim--inp:valid + .anim--inp--label{
@@ -129,17 +132,93 @@
 }
 .billing,
 .shipping,
-.user__form{
+.user__form,
+.promo__code{
     width: 80%;
     /* border: 1px solid rgb(235, 235, 235); */
     margin: auto;
     border-radius: 4px;
     padding: 20px 0;
 }
-.btn__wrapper{
-    text-align: center;
+.promo__wrapper{
+    display: flex;
+    /* width: 100%; */
+    /* align-items: center; */
+}
+.promo__input__wrapper{
+    width: 100%;
+    margin-right: 10px;
+    position: relative;
 }
 
+.promo__code input{
+    border: 3px solid rgb(199, 199, 199);
+    padding: 8px 45px 8px 5px;
+    outline: none;
+    font-size: 16px;
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 4px;
+    letter-spacing: 1px;
+}
+
+/*valid promo animation*/
+.promo__input__wrapper svg{
+    position: absolute;
+    top: 50%;
+    width: 24px;
+    right: 10px;/*24px plus 10px is 34 which is less than 45px padding*/
+    transform: translateY(-50%);
+}
+.circ{
+    stroke: rgb(0, 199, 0);
+    opacity: 0;
+    stroke-dasharray: 130;
+    stroke-dashoffset: 130;
+    -webkit-transition: all 1s;
+    -moz-transition: all 1s;
+    -ms-transition: all 1s;
+    -o-transition: all 1s;
+    transition: all 1s;
+}
+.tick{
+    stroke: rgb(0, 199, 0);
+    stroke-dasharray: 50;
+    stroke-dashoffset: 50;
+    -webkit-transition: stroke-dashoffset 1s 0.5s ease-out;
+    -moz-transition: stroke-dashoffset 1s 0.5s ease-out;
+    -ms-transition: stroke-dashoffset 1s 0.5s ease-out;
+    -o-transition: stroke-dashoffset 1s 0.5s ease-out;
+    transition: stroke-dashoffset 1s 0.5s ease-out;
+}
+.valid path{
+    opacity: 1;
+    stroke-dashoffset: 0;
+}
+.promo__code button{
+    box-sizing: border-box;
+    padding: 8px 25px;
+    outline: none;
+    letter-spacing: 1px;
+    background-color: rgb(60, 197, 252);
+    border: none;
+    font-size: 16px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    color: white;
+    cursor: pointer;
+}
+.promo__code button:hover{
+    background-color: rgb(94, 204, 248);
+}
+.promo__code::placeholder{
+    font-size: 17px;
+    letter-spacing: 1px;
+}
+.btn__wrapper{
+    box-sizing: border-box;
+    text-align: center;
+}
 
 .checkout__sidebar .cart__products{
     width: 100%;
@@ -207,6 +286,11 @@
         width: 100%;
     }
 }
+@media screen and (max-width: 600px){
+    .promo__code button{
+        padding: 8px 10px;
+    }
+}
 @media screen and (max-width:420px){
 
     .checkout__form{
@@ -216,7 +300,8 @@
 
     .billing,
     .shipping,
-    .user__form{
+    .user__form,
+    .promo__code{
         width: 100%;
     }
     .checkout__sidebar .cart__products{

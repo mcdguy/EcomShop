@@ -16,14 +16,23 @@ const createToken = (id) =>{
 }
 
 router.get('/',(req,res)=>{
-    User.find()
+    let {page,limit} = req.query;
+    if(!page){
+        page = 1;
+    }
+    if(!limit){
+        limit = 1;
+    }
+    limit = parseInt(limit);
+    skip = (page - 1) * limit;
+    User.find().skip(skip).limit(limit)
         .then(result =>{
-            res.json({users: result});
+            res.json({users: result, page,limit});
         })
         .catch(err => res.json({error: 'could not get users'}))
 })
 
-router.get('/:id',(req,res)=>{
+router.get('/find/:id',(req,res)=>{
     const {id} = req.params;
     User.findById(id)
         .then(result=>{
@@ -86,6 +95,10 @@ router.post('/login',(req,res)=>{
 })
 
 //checking if user is logged in
+// router.get('/status',(req,res)=>{
+//     console.log('inside status');
+// })
+
 router.get('/status',requireAuth,(req,res)=>{
     res.json({success: 'user logged in'});
 })
@@ -106,13 +119,13 @@ router.post('/mergecart',requireAuth,(req,res)=>{
     User.findById(id)
         .then(user =>{
             const backendCart = user.cart;
-            console.log('frontend',frontendCart);
-            console.log('backend',backendCart);
+            // console.log('frontend',frontendCart);
+            // console.log('backend',backendCart);
             const newCart = [...frontendCart,...backendCart];
             //this is cart productId without duplicates
             const uniqueCartItems = [...new Set(newCart.map(i=>i.productId))];
             // console.log(newCart);
-            console.log(uniqueCartItems);
+            // console.log(uniqueCartItems);
             let updatedCart = [];
             
             for(let i=0;i<uniqueCartItems.length;i++){
@@ -130,7 +143,7 @@ router.post('/mergecart',requireAuth,(req,res)=>{
             // return User.findByIdAndUpdate(id,{cart: updatedCart},{new:true})        
             User.findByIdAndUpdate(id,{cart: updatedCart},{new:true})
                 .then(result=>{
-                    console.log('cart',result.cart);
+                    // console.log('cart',result.cart);
                     res.json({cart:result.cart});
                 })
         })

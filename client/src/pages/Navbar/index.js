@@ -57,10 +57,6 @@ const Navbar = () => {
                             <a onClick={setShowLoginModal}>Login</a>
                         </li>
                     }
-                   
-                    {/* <li>
-                        <Link to="/signin">log in</Link>
-                    </li> */}
                 </ul>
             <div onClick={()=>setOpenMenu(!openMenu)} className={`${openMenu?'nav__hamburger open': 'nav__hamburger'}`}>
                 <span className="nav__ham__bar"></span>

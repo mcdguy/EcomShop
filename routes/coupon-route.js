@@ -15,17 +15,13 @@ router.get('/',(req,res)=>{
         })
 })
 
-router.get('/check',(req,res)=>{
+router.post('/check',(req,res)=>{
     const {code} = req.body;
-    Coupon.find()
-        .then(coupons=>{
-            if(!coupons) return res.json({error: 'invalid coupon'});
-            coupons.forEach(c=>{
-                if(c.code === code){
-                    return res.json({success: 'coupon matched',discount: c.discount});
-                }
-            })
-            res.json({erorr: 'invalid coupon'});
+    Coupon.findOne({code})
+        .then(coupon=>{
+            console.log(coupon);
+            if(!coupon) return res.json({nomatch:'invalid coupon'});
+            res.json({success: 'coupon matched',discount: coupon.discount});
         })
         .catch(err =>{
             res.json({error: ' an error occured'});

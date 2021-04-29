@@ -38,14 +38,15 @@ if(process.env.NODE_ENV === 'production'){
 
 
 app.use('/user',require('./routes/auth-route'));
+
 app.use('/product',require('./routes/product-route'));
 app.use('/blog',require('./routes/blog-route'));
-// app.use('/info',require('./routes/address-route'));
 app.use(require('./routes/payment-route'));
 app.use('/coupon',require('./routes/coupon-route'));
 app.use('/location',require('./routes/location-route'));
 app.use('/order',require('./routes/order-route'))
 app.use('/gallery',require('./routes/gallery-route'));
+
 //for 404 error on refresh we will serve index.html
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname+'/client/build/index.html'));

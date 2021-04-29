@@ -3,11 +3,27 @@ const router = express.Router();
 const Order = require('../models/order');
 
 router.get('/',(req,res)=>{
-    Order.find()
+    let {page,limit} = req.query;
+    if(!page){
+        page = 1;
+    }
+    if(!limit){
+        limit = 1;
+    }
+    limit = parseInt(limit);
+    skip = (page - 1) * limit;
+    Order.find().skip(skip).limit(limit)
         .then(result=>{
-            res.json({orders: result})
+                res.json({orders: result, page,limit})
+            
+            // Order.estimatedDocumentCount()
+            //     .then((count)=>{
+            //         res.json({orders: result,totalDocs:count, page,limit})
+            //     })
         })
-        .catch(err => res.json({error: 'could not fetch orders'}));
+        .catch(err => {
+            console.log(err)
+            res.json({error: 'could not fetch orders'})});
 })
 
 router.get('/:id',(req,res)=>{

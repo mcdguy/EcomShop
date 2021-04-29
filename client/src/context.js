@@ -210,8 +210,10 @@ export const AppProvider = ({children}) =>{
     },[]);
 
     useEffect(()=>{
-        let featured = state.products.filter(product=>product.featured === true);
-        dispatch({type:'SET_FEATURED',payload: featured})
+        if(state.products){
+            let featured = state.products.filter(product=>product.featured === true);
+            dispatch({type:'SET_FEATURED',payload: featured})
+        }
     },[state.products]);
 
     return <AppContext.Provider value={{

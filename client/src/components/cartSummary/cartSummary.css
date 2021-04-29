@@ -16,10 +16,13 @@
     padding-bottom: 14px;
     border-bottom: 1px solid rgb(211, 208, 208);
 }
-.cart__summary__info{
-    border-bottom: 1px solid rgb(211, 208, 208);
-
+.cart__summary__total{
+    border-top: 1px solid rgb(211, 208, 208);
+    margin-top: 15px;
 }
+/* .cart__summary__info{
+    border-bottom: 1px solid rgb(211, 208, 208);
+} */
 .cart__summary__details{
     display: flex;
     justify-content: space-between;

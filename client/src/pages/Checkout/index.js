@@ -12,6 +12,7 @@ import Alert from '../../components/alert';
 
 const Checkout = () => {
     const { showShipping,showShippingAddress,hideShippingAddress,makePayment,user,handleUserDetails,userError,orderAlert,hideOrderAlert,showAlert,setShowAlert} = useCheckoutContext();
+    const {couponCode,setCouponError,couponError,setCouponCode,verifyCoupon,discount} = useCartContext();
     const {isLoggedIn} = useGlobalContext();
 
     const handleCheckbox = (e) =>{
@@ -69,6 +70,35 @@ const Checkout = () => {
                             <h1 className="form__type type-billing">shipping address</h1>
                             <ShippingAddress/>
                         </div>}
+                        <div className="promo__code">
+                            <div className="promo__wrapper">
+                                <div className="promo__input__wrapper">
+                                    <input value={couponCode} onChange={(e)=>{setCouponCode(e.target.value);setCouponError('')}} placeholder="got a promo code?" type="text"></input>
+                                    <svg xmlns="http://www.w3.org/2000/svg" className={discount?'valid': 'nothing'} viewBox="0 0 37 37">
+                                        <path
+                                            className="circ path"
+                                            d="M30.5 6.5h0c6.6 6.6 6.6 17.4 0 24h0c-6.6 6.6-17.4 6.6-24 0h0c-6.6-6.6-6.6-17.4 0-24h0c6.6-6.7 17.4-6.7 24 0z"
+                                            fill="none"
+                                            stroke="#000"
+                                            strokeWidth={3}
+                                            strokeLinejoin="round"
+                                            strokeMiterlimit={10}
+                                        />
+                                        <path
+                                            className="tick path"
+                                            fill="none"
+                                            stroke="#000"
+                                            strokeWidth={3}
+                                            strokeLinejoin="round"
+                                            strokeMiterlimit={10}
+                                            d="M11.6 20l4.3 4.2 10.5-10.4"
+                                        />
+                                    </svg>
+                                    {couponError===''?null:<span className="anim--inp--error coupon__error">{couponError}</span>}
+                                </div>
+                                <button onClick={verifyCoupon} >apply</button>
+                            </div>
+                        </div>
                         <div className="btn__wrapper"><button className="checkout__btn" onClick={makePayment}>make payment</button></div>
                 </div>
                 <div className="checkout__sidebar">

@@ -5,7 +5,7 @@ import { useGlobalContext } from '../../context';
 
 //add date field
 const Order = () => {
-    const {order} = useGlobalContext();
+    const {order, showNextOrderPage,orderHasMore} = useGlobalContext();
 
     return (
         <div className="read-orders action__read">
@@ -13,6 +13,7 @@ const Order = () => {
                 {/* <Link to="/create" className="btn">create</Link> */}
             </nav>
             {order.length?
+            <>
                 <table className="read__table">
                     <thead>
                         <tr>
@@ -59,6 +60,14 @@ const Order = () => {
                         })}
                     </tbody>
                 </table>
+                {orderHasMore?
+                <div className="btn-wrapper">
+                    <button onClick={showNextOrderPage} className="btn paginate-btn">show more</button>
+                </div>
+                :
+                <div className="btn-wrapper">End of result</div>
+                }
+            </>
             :null}
         </div>
     )

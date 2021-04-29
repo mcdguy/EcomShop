@@ -161,3 +161,10 @@ code {
   padding: 7px 10px;
   box-sizing: border-box;
 }
+.paginate-btn{
+  background-color: whitesmoke;
+  color: gray;
+}
+.paginate-btn:hover{
+  background-color: rgb(233, 235, 233);
+}

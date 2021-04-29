@@ -92,6 +92,10 @@ const orderSchema = new Schema({
     validity:{
         type:Date,
         // default: (new Date().getTime())
+    },
+    discount:{
+        type:Number,
+        default: 0
     }
 },{timestamps: true});
 

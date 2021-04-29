@@ -7,13 +7,31 @@ import VideoRow from '../videoRow';
 
 const Video = () => {
     const {videos} = useGlobalContext();
+    const [filter,setFilter] = useState('title');
+    const [query,setQuery] = useState('');
+    const [filteredVideos,setFilteredVideos] = useState([]);
+    
+    useEffect(()=>{
+        if(query===''){
+            setFilteredVideos(videos);
+        }
+        let newVideos = videos.filter(v =>{
+            return(v[filter].toString().toLowerCase().indexOf(query.toLowerCase())>=0)
+        })
+        setFilteredVideos(newVideos);
+    },[query,videos])
+
     if(!videos) return null;
     return (
         <div className="read__locations action__read">
             <nav className="video__nav control__nav">
                 <Link to="/create" className="btn">create</Link>
+                <input autoComplete="off" type="text" value={query} onChange={(e)=>setQuery(e.target.value)} name="search" placeholder="search"/>
+                <select value={filter} onChange={(e)=>{setFilter(e.target.value)}}>
+                    <option value="title">title</option>
+                </select>
             </nav>
-            {videos.length?
+            {filteredVideos.length?
                 <table className="read__table">
                     <thead>
                         <tr>
@@ -28,7 +46,7 @@ const Video = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {videos.map(v=>{
+                        {filteredVideos.map(v=>{
                             return(
                                 <VideoRow {...v} key={v._id}/>
                             )

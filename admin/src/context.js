@@ -11,7 +11,22 @@ export const AppProvider = ({children}) => {
     const [product,setProduct]=useState([]);
     const [coupon,setCoupon]=useState([]);
     const [videos,setVideos] = useState([]);
+    const [userPage,setUserPage] = useState(1);
+    const [userHasMore,setUserHasMore] = useState(true);
+    const [orderPage,setOrderPage] = useState(1);
+    const [orderHasMore,setOrderHasMore] = useState(true);
 
+    const showNextUserPage = () =>{
+        if(userHasMore){
+            setUserPage((p)=>{return p+1});
+        }
+    }
+
+    const showNextOrderPage = () =>{
+        if(orderHasMore){
+            setOrderPage((p)=>{return p+1});
+        }
+    }
     useEffect(()=>{
         axios('/gallery')
             .then(res =>{
@@ -39,15 +54,6 @@ export const AppProvider = ({children}) => {
     },[]);
 
     useEffect(()=>{
-        axios.get('/order')
-            .then(res=>{
-                if(res.data.orders){
-                    setOrder(res.data.orders);
-                }
-            })
-    },[])
-
-    useEffect(()=>{
       axios.get('/location')
         .then(res => {
             if(res.data.locations){
@@ -58,14 +64,28 @@ export const AppProvider = ({children}) => {
     },[]);
 
     useEffect(()=>{
-        axios.get('/user')
+        axios.get(`/user?page=${userPage}&limit=2`)
             .then(res=>{
                 if(res.data.users){
-                    setUser(res.data.users);
+                    setUser((oldUser)=>{return[...oldUser,...res.data.users]});
                 }
+                setUserHasMore(res.data.users.length > 0);
             })
             .catch(err => console.log(err));
-    },[])
+    },[userPage])
+
+    useEffect(()=>{
+        axios.get(`/order?page=${orderPage}&limit=1`)
+            .then(res=>{
+                if(res.data.orders){
+                    setOrder(oldOrders =>{
+                        return([...oldOrders,...res.data.orders]);
+                    });
+                }
+                setOrderHasMore(res.data.orders.length > 0);
+            })
+    },[orderPage])
+
     return (
         <AppContext.Provider value={{
                 currentTab,
@@ -75,7 +95,11 @@ export const AppProvider = ({children}) => {
                 location,
                 order,
                 coupon,
-                videos
+                videos,
+                showNextUserPage,
+                userHasMore,
+                showNextOrderPage,
+                orderHasMore
             }}>
             {children}
         </AppContext.Provider>

@@ -5,6 +5,7 @@ const Product = require('../models/product');
 const uuid = require('uuid');
 const {handleOrderError} = require('../utils/handleOrderError');
 const Order = require('../models/order');
+const Coupon = require('../models/coupon');
 const crypto = require('crypto');
 const instance = new razorpay({
     key_id:process.env.KEY_ID,
@@ -13,7 +14,6 @@ const instance = new razorpay({
 
 
 const deleteOrder = (order_id) =>{//this function returns a promise
-    let stockUpdate = [];
     return new Promise((resolve,reject)=>{
         Order.findOne({orderId:order_id})
             .then(result => {
@@ -77,13 +77,11 @@ setInterval(()=>{
                     .then(res =>{
                         console.log('removed pending orders');
                         // do nothing
-                        // console.log('item removed');
                     })
                     .catch(err =>{
                         console.log('failed to remove item');
                     })
             })
-            // console.log('removed old items') 
         })
         .catch(err => {console.log('failed')});
 },120000);//runs after 2 mins
@@ -91,13 +89,14 @@ setInterval(()=>{
 
 
 router.post('/makepayment',(req,res)=>{
-    const {cartProducts,billingAddress,shippingAddress,user,showShipping} = req.body;
+    const {code,cartProducts,billingAddress,shippingAddress,user,showShipping} = req.body;
     //this can be manipulated like someone can send an id of cheap item and name and product id of expensive item and since price is calculated using id he can successfully cheat us
     let orderItems = [];
     let mismatch = false; //this variable will trigger cart refresh if product is out of stock or deleted
     let amount = 0;
     let receipt = uuid.v4();
-
+    let discount = 0;//this is in percent
+    let discountAmount = 0;//this is in paise
     const newOrder ={
         buyer:{
             name:user.name,
@@ -131,83 +130,94 @@ router.post('/makepayment',(req,res)=>{
     
     productIds = cartProducts.map(item=>{return item._id});
     //now i want to find all cart documents at once
-    Product.find({'_id' : {$in: productIds} })
-        .then(result=>{
-            result.forEach(item=>{
-                //nested loops because i want the purchase qty after finding items and the order in which items come back is not same
-                cartProducts.forEach(cartItem=>{
-                    if(item._id == cartItem._id){//this also means i  have found the product in db
-                        amount += item.price*cartItem.pqty;
-                        const singleOrderItem = {
-                            itemId:item._id,
-                            productId: item.productId,
-                            name: item.name,
-                            price: item.price,//this price is the purchase price
-                            pqty: cartItem.pqty
-                        }
-                        orderItems.push(singleOrderItem);
-                    }
-                })
-            })
-
-            
-            //creating array of promise
-            let stockUpdatePromise = [];
-            cartProducts.forEach(item =>{
-                let newPromise = new Promise((resolve,reject)=>{
-                    Product.findByIdAndUpdate(item._id,{$inc:{'stock': (-item.pqty)}},{new:true})
-                        .then((updatedProduct)=>{
-                            resolve(updatedProduct);
-                        })
-                        .catch((err)=>{
-                            reject(err);
-                        })
-                })
-                stockUpdatePromise.push(newPromise);
-            })
-
-            //updating backend
-            instance.orders.create({amount,currency: 'INR',receipt,payment_capture:1},(error,order)=>{
-                if(error) return res.status(500).json(error);
-                newOrder.orderItems = orderItems;
-                newOrder.amount = order.amount;
-                newOrder.receipt = order.receipt;
-                newOrder.orderId = order.id;
-                newOrder.validity = new Date();
-                Promise.all(stockUpdatePromise)//updating stock after order creation
-                    .then(updatedStock=>{
-                        updatedStock.forEach(item=>{
-                            console.log(item.stock);
-                            if(item.stock < 0){
-                                mismatch = true;
+    Coupon.findOne({code})
+        .then(coupon=>{
+            if(!coupon){
+                discount=0;
+            }
+            if(coupon){
+                discount = coupon.discount;
+                console.log("discount", coupon.discount)
+            }
+            Product.find({'_id' : {$in: productIds} })
+                .then(result=>{
+                    result.forEach(item=>{
+                        //nested loops because i want the purchase qty after finding items and the order in which items come back is not same
+                        cartProducts.forEach(cartItem=>{
+                            if(item._id == cartItem._id){//this also means i  have found the product in db
+                                amount += item.price*cartItem.pqty;
+                                const singleOrderItem = {
+                                    itemId:item._id,
+                                    productId: item.productId,
+                                    name: item.name,
+                                    price: item.price,//this price is the purchase price
+                                    pqty: cartItem.pqty
+                                }
+                                orderItems.push(singleOrderItem);
                             }
                         })
-                        if(mismatch){
-                                let rollbackPromise = [];
-                                cartProducts.forEach(item =>{
-                                    let rollPromise = new Promise((resolve,reject)=>{
-                                        Product.findByIdAndUpdate(item._id,{$inc:{'stock': item.pqty}},{new:true})//quoting stock helps don't know why
-                                            .then((result)=>{
-                                                resolve(result);
-                                            })
-                                            .catch((err)=>{
-                                                reject(err);
-                                            })
-                                    })
-                                    rollbackPromise.push(rollPromise);
-                                })
-                                Promise.all(rollbackPromise)
-                                    .then(() =>{
-                                        return res.json({mismatch: 'need to update cart'});
-                                    })
-                            }else{
-                                Order.create(newOrder)
-                                    .then(()=>{
-                                        return res.json(order);
-                                    })
-                            }
                     })
-                });         
+                    discountAmount = amount/100*discount;
+                    console.log(discountAmount);
+                    newOrder.discount = discountAmount;
+                    //creating array of promise
+                    let stockUpdatePromise = [];
+                    cartProducts.forEach(item =>{
+                        let newPromise = new Promise((resolve,reject)=>{
+                            Product.findByIdAndUpdate(item._id,{$inc:{'stock': (-item.pqty)}},{new:true})
+                                .then((updatedProduct)=>{
+                                    resolve(updatedProduct);
+                                })
+                                .catch((err)=>{
+                                    reject(err);
+                                })
+                        })
+                        stockUpdatePromise.push(newPromise);
+                    })
+        
+                    //updating backend
+                    instance.orders.create({amount:(amount-discountAmount),currency: 'INR',receipt,payment_capture:1},(error,order)=>{
+                        if(error) return res.status(500).json(error);
+                        newOrder.orderItems = orderItems;
+                        newOrder.amount = order.amount;
+                        newOrder.receipt = order.receipt;
+                        newOrder.orderId = order.id;
+                        newOrder.validity = new Date();
+                        Promise.all(stockUpdatePromise)//updating stock after order creation
+                            .then(updatedStock=>{
+                                updatedStock.forEach(item=>{
+                                    console.log(item.stock);
+                                    if(item.stock < 0){
+                                        mismatch = true;
+                                    }
+                                })
+                                if(mismatch){
+                                        let rollbackPromise = [];
+                                        cartProducts.forEach(item =>{
+                                            let rollPromise = new Promise((resolve,reject)=>{
+                                                Product.findByIdAndUpdate(item._id,{$inc:{'stock': item.pqty}},{new:true})//quoting stock helps don't know why
+                                                    .then((result)=>{
+                                                        resolve(result);
+                                                    })
+                                                    .catch((err)=>{
+                                                        reject(err);
+                                                    })
+                                            })
+                                            rollbackPromise.push(rollPromise);
+                                        })
+                                        Promise.all(rollbackPromise)
+                                            .then(() =>{
+                                                return res.json({mismatch: 'need to update cart'});
+                                            })
+                                    }else{
+                                        Order.create(newOrder)
+                                            .then(()=>{
+                                                return res.json(order);
+                                            })
+                                    }
+                            })
+                        });         
+                    })
             })
             .catch(err =>{
                 return res.status(500).json({error: 'an error occurred'});
@@ -251,16 +261,18 @@ router.delete('/deleteorder',(req,res)=>{
     if(!order_id) return res.status(400).json({error: 'could not find order'});
     
     deleteOrder(order_id)
-        .then(res => {
-            if(res === 'order deleted'){
+        .then(result => {
+            console.log(result);
+            if(result == 'order deleted'){
                 return res.json({success: 'order deleted successfully'});
             }
             else{
-                return res.json({success: 'could not delete order'});
+                console.log('there');
+                return res.json({error: 'could not delete order'});
             }
         })
         .catch(err => {
-            return res.json({success: 'could not delete order'});
+            return res.json({error: 'could not delete order'});
         });
 });
 
@@ -282,11 +294,11 @@ router.post('/verify',(req,res)=>{
                 return res.json({success: 'order deleted successfully'});
             }
             else{
-                return res.json({success: 'could not delete order'});
+                return res.json({error: 'could not delete order'});
             }
         })
         .catch(err => {
-            return res.json({success: 'could not delete order'});
+            return res.json({error: 'could not delete order'});
         });
     }
     //instead of updating order here i can leave that on webhook and just send success so that order alert popup shows up 
