@@ -44,6 +44,9 @@ const userDetailsSchema = new Schema({
 },{ _id : false });
 
 const itemPurchasedSchema = new Schema({
+    img:{
+        type: String
+    },
     itemId:{
         type:String
     },
@@ -96,6 +99,12 @@ const orderSchema = new Schema({
     discount:{
         type:Number,
         default: 0
+    },
+    id: {
+        type: String
+    },
+    user:{
+        type: String
     }
 },{timestamps: true});
 

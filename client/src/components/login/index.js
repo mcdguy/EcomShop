@@ -39,7 +39,7 @@ const Login = () => {
         spinnerRef.current.classList.add('show');
         axios.post(`/user/${authType}`,{email,password,username})//sending username for login too which is empty for login but i will not destructure it on backend
         .then(res=>{ 
-            // console.log(res.data);
+            console.log(res.data);
             if(spinnerRef.current) spinnerRef.current.classList.remove('show');
             //i observed that when user is not logged in or signed in due to any error the spinner will hide but modal will stay open
             if(res.data.errors){

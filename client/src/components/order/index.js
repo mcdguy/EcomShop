@@ -1,0 +1,45 @@
+import React,{useEffect,useState} from 'react';
+import axios from 'axios';
+import { useGlobalContext } from '../../context';
+import './order.css';
+import { Link } from 'react-router-dom';
+import {formatPrice} from '../../utils/formatPrice';
+
+const Order = () => {
+    const {isLoggedIn} = useGlobalContext();
+    const [orders,setOrders] = useState([]);
+    useEffect(()=>{
+        if(isLoggedIn){
+            axios.get('/user/orders')
+                .then(res =>{
+                    if(res.data.orders){
+                        console.log(res.data.orders);
+                        setOrders(res.data.orders);
+                    }
+                })
+        }
+    },[isLoggedIn]);
+    return (
+        <div className="orders">
+            {orders.map(o =>{
+                // console.log(o);
+                return <div key={o.orderId} className="single__order">
+                    <h1> <span>order id :</span> {o.orderId}</h1>
+                    <h1> <span>total : </span> {formatPrice(o.amount)}</h1>
+                    {o.order.map((item,index) => {
+                        return(
+                            <Link key={index} to={`/shop/${item.itemId}`} className="order__item">
+                                <img src={`/${item.img}`} alt=""/>
+                                <span>{item.name}</span>
+                                <span>{formatPrice(item.price)}</span>
+                                <span>{item.pqty}</span>
+                            </Link>
+                        );
+                    })}
+                </div>
+            })}
+        </div>
+    )
+}
+
+export default Order

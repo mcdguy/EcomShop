@@ -40,7 +40,7 @@ const Location = () => {
     useEffect(()=>{
         axios(`/location`)
             .then(res =>{
-                console.log(res.data.locations);
+                // console.log(res.data.locations);
                 if(res.data.locations){
                     setLocations(res.data.locations);
                     const stateArray = new Set(res.data.locations.map(loc => loc.state));

@@ -32,6 +32,7 @@ router.get('/',(req,res)=>{
         .catch(err => res.json({error: 'could not get users'}))
 })
 
+
 router.get('/find/:id',(req,res)=>{
     const {id} = req.params;
     User.findById(id)
@@ -56,6 +57,7 @@ router.post('/signup',async (req,res)=>{
     const salt = await bcrypt.genSalt();
     password = await bcrypt.hash(password,salt);
     
+    console.log('singnup');
     User.create({email,password,username})
         .then(result=>{
             const token = createToken(result._id);
@@ -67,6 +69,7 @@ router.post('/signup',async (req,res)=>{
             //this is checking unique error
             // const errors = handleErrors(err);
             // console.log(errors);
+            console.log(err)
             let errors = {email: '',password: ''};
             if(err.code === 11000){
                 errors.email = 'email already exists';
@@ -102,6 +105,7 @@ router.post('/login',(req,res)=>{
 router.get('/status',requireAuth,(req,res)=>{
     res.json({success: 'user logged in'});
 })
+
 
 //logging out a user
 router.get('/logout',(req,res)=>{
@@ -193,6 +197,23 @@ router.get('/cart',requireAuth, (req,res)=>{
 })
 
 
+router.get('/orders',requireAuth,(req,res)=>{
+    const token = req.cookies.jwt;
+    const id = checkUser(token);
+    if(!id){
+        res.json({error: 'could not find user'});
+        return;
+    }
+    User.findById(id)
+        .then(result=>{
+            if(result.orders){
+                return res.json({orders:result.orders});
+            }
+            res.json({orders: []});
+        })
+        .catch(err => res.json({error: 'something went wrong'}));
+})
+
 //now handling address request
 //getting address
 router.get('/account/address',requireAuth,(req,res)=>{
@@ -219,14 +240,12 @@ router.post('/account/address',requireAuth,(req,res)=>{
         return;
     }
     const {addressLine,state,city,pin,contact} = req.body.address;
-    // console.log(req.body.address);
     const errors = handleAddressError(addressLine,state,city,pin,contact);
     console.log(errors);
     if(errors.addressLine !=='' || errors.state !=='' || errors.city !== '' || errors.pin !=='' ||errors.contact !==''){
         res.json({errors});
         return;
     }
-    // console.log(addressLine,state,city,pin,contact);
     User.findByIdAndUpdate(id,{address:req.body.address},{new:true})
         .then(result=>{
             res.json(result);
@@ -234,11 +253,7 @@ router.post('/account/address',requireAuth,(req,res)=>{
         .catch(err =>res.json({error: 'an error occured while updating address'}));
 })
 
-// //one more route for updating - not required
-// router.patch('/account/address',requireAuth,(req,res)=>{
-//     const token = req.cookies.jwt;
-//     const userId = checkUser(token);
-// })
+
 
 
 module.exports = router;

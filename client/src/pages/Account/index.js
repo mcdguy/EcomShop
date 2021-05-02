@@ -1,12 +1,8 @@
-import React,{useState,useRef} from 'react';
+import React,{useState,useEffect,useRef} from 'react';
 import { useAddressContext } from '../../addressContext';
 import { useGlobalContext } from '../../context';
 import './account.css';
-
-
-
-
-
+import Order from '../../components/order';
 
 //the concept of editing is not manipulating the state directly but using it as default value(talking about editing and not saving)
 //if user cancels state is unchanged but if he saves i won't change state immediately but check with backend if data is valid and then save it to db
@@ -22,15 +18,9 @@ const Account = () => {
     const contactRef = useRef(null);
     const addressLineRef = useRef(null);
     const [showForm,setShowForm] = useState(false)
-    // const [editMode,setEditMode] = useState(false);
-    // console.log(address);
-    // const handleSubmit = (e) =>{
-    //     e.preventDefault();
-    //     saveAddress();
-    // }
+
     const handleChange = (e) =>{
         setError(error => {return ({...error,addressLine:'',state:'',city:'',contact:'',pin:''})});
-        // setError({addressLine:'',state:'',city:'',contact:'',pin:''});
         setAddress({...address,[e.target.name]:e.target.value});
     }
     //not using onchange because of refs so i will use onFocus
@@ -39,18 +29,6 @@ const Account = () => {
     }
     const saveChanges = () =>{
         setError(error => {return ({...error,addressLine:'',state:'',city:'',contact:'',pin:''})});
-        // i cant directly set state and then go to db because then user cant cancel the change(refreshing will cancel but that's bad)
-        // i will first send new items to db and then set state
-        // setAddress(address=>{
-        //         return({
-        //             ...address,
-        //             addressLine:addressLineRef.current.value,
-        //             state: stateRef.current.value,
-        //             city: cityRef.current.value,
-        //             pin: pinRef.current.value,
-        //             contact: contactRef.current.value,
-        //         })
-        // });
         saveAddress({
             addressLine:addressLineRef.current.value,
             state: stateRef.current.value,
@@ -58,9 +36,6 @@ const Account = () => {
             pin: pinRef.current.value,
             contact: contactRef.current.value,
         });
-        // console.log(saveAddress.constructor.name  == 'AsyncFunction')
-        // console.log(result);
-        // setEditMode(false);
     }
     if(!isLoggedIn){
         return <div className="account__notLogged">
@@ -72,7 +47,8 @@ const Account = () => {
             <div className="address__center center">
                 <div className="address__header">
                     {/* <p>hello, {address.username}</p> */}
-                    {address.email && <p> <span> Logged in as :</span>  {address.email}</p>}
+                    {/* {address.email && <p> <span> Logged in as :</span>  {address.email}</p>} */}
+                    {address.email && <p> {address.email}</p>}
                 </div>
                 {!showForm?
                     <div className="save__address__prompt">
@@ -103,6 +79,8 @@ const Account = () => {
                     </form>
                 </>
                 :null}
+                <h1 className="order__head">previous orders</h1>
+                <Order/>
             </div>
         </div>
     }
@@ -112,7 +90,8 @@ const Account = () => {
             <div className="address__center center">
                 <div className="address__header">
                     {/* <p>hello, {address.username}</p> */}
-                    {address.email && <p> <span> Logged in as :</span>   {address.email}</p>}
+                    {/* {address.email && <p> <span> Logged in as :</span>   {address.email}</p>} */}
+                    {address.email && <p> {address.email}</p>}
                 </div>
 
                 <div className="address__details">
@@ -180,6 +159,8 @@ const Account = () => {
                         }
                     </div>
                 </div>
+                <h1 className="order__head">previous orders</h1>
+                <Order/>
             </div>
         </div>
     )

@@ -12,6 +12,8 @@ const CartItem = ({img,name,price,pqty,_id,cartProducts,stock,source,checked}) =
     const {toggleCheck} = useCartContext();
     const {updateCartItem,removeCartItem} = useGlobalContext();
     const [quantity,setQuantity] = useState(0);//setting this to 0 because it will get updated in useEffect and i don't want the other useEffect to run when quantity is 0
+    //when i feel like content will break the width like name will go to next line or will push content i can wrap it in div and say whiteshpace nowrap and overflow hidden
+    //if the name is way to long it will get cut and if it has too many words even then it will be cut
     
     const cartItem = () =>{
         return (

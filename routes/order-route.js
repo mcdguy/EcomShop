@@ -15,11 +15,6 @@ router.get('/',(req,res)=>{
     Order.find().skip(skip).limit(limit)
         .then(result=>{
                 res.json({orders: result, page,limit})
-            
-            // Order.estimatedDocumentCount()
-            //     .then((count)=>{
-            //         res.json({orders: result,totalDocs:count, page,limit})
-            //     })
         })
         .catch(err => {
             console.log(err)

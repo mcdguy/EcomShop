@@ -11,7 +11,7 @@ import { useCartContext } from '../../cartContext';
 import Alert from '../../components/alert';
 
 const Checkout = () => {
-    const { showShipping,showShippingAddress,hideShippingAddress,makePayment,user,handleUserDetails,userError,orderAlert,hideOrderAlert,showAlert,setShowAlert} = useCheckoutContext();
+    const { showShipping,showShippingAddress,hideShippingAddress,makePayment,user,handleUserDetails,userError,orderAlert,hideOrderAlert,showAlert,setShowAlert,saveDetails,setSaveDetails} = useCheckoutContext();
     const {couponCode,setCouponError,couponError,setCouponCode,verifyCoupon,discount} = useCartContext();
     const {isLoggedIn} = useGlobalContext();
 
@@ -61,15 +61,12 @@ const Checkout = () => {
                             <h1 className="form__type">billing address</h1>
                             <BillingAddress/>
                         </div>
-                        <p className="checkout__checkbox">
-                            <input type="checkbox" id="same-address" onChange={handleCheckbox} checked={!showShipping} />
-                            <label htmlFor="same-address"> billing address same as shipping address</label>
-                        </p>
                         {showShipping && 
                         <div className="shipping__wrapper">
                             <h1 className="form__type type-billing">shipping address</h1>
                             <ShippingAddress/>
                         </div>}
+                      
                         <div className="promo__code">
                             <div className="promo__wrapper">
                                 <div className="promo__input__wrapper">
@@ -99,6 +96,14 @@ const Checkout = () => {
                                 <button onClick={verifyCoupon} >apply</button>
                             </div>
                         </div>
+                        <p className="checkout__checkbox">
+                            <input type="checkbox" id="same-address" onChange={handleCheckbox} checked={!showShipping} />
+                            <label htmlFor="same-address"> billing address same as shipping address</label>
+                        </p>
+                        {isLoggedIn?<p className="checkout__checkbox">
+                            <input type="checkbox" id="save-details" onChange={()=>setSaveDetails(!saveDetails)} checked={!showShipping} checked={saveDetails}/>
+                            <label htmlFor="save-details"> save details</label>
+                        </p>:null}
                         <div className="btn__wrapper"><button className="checkout__btn" onClick={makePayment}>make payment</button></div>
                 </div>
                 <div className="checkout__sidebar">

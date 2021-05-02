@@ -5,6 +5,9 @@ const Product = require('../models/product');
 const uuid = require('uuid');
 const {handleOrderError} = require('../utils/handleOrderError');
 const Order = require('../models/order');
+const {checkUser} = require('../utils/userDetails');
+const User = require('../models/user');
+// const User = require('user');
 const Coupon = require('../models/coupon');
 const crypto = require('crypto');
 const instance = new razorpay({
@@ -52,7 +55,6 @@ const deleteOrder = (order_id) =>{//this function returns a promise
 setInterval(()=>{
     let tenMinutesOld = new Date();
     tenMinutesOld.setMinutes(tenMinutesOld.getMinutes()-10)
-    // console.log(tenMinutesOld);
     Order.find({validity:{$lt:tenMinutesOld}})
         .then((orders)=>{
 
@@ -89,7 +91,8 @@ setInterval(()=>{
 
 
 router.post('/makepayment',(req,res)=>{
-    const {code,cartProducts,billingAddress,shippingAddress,user,showShipping} = req.body;
+    const {code,cartProducts,billingAddress,shippingAddress,user,showShipping,saveDetails} = req.body;
+    const token = req.cookies.jwt;
     //this can be manipulated like someone can send an id of cheap item and name and product id of expensive item and since price is calculated using id he can successfully cheat us
     let orderItems = [];
     let mismatch = false; //this variable will trigger cart refresh if product is out of stock or deleted
@@ -97,6 +100,7 @@ router.post('/makepayment',(req,res)=>{
     let receipt = uuid.v4();
     let discount = 0;//this is in percent
     let discountAmount = 0;//this is in paise
+
     const newOrder ={
         buyer:{
             name:user.name,
@@ -125,20 +129,20 @@ router.post('/makepayment',(req,res)=>{
 
     //if there is a validation error code must return
     if(orderError !== '') return res.status(422).json({error:'details not provided'});
-
     if(!cartProducts) return res.status(404).json({error:'no products found'});
     
+    //now i want to save address and order in user without worrying about its completion
     productIds = cartProducts.map(item=>{return item._id});
-    //now i want to find all cart documents at once
     Coupon.findOne({code})
-        .then(coupon=>{
-            if(!coupon){
-                discount=0;
-            }
-            if(coupon){
-                discount = coupon.discount;
-                console.log("discount", coupon.discount)
-            }
+    .then(coupon=>{
+        if(!coupon){
+            discount=0;
+        }
+        if(coupon){
+            discount = coupon.discount;
+            console.log("discount", coupon.discount)
+        }
+            //now i want to find all cart documents at once
             Product.find({'_id' : {$in: productIds} })
                 .then(result=>{
                     result.forEach(item=>{
@@ -147,6 +151,7 @@ router.post('/makepayment',(req,res)=>{
                             if(item._id == cartItem._id){//this also means i  have found the product in db
                                 amount += item.price*cartItem.pqty;
                                 const singleOrderItem = {
+                                    img: item.img[0],
                                     itemId:item._id,
                                     productId: item.productId,
                                     name: item.name,
@@ -174,7 +179,23 @@ router.post('/makepayment',(req,res)=>{
                         })
                         stockUpdatePromise.push(newPromise);
                     })
-        
+                    
+                    if(token){
+                        const id = checkUser(token);
+                        if(id){
+                            newOrder.user = id;//inserting id in order
+                            if(saveDetails){
+                                let address = newOrder.billingAddress;
+                                address.contact = billingAddress.billingcontact;
+                                console.log(address);
+                                User.findByIdAndUpdate(id,{address})
+                                    .then((result)=>{
+                                        console.log('address updated');
+                                    })
+                            }
+                        }
+                    }
+
                     //updating backend
                     instance.orders.create({amount:(amount-discountAmount),currency: 'INR',receipt,payment_capture:1},(error,order)=>{
                         if(error) return res.status(500).json(error);
@@ -301,6 +322,24 @@ router.post('/verify',(req,res)=>{
             return res.json({error: 'could not delete order'});
         });
     }
+    //adding order to users cart
+    const token = req.cookies.jwt;
+    if(token){
+        const id = checkUser(token);
+        if(id){
+            Order.findOne({orderId: order_id})
+                .then(result=>{
+                    if(result){
+                        console.log(result.orderItems);
+                        User.findByIdAndUpdate(id,{$push:{"orders":{order:result.orderItems,amount:result.amount,orderId:result.orderId}}},{new:true})
+                            .then(result=>{
+                                console.log(result);
+                            })
+                    }
+                })
+        }
+    }
+
     //instead of updating order here i can leave that on webhook and just send success so that order alert popup shows up 
     Order.findOneAndUpdate({orderId:order_id},{pending:false,paymentId:payment_id,$unset: {validity: 1}},{new:true})//deleting the validity key
     .then((result)=>{

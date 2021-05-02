@@ -12,7 +12,6 @@ export const CartProvider = ({children})=>{
     const [couponError,setCouponError] = useState('');
     const [discount,setDiscount] = useState(0);//this contains discount in percent
     const [discountAmount,setDiscountAmount] = useState(0); //this contains discount in paise
-    
     const verifyCoupon = () =>{
         axios.post('/coupon/check',{code: couponCode})
             .then((res)=>{
@@ -92,7 +91,8 @@ export const CartProvider = ({children})=>{
             couponError,
             discountAmount,
             setCouponError,
-            discount
+            discount,
+
         }}>
         {children}
     </CartContext.Provider>

@@ -16,12 +16,12 @@ export const AddressProvider = ({children}) =>{
                     // console.log(res.data.errors);
                     setError({addressLine:res.data.errors.addressLine,state:res.data.errors.state,pin: res.data.errors.pin,city: res.data.errors.city,contact: res.data.errors.contact})
                 }else{
-                    console.log(res.data);
+                    // console.log(res.data);
                     //however my res is also sending hashed password
                     // maybe instead i need to use res.data.success type thing
                     //so when i successfully save data i will set state instead of already setting it
                     setAddress(address => {return{...address,exists: true,addressLine,state,city,pin,contact}});
-                    //this is specifically for request sent via saveChanges
+                    //this is specifically for function called sent via saveChanges
                     setEditMode(false);
                 }
             })

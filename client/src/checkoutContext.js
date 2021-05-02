@@ -32,22 +32,8 @@ export const CheckoutProvider = ({children}) =>{
     const [orderAlert,setOrderAlert] = useState({id:'',email:'',show:false});
     const [userError,setUserError] = useState({name:'',email:''});
     const [showAlert,setShowAlert] = useState(false);
-    // const [couponCode,setCouponCode] = useState('');
-    // const [couponError,setCouponError] = useState('');
-    // const [discount,setDiscount] = useState(0);
+    const [saveDetails,setSaveDetails]  = useState(true);
 
-    // const verifyCoupon = () =>{
-    //     console.log('hello',couponCode);
-    //     axios.post('/coupon/check',{code: couponCode})
-    //         .then((res)=>{
-    //             if(res.data.success){
-    //                 setDiscount(res.data.discount);
-    //             }
-    //             if(res.data.nomatch){
-    //                 setCouponError('invalid coupon code');
-    //             }
-    //         })
-    // }
     const hideOrderAlert = () =>{
         setOrderAlert(OrderAlert=>{return({...OrderAlert,show: false})});
     }
@@ -156,7 +142,7 @@ export const CheckoutProvider = ({children}) =>{
             return;
         }
         //only proceed if there is no error in above functions
-        axios.post('/makepayment',{cartProducts,billingAddress,shippingAddress,user,showShipping,code:couponCode})
+        axios.post('/makepayment',{cartProducts,billingAddress,shippingAddress,user,showShipping,code:couponCode,saveDetails})
             .then(res =>{
                 if(res.data.mismatch){
                     //now i should update cart
@@ -254,15 +240,14 @@ export const CheckoutProvider = ({children}) =>{
             hideOrderAlert,
             user,
             orderAlert,
-            // setUser,
+            saveDetails,
+            setSaveDetails,
             userError,
             setUserError,
             handleUserDetails,
             showAlert,
             setShowAlert,
-            // couponCode,
-            // setCouponCode,
-            // verifyCoupon,
+  
         }}>
         {children}
     </CheckoutContext.Provider>

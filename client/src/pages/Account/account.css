@@ -183,6 +183,13 @@ input[type=number] {
   border: none;
   /* border-bottom: 2px solid; */
 }
+.order__head{
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 18px;
+  margin: 24px 0;
+  letter-spacing: 1px;
+}
 @media screen and (max-width:768px){
   .address__text__head{
     width: 40%;
