@@ -35,4 +35,7 @@ code,button,a,h1,p,span,div {
 a{
   text-decoration: none;
 }
+.mobile #modal{
+  height: auto;
+}
 
