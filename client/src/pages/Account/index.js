@@ -40,6 +40,12 @@ const Account = () => {
         });
     }
 
+    if(!isLoggedIn){
+        return <div className="account__notLogged">
+            You must log in first
+        </div>
+    }
+
     if(isLoading){
         return <Loader/>
     }
@@ -48,11 +54,7 @@ const Account = () => {
         return <Error/>
     }
 
-    if(!isLoggedIn){
-        return <div className="account__notLogged">
-            You must log in first
-        </div>
-    }
+
 
     if(!address.exists){
         return <div className="address__save">

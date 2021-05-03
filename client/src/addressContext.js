@@ -53,6 +53,7 @@ export const AddressProvider = ({children}) =>{
                         }
                         setIsLoading(false);
                     }
+                    // setIsLoading(false);
                 })
                 .catch(err => {
                     console.log(err)
