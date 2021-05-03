@@ -3,9 +3,11 @@ import { useGlobalContext } from '../../context';
 import './shop.css';
 import Product from '../../components/product';
 import {BsFilterRight} from "react-icons/bs";
+import Loader from '../../components/loader';
+import Error from '../../components/error';
 
 const Shop = () => {
-    const {products,filterName,setFilterName} = useGlobalContext();
+    const {products,productError,productLoading,filterName,setFilterName} = useGlobalContext();
     const [showFilters,setShowFilters] = useState(false);
     const [filteredProducts,setFilteredProducts] = useState(false);
     const setFilter = (name) =>{
@@ -26,8 +28,17 @@ const Shop = () => {
         setFilteredProducts(newProducts);
 
     },[filterName,products])
+
+    if(productLoading){
+        return <Loader/>
+    }
+    if(productError){
+        return <Error/>
+    }
     return (
         <>
+            {/* <Loader/>
+            <Error/> */}
             {filteredProducts.length?
                 <div className="shop">
                         <div className="shop__filter center">

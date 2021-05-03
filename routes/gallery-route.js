@@ -5,6 +5,7 @@ const router = express.Router();
 router.get('/',(req,res)=>{
     Gallery.find()
         .then((result)=>{
+            if(!result) return res.json({error: 'videos not available'});
             res.json({videos: result});
         })
         .catch(err => res.json({error:err}));

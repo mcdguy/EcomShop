@@ -1,4 +1,4 @@
-import React,{useState,useReducer,useEffect,useContext} from 'react';
+import React,{useState,useEffect,useContext} from 'react';
 import {useAddressContext} from './addressContext';
 import {handleBillingError} from './utils/handleBillingError';
 import {handleShippingError} from './utils/handleShippingError';
@@ -24,7 +24,7 @@ const getsiad = () =>{
 }
 
 export const CheckoutProvider = ({children}) =>{
-    const {address,setAddress,saveAddress,error,setError,editMode,setEditMode} = useAddressContext();
+    const {address} = useAddressContext();
     const {cartProducts,couponCode} = useCartContext();
     const {getProducts} = useGlobalContext();
     const [showShipping,setShowShipping] = useState(false);

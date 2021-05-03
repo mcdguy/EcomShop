@@ -1,18 +1,34 @@
-import React,{useState,useEffect} from 'react';
+import React from 'react';
 import { useGlobalContext } from '../../context';
-import CartItem from '../../components/cartItem';
 import CartComponent from '../../components/cartComponent';
 import './cart.css';
-import Checkout from '../Checkout'
-import { Link } from 'react-router-dom';
 import { useCartContext } from '../../cartContext';
 import CartSummary from '../../components/cartSummary';
+import Loader from '../../components/loader';
+import Error from '../../components/error';
 
 const Cart = () => {
-    const {cart} = useGlobalContext();
+    const {cart,productError,productLoading} = useGlobalContext();
     const {cartProducts} = useCartContext();
+    
+    //the cart is dependent on products so it will load after products load
+
+    if(productLoading){
+        return <Loader/>
+    }
+    if(productError){
+        return <Error/>
+    }
 
     if(!cart.length){
+        return(
+            <div className="cart__empty">
+                <p>There is nothing in cart </p>
+            </div>
+        )
+    }
+
+    if(!cartProducts.length){
         return(
             <div className="cart__empty">
                 <p>There is nothing in cart </p>

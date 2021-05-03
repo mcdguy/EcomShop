@@ -1,10 +1,18 @@
 import React from 'react';
 import { useGlobalContext } from '../../context';
 import './gallery.css';
+import Loader from '../../components/loader';
+import Error from '../../components/error';
 
 const Gallery = () => {
-    const {videos} = useGlobalContext();
+    const {videos,galleryError,galleryLoading} = useGlobalContext();
 
+    if(galleryLoading){
+        return <Loader/>
+    }
+    if(galleryError){
+        return <Error/>
+    }
     return (
         <div className="gallery">
             <div className="gallery__center center">

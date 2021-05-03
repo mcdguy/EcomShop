@@ -49,6 +49,18 @@ const reducer = (oldState,action) =>{
     if(action.type === 'SET_VIDEO'){
         return({...oldState,videos: action.payload})
     }
+    if(action.type === 'SET_PRODUCT_ERROR'){
+        return({...oldState,productError: action.payload})
+    }
+    if(action.type === 'SET_PRODUCT_LOADING'){
+        return({...oldState,productLoading: action.payload})
+    }
+    if(action.type === 'SET_GALLERY_ERROR'){
+        return({...oldState,galleryError: action.payload})
+    }
+    if(action.type === 'SET_GALLERY_LOADING'){
+        return({...oldState,galleryLoading: action.payload})
+    }
     throw new Error('invalid dispatch');
 }
 
@@ -56,8 +68,10 @@ const defaultState = {
     products: [],
     cart: getLocalStorage(),
     filter: 'none',
-    error: {message: '',show: false},
-    isLoading: false,
+    productError: false,
+    productLoading: true,
+    galleryError: false,
+    galleryLoading: true,
     filterName: 'none',
     isLoggedIn: false,
     featuredProducts: [],
@@ -84,6 +98,18 @@ export const AppProvider = ({children}) =>{
     }
     const setLogout = () =>{
         dispatch({type: 'LOGOUT'});
+    }
+    const setProductLoading = (value) =>{
+        dispatch({type: 'SET_PRODUCT_LOADING',payload: value});
+    }
+    const setProductError = (value) =>{
+        dispatch({type: 'SET_PRODUCT_ERROR',payload: value});
+    }
+    const setGalleryLoading = (value) =>{
+        dispatch({type: 'SET_GALLERY_LOADING',payload: value});
+    }
+    const setGalleryError = (value) =>{
+        dispatch({type: 'SET_GALLERY_ERROR',payload: value});
     }
     //replacing cart with new one
     const setCart = (newCart) =>{
@@ -173,16 +199,24 @@ export const AppProvider = ({children}) =>{
    
     //setting up videos
     useEffect(()=>{
+        setGalleryError(false);
+        setGalleryLoading(true);
         axios('/gallery')
             .then(res =>{
-                setVideos(res.data.videos);
+                if(res.data.videos){
+                    setVideos(res.data.videos);
+                    setGalleryLoading(false);
+                }
+                
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err);
+                setGalleryError(true);
+            });
     },[]);
 
 
     useEffect(()=>{
-        // alert('running');
         let status = localStorage.getItem('status');
         if(status){
             axios.get('/user/cart')
@@ -197,12 +231,18 @@ export const AppProvider = ({children}) =>{
 
     //setting the products
     const getProducts = () =>{
+        setProductLoading(true);
+        setProductError(false);
         axios('/product')
         .then(res=>{
-            setProducts(res.data);
+            if(res.data.product){
+                setProducts(res.data.product);
+                setProductLoading(false);
+            }
         })
         .catch(err => {
             console.log(err);
+            setProductError(true);
         })
     }
     useEffect(()=>{

@@ -5,21 +5,26 @@ import axios from 'axios';
 import { useGlobalContext } from '../../context';
 import { Link } from 'react-router-dom';
 import {formatPrice} from '../../utils/formatPrice';
+import Loader from '../../components/loader';
+import Error from '../../components/error';
+
 const SingleProduct = () => {
     const {addCartItem} = useGlobalContext();   
     const {id} = useParams();
     const [item,setItem] = useState({});
-    const [error,setError] = useState({message: '',show: false});
-    const [isLoading,setIsLoading] = useState(false);
+    const [error,setError] = useState(false);
+    const [isLoading,setIsLoading] = useState(true);
     const [currentImage,setCurrentImage] = useState(0);
     const [showMsg,setShowMsg] = useState(false);
     useEffect(()=>{
-        setError({...error, message:'',show: false})
+        setError(false);
+        setIsLoading(true);
         axios.get(`/product/shop/${id}`)
             .then(res => {
                 setItem(res.data);
+                setIsLoading(false);
             })
-            .catch(err =>{setError({...error, message: err.message,show: true})});
+            .catch((err) =>{setError(true)});
     },[]);
 
     useEffect(()=>{
@@ -30,7 +35,13 @@ const SingleProduct = () => {
             clearTimeout(x);
         }
     },[showMsg])
-    
+
+    if(isLoading){
+        return <Loader/>;
+    }
+    if(error){
+        return <Error/>;
+    }
     return (
         <> 
             {item.error?<div className="item_error">{item.error}</div>:

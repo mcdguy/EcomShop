@@ -1,5 +1,5 @@
-import React,{useState,useRef,useEffect} from 'react';
-import { useAddressContext } from '../../addressContext';
+import React from 'react';
+// import { useAddressContext } from '../../addressContext';
 import { useCheckoutContext } from '../../checkoutContext';
 import './shippingAddress.css';
 

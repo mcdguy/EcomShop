@@ -10,7 +10,10 @@ router.get('/',(req,res)=>{
     // console.log('getting all products');
     Product.find()
         .then((result)=>{
-            res.json(result)
+            if(!result){
+                res.json({error: 'products not available'});
+            }
+            res.json({product:result})
         })
         .catch(err =>{
             console.log(err.message);

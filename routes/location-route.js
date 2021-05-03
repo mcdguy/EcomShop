@@ -5,6 +5,7 @@ const Location = require('../models/location');
 router.get('/',(req,res)=>{
     Location.find()
         .then(result=>{
+            if(!result) return res.json({error: 'locations not available'});
             res.json({locations: result});
         })
         .catch(err =>{

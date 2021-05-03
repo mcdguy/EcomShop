@@ -1,4 +1,4 @@
-import React,{useState,useReducer,useEffect,useContext} from 'react';
+import React,{useState,useEffect,useContext} from 'react';
 import axios from 'axios';
 import { useGlobalContext } from './context';
 const CartContext = React.createContext();

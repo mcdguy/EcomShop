@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import './orderModal.css';
 import successLogo from '../../assets/images/order__success.jpg';
 import {GrClose} from "react-icons/gr";

@@ -33,6 +33,21 @@
     object-fit: cover;
     flex-shrink: 0;
 }
+.order__loader .loader__spinner{
+    width: 20px;
+    height: 20px;
+    margin: auto;
+    border: 2px solid rgb(231, 226, 226);
+    border-top-color: rgb(189, 184, 184);
+}
+.no__orders{
+    text-align: center;
+    letter-spacing: 1px;
+    font-size: 14px;
+    text-transform: uppercase;
+    line-height: 1.7;
+    color: rgb(151, 150, 150);
+}
 @media screen and (max-width: 420px) {
     .single__order h1{
         font-size: 12px;

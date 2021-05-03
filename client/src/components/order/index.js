@@ -8,17 +8,32 @@ import {formatPrice} from '../../utils/formatPrice';
 const Order = () => {
     const {isLoggedIn} = useGlobalContext();
     const [orders,setOrders] = useState([]);
+    const [isLoading,setIsLoading] = useState(true);
     useEffect(()=>{
+        setIsLoading(true);
         if(isLoggedIn){
             axios.get('/user/orders')
                 .then(res =>{
                     if(res.data.orders){
-                        console.log(res.data.orders);
                         setOrders(res.data.orders);
+                        setIsLoading(false);
                     }
                 })
         }
     },[isLoggedIn]);
+
+    if(isLoading){
+        return (
+            <div className="order__loader">
+                <div className="loader__spinner"></div>
+            </div>
+        )
+    }
+
+    if(!orders.length){
+        return <p className="no__orders center">All your orders will be displayed here</p>
+    }
+
     return (
         <div className="orders">
             {orders.map(o =>{

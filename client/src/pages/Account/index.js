@@ -3,6 +3,8 @@ import { useAddressContext } from '../../addressContext';
 import { useGlobalContext } from '../../context';
 import './account.css';
 import Order from '../../components/order';
+import Loader from '../../components/loader';
+import Error from '../../components/error';
 
 //the concept of editing is not manipulating the state directly but using it as default value(talking about editing and not saving)
 //if user cancels state is unchanged but if he saves i won't change state immediately but check with backend if data is valid and then save it to db
@@ -10,7 +12,7 @@ import Order from '../../components/order';
 //this is because i might update the state with corrupt data on press of save button but db will reject it and now user can't cancel the edit because i have no track of it
 //due to this change i have to pass address explicitly to saveAddress function because i am not directly saving state to db in case of edit mode
 const Account = () => {
-    const {address,setAddress,saveAddress,error,setError,editMode,setEditMode} = useAddressContext();
+    const {address,setAddress,saveAddress,error,setError,editMode,setEditMode,isLoading,loadingError} = useAddressContext();
     const {isLoggedIn} = useGlobalContext();
     const stateRef = useRef(null);
     const cityRef = useRef(null);
@@ -37,11 +39,21 @@ const Account = () => {
             contact: contactRef.current.value,
         });
     }
+
+    if(isLoading){
+        return <Loader/>
+    }
+    
+    if(loadingError){
+        return <Error/>
+    }
+
     if(!isLoggedIn){
         return <div className="account__notLogged">
             You must log in first
         </div>
     }
+
     if(!address.exists){
         return <div className="address__save">
             <div className="address__center center">

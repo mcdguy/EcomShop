@@ -4,12 +4,12 @@ import './cartItem.css';
 import {GrClose} from "react-icons/gr";
 import {BiMinus,BiPlus} from "react-icons/bi";
 import { Link } from 'react-router-dom';
-import { useCartContext } from '../../cartContext';
+// import { useCartContext } from '../../cartContext';
 import {formatPrice} from '../../utils/formatPrice';
 
 const CartItem = ({img,name,price,pqty,_id,cartProducts,stock,source,checked}) => {
-    const {cart} = useGlobalContext();
-    const {toggleCheck} = useCartContext();
+    // const {cart} = useGlobalContext();
+    // const {toggleCheck} = useCartContext();
     const {updateCartItem,removeCartItem} = useGlobalContext();
     const [quantity,setQuantity] = useState(0);//setting this to 0 because it will get updated in useEffect and i don't want the other useEffect to run when quantity is 0
     //when i feel like content will break the width like name will go to next line or will push content i can wrap it in div and say whiteshpace nowrap and overflow hidden

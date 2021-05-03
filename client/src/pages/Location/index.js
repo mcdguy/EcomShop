@@ -2,7 +2,9 @@ import React,{useEffect, useState,useRef} from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import './location.css';
 import axios from 'axios';
-import {Icon} from 'leaflet';
+// import {Icon} from 'leaflet';
+import Loader from '../../components/loader';
+import Error from '../../components/error';
 // import CoffeeCup from '../../assets/images/coffee_marker2.png'
 const Location = () => {
     const [map,setMap] = useState(null);
@@ -18,7 +20,9 @@ const Location = () => {
     const [locations, setLocations] = useState([]);
     const [locationStates,setLocationStates] = useState([]);
     const [showDropdown,setShowDropdown] = useState(false);
-    
+    const [loading,setLoading] = useState(true);
+    const [error,setError] = useState(false);
+
     const handleMarkerClick = (id) =>{
         for(let i=0;i<locations.length;i++){
             if(locations[i]._id === id){
@@ -38,6 +42,8 @@ const Location = () => {
     // },[selectedMarker])
 
     useEffect(()=>{
+        setLoading(true);
+        setError(false);
         axios(`/location`)
             .then(res =>{
                 // console.log(res.data.locations);
@@ -45,9 +51,13 @@ const Location = () => {
                     setLocations(res.data.locations);
                     const stateArray = new Set(res.data.locations.map(loc => loc.state));
                     setLocationStates([...stateArray]);
+                    setLoading(false);
                 }
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err);
+                setError(true);
+            });
     },[]);
     
     useEffect(()=>{
@@ -61,10 +71,15 @@ const Location = () => {
         }
     },[queryLocation,locations]);
 
+    if(loading){
+        return <Loader/>
+    }
+    if(error){
+        return <Error/>
+    }
     if(!locations.length){
         return null;
     }
-    
     return (
         <div>
             <div className="map__center center">

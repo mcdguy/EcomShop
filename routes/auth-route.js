@@ -226,7 +226,10 @@ router.get('/account/address',requireAuth,(req,res)=>{
     }
     User.findById(id)
         .then(result =>{
-            res.json({address: result.address,email: result.email,username: result.username});
+            if(!result){
+                return res.json({error: 'could not find address'});
+            }
+            res.json({success:'address found',address: result.address,email: result.email,username: result.username});
         })
         .catch(err => res.json({error: 'something went wrong'}));
 });
@@ -241,7 +244,7 @@ router.post('/account/address',requireAuth,(req,res)=>{
     }
     const {addressLine,state,city,pin,contact} = req.body.address;
     const errors = handleAddressError(addressLine,state,city,pin,contact);
-    console.log(errors);
+    //console.log(errors);
     if(errors.addressLine !=='' || errors.state !=='' || errors.city !== '' || errors.pin !=='' ||errors.contact !==''){
         res.json({errors});
         return;
