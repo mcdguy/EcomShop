@@ -7,7 +7,7 @@ const {handleAuthErrors} = require('../utils/handleAuthErrors');
 const {handleAddressError} = require('../utils/handleAddressError');
 const {checkUser} = require('../utils/userDetails');
 const requireAuth = require('../middleware/auth-middleware');
-
+const {forgotPassword,transporter} = require('../utils/nodemailer');
 //i could have seperated auth routes and user routes
 
 const maxAge = 3 * 24 * 60 * 60; //3 days in seconds
@@ -66,9 +66,6 @@ router.post('/signup',async (req,res)=>{
             
         })
         .catch(err =>{
-            //this is checking unique error
-            // const errors = handleErrors(err);
-            // console.log(errors);
             console.log(err)
             let errors = {email: '',password: ''};
             if(err.code === 11000){
@@ -98,10 +95,6 @@ router.post('/login',(req,res)=>{
 })
 
 //checking if user is logged in
-// router.get('/status',(req,res)=>{
-//     console.log('inside status');
-// })
-
 router.get('/status',requireAuth,(req,res)=>{
     res.json({success: 'user logged in'});
 })
@@ -114,6 +107,66 @@ router.get('/logout',(req,res)=>{
     res.json({success: 'user logged out'});
 })
 
+router.post('/forgotpassword',(req,res)=>{
+    const {email} = req.body;
+    User.findOne({email})
+        .then(result=>{
+            if(!result) return res.json({error: 'email not registered'});
+            const secret = process.env.FORGOT__PASS + result.password;
+            const payload = {email:result.email,id:result._id};
+            const token = jwt.sign(payload,secret,{expiresIn:'15m'});
+            const link = `http://localhost:3000/reset-password/${result._id}/${token}`;
+            const mailOptions = {
+                from: process.env.EMAIL,
+                to: result.email,
+                subject: 'reset password',
+                text: forgotPassword(result.username,link)
+            }
+            // console.log(mailOptions);
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                    console.log(error);
+                    res.json({error: 'could not send email'});
+                } else {
+                    console.log('Email sent: ' + info.response);
+                    res.json({success: 'email sent'});
+                }
+            });
+        })
+    console.log(email);
+    console.log('forgot password');
+})
+
+router.post('/update-password',async (req,res)=>{
+    let {id,token,password} = req.body;
+    //simple password validation in backend
+    if(password.length < 6){
+        return res.json({error: 'password too short'});
+    }
+    const salt = await bcrypt.genSalt();
+    password = await bcrypt.hash(password,salt);
+    console.log(password);
+    User.findById(id)
+        .then(result=>{
+            if(!result) return res.json({error: 'user not found'});
+            const secret = process.env.FORGOT__PASS + result.password;
+            jwt.verify(token,secret,(err,decodedToken)=>{
+                if(err){
+                    console.log('token is not valid');
+                    return res.json({error: 'link has expired'});
+                }
+                else{
+                    console.log(decodedToken);
+                    User.findByIdAndUpdate(id,{password},{new:true})
+                        .then(result=>{
+                            return (res.json({success: 'password reset successful'}));
+                        })
+                }
+            })
+        })
+        .catch(err => res.json({error: 'an error occurred'}));
+
+})
 //merging cart on login
 
 router.post('/mergecart',requireAuth,(req,res)=>{
@@ -128,8 +181,6 @@ router.post('/mergecart',requireAuth,(req,res)=>{
             const newCart = [...frontendCart,...backendCart];
             //this is cart productId without duplicates
             const uniqueCartItems = [...new Set(newCart.map(i=>i.productId))];
-            // console.log(newCart);
-            // console.log(uniqueCartItems);
             let updatedCart = [];
             
             for(let i=0;i<uniqueCartItems.length;i++){

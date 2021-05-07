@@ -12,8 +12,9 @@ const Login = () => {
     const [password,setPassword] = useState('');
     const [username,setUsername] = useState('');
     const [error,setError] = useState({email: '',password:'',username:''});
+    const [showForgot,setShowForgot] = useState(false);
     const spinnerRef = useRef(null)
-
+    const [forgotMessage,setForgotMessage] = useState('');
     const handleEmail = (e) =>{ 
         setEmail( e.target.value.trim());//setting email as well as removing whitespace
         setError({email: '',password:'',username:''})
@@ -72,45 +73,77 @@ const Login = () => {
                 console.log(err);
         });
     }
+    const forgotPassword = () =>{
+        let msg = 'A password reset link has been sent to your email';
+        spinnerRef.current.classList.add('show');
+        if(email === ''){
+            setError(error => {return({...error,email: 'please enter your email'})});
+            return;
+        }
+        axios.post('/user/forgotpassword',{email})
+        .then(res =>{
+            console.log(res.data);
+            if(res.data.success){
+                if(spinnerRef.current) spinnerRef.current.classList.remove('show');
+                    setForgotMessage(msg);
+                    setShowForgot(true);
+            }
+            if(res.data.error){
+                if(spinnerRef.current) spinnerRef.current.classList.remove('show');
+                setForgotMessage(res.data.error);
+                setShowForgot(true);
+            }
+        })
+        .catch(err => console.log('an error occurred'));
+    }
+
     return (
         <>
-            {showLogin === true? 
-                <div className="auth_wrapper" onClick={setHideLoginModal}>
+            {showLogin === true?
+                // its very imp to have setShowForgot on dismiss because otherwise i can't reverse state after that
+                <div className="auth_wrapper" onClick={()=>{setHideLoginModal();setShowForgot(false)}}>
                 <div className="auth" onClick={e=>e.stopPropagation()}>
-                    <div className="auth__close" onClick={setHideLoginModal}><GrClose/></div>
-                    <div className="auth__headers">
-                        <h1>{`${authType==='login'?'log in': 'sign up'}`}</h1>
-                    </div>
+                    <div className="auth__close" onClick={()=>{setHideLoginModal();setShowForgot(false)}}><GrClose/></div>
+                    {showForgot?
+                        <div className="auth__forgot">
+                            <p>{forgotMessage}</p>
+                        </div>
+                        :<>
+                            <div className="auth__headers">
+                                <h1>{`${authType==='login'?'log in': 'sign up'}`}</h1>
+                            </div>
 
-                    <div className="auth__form__wrapper">
-                        <form className="auth__form" onSubmit={handleAuth}>
-                            {authType==='signup'?<div className="auth__field">
-                                <input value={username} onChange={e=>{setUsername(e.target.value);setError({email: '',password:'',username: ''})}} autoComplete="off" type="text" id="username" placeholder="Username"/>
-                                <p className="auth__error">{error.username}</p>
-                            </div>
-                            :null}
-                            <div className="auth__field">
-                                <input value={email} onChange={handleEmail} autoComplete="off" type="text" id="email" placeholder="Email"/>
-                                <p className="auth__error">{error.email}</p>
-                            </div>
-                            <div className="auth__field">
-                                <input value={password} onChange={e=>{setPassword(e.target.value);setError({email: '',password:'',username: ''})}} autoComplete="off"  type="password" placeholder="Password"/>
-                                <p className="auth__error">{error.password}</p>
-                            </div>
-                            <button type="submit">{`${authType==='signup'?'sign up': 'login'}`}</button>
-                        </form>
+                            <div className="auth__form__wrapper">
+                                <form className="auth__form" onSubmit={handleAuth}>
+                                    {authType==='signup'?<div className="auth__field">
+                                        <input value={username} onChange={e=>{setUsername(e.target.value);setError({email: '',password:'',username: ''})}} autoComplete="off" type="text" id="username" placeholder="Username"/>
+                                        <p className="auth__error">{error.username}</p>
+                                    </div>
+                                    :null}
+                                    <div className="auth__field">
+                                        <input value={email} onChange={handleEmail} autoComplete="off" type="text" id="email" placeholder="Email"/>
+                                        <p className="auth__error">{error.email}</p>
+                                    </div>
+                                    <div className="auth__field">
+                                        <input value={password} onChange={e=>{setPassword(e.target.value);setError({email: '',password:'',username: ''})}} autoComplete="off"  type="password" placeholder="Password"/>
+                                        <p className="auth__error">{error.password}</p>
+                                    </div>
+                                    <button type="submit">{`${authType==='signup'?'sign up': 'login'}`}</button>
+                                </form>
 
-                        {authType==='login'?
-                            <div className="auth__toggle">
-                                <span > <button onClick={()=>setAuthType('signup')}>create an account</button> | <button>forgot password?</button></span>
+                                {authType==='login'?
+                                    <div className="auth__toggle">
+                                        <span > <button onClick={()=>setAuthType('signup')}>create an account</button> | <button onClick={forgotPassword}>forgot password?</button></span>
+                                    </div>
+                                :
+                                    <div className="auth__toggle">
+                                        <span> <button onClick={()=>setAuthType('login')}>already have an account?</button></span>
+                                    </div>
+                                }
+                                <div className="auth__spinner" ref={spinnerRef}><BiLoaderAlt /></div>
                             </div>
-                        :
-                            <div className="auth__toggle">
-                                <span> <button onClick={()=>setAuthType('login')}>already have an account?</button></span>
-                            </div>
-                        }
-                        <div className="auth__spinner" ref={spinnerRef}><BiLoaderAlt /></div>
-                    </div>
+                        </>
+                    }
                 </div>
             </div>
             :null}

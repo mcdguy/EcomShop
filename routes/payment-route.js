@@ -7,7 +7,7 @@ const {handleOrderError} = require('../utils/handleOrderError');
 const Order = require('../models/order');
 const {checkUser} = require('../utils/userDetails');
 const User = require('../models/user');
-// const User = require('user');
+const {orderEmail,transporter} = require('../utils/nodemailer');
 const Coupon = require('../models/coupon');
 const crypto = require('crypto');
 const instance = new razorpay({
@@ -187,7 +187,7 @@ router.post('/makepayment',(req,res)=>{
                             if(saveDetails){
                                 let address = newOrder.billingAddress;
                                 address.contact = billingAddress.billingcontact;
-                                console.log(address);
+                                // console.log(address);
                                 User.findByIdAndUpdate(id,{address})
                                     .then((result)=>{
                                         console.log('address updated');
@@ -260,9 +260,17 @@ router.post('/webhook',(req,res)=>{
             Order.findOne({orderId:order_id})
                 .then(result =>{
                     //before updating i can check if order exists and if not it means timer deleted it and this is late authorization so i should issue refund
+                    
                     // if(!result){
                         //issue refund
                     //     return;
+                    // }
+                    console.log('webhook',result);
+                    // const mailOptions = {
+                    //     from: 'youremail@gmail.com',
+                    //     to: 'myfriend@yahoo.com',
+                    //     subject: 'order confirmation mail',
+                    //     text: 'That was easy!'
                     // }
                     Order.findOneAndUpdate({orderId:order_id},{pending:false,paymentId:payment_id,$unset: {validity: 1}},{new:true})
                     .then((result)=>{
@@ -322,7 +330,7 @@ router.post('/verify',(req,res)=>{
             return res.json({error: 'could not delete order'});
         });
     }
-    //adding order to users cart
+    //adding order to user's orders
     const token = req.cookies.jwt;
     if(token){
         const id = checkUser(token);
@@ -330,10 +338,11 @@ router.post('/verify',(req,res)=>{
             Order.findOne({orderId: order_id})
                 .then(result=>{
                     if(result){
-                        console.log(result.orderItems);
+                        // console.log(result.orderItems);
                         User.findByIdAndUpdate(id,{$push:{"orders":{order:result.orderItems,amount:result.amount,orderId:result.orderId}}},{new:true})
                             .then(result=>{
-                                console.log(result);
+                                console.log('orders added to user');
+                                // console.log(result);
                             })
                     }
                 })
@@ -343,6 +352,25 @@ router.post('/verify',(req,res)=>{
     //instead of updating order here i can leave that on webhook and just send success so that order alert popup shows up 
     Order.findOneAndUpdate({orderId:order_id},{pending:false,paymentId:payment_id,$unset: {validity: 1}},{new:true})//deleting the validity key
     .then((result)=>{
+        // console.log('order',result);
+        //here i am sending mail
+        // console.log(process.env.EMAIL,result.buyer.email,orderEmail(result.buyer.name,result.orderId))
+       const mailOptions = {
+            from: process.env.EMAIL,
+            to: result.buyer.email,
+            subject: 'order confirmation mail',
+            text: orderEmail(result.buyer.name,result.orderId)
+        }
+        // console.log(mailOptions);
+        transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+
+        //the mail portion ends here i can paste it in webhook instead
         return res.json({success:'singature matched, updated record'});
     })
     .catch((err)=>{res.json({error: err})});

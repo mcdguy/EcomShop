@@ -15,6 +15,8 @@ import Checkout from './pages/Checkout';
 import Location from './pages/Location';
 import About from './pages/About';
 import Gallery from './pages/Gallery';
+import Forgot from './pages/Forgot';
+
 const App = () => {
   return (
     <Router>
@@ -46,6 +48,8 @@ const App = () => {
             <Brew/>
           </Route>
 
+          <Route path="/reset-password/:id/:token" children={<Forgot/>} exact></Route>
+          
           <Route path="/shop/:id" children={<SingleProduct/>} exact></Route>
 
           <Route path="/cart" exact>

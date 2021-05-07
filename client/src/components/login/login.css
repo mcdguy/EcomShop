@@ -14,10 +14,11 @@
     width: 80%;
     max-width: 320px;
     background-color: white;
-    border-radius: 4px;
+    /* border-radius: 4px; */
     padding: 30px 25px;
     position: relative;
     box-sizing: border-box;
+    border-radius: 4px;
 }
 /* .auth__form__wrapper{
     padding: 20px 20px 20px;
@@ -27,6 +28,13 @@
     top: 15px;
     right: 15px;
     cursor: pointer;
+}
+.auth__forgot{
+    text-align: center;
+    line-height: 1.5;
+    padding: 50px 20px;
+    letter-spacing: 1px;
+    font-size: 14px;
 }
 .auth__headers h1{
     cursor: default;
@@ -152,6 +160,6 @@ input:focus{
         width: 90%;
         max-width: 420px;
         padding: 20px 20px;
-        border-radius: 0;
+        border-radius: 4px;
     }   
 }
