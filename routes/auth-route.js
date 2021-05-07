@@ -115,7 +115,7 @@ router.post('/forgotpassword',(req,res)=>{
             const secret = process.env.FORGOT__PASS + result.password;
             const payload = {email:result.email,id:result._id};
             const token = jwt.sign(payload,secret,{expiresIn:'15m'});
-            const link = `http://localhost:3000/reset-password/${result._id}/${token}`;
+            const link = `http://sbcoffeecompany.herokuapp.com/reset-password/${result._id}/${token}`;
             const mailOptions = {
                 from: process.env.EMAIL,
                 to: result.email,
