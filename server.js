@@ -47,7 +47,7 @@ if(process.env.NODE_ENV === 'production'){
 
     //only using this middleware is not enough i need to set withCredentials: true with every axios request
     //we need to pass origin and not * for cookies to work
-    var whitelist = ['https://tender-swartz-02e579.netlify.app']//pass domains you wanna whitelist
+    var whitelist = ['https://tender-swartz-02e579.netlify.app',"https://sbcoffeecompany.herokuapp.com/"]//pass domains you wanna whitelist
     var corsOptions = {
       origin: (origin, callback) => {
           var originIsWhitelisted = whitelist.indexOf(origin) !== -1;

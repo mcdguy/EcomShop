@@ -58,6 +58,7 @@ router.post('/login',(req,res)=>{
 })
 router.post('/logout',(req,res)=>{
     // console.log('logout');
+    console.log('logout');
     res.clearCookie('jwt');
     res.json({success: 'admin logged out'});
 })

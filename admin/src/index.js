@@ -8,8 +8,9 @@ import axios from 'axios';
 
 //i could have done this instead of appendind url to every request
 // axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com';
+
 //this makes sure i access cookie over cross site
-// axios.defaults.withCredentials = true
+axios.defaults.withCredentials = true
 
 ReactDOM.render(
   <React.StrictMode>
