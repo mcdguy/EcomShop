@@ -73,7 +73,7 @@ const Location = () => {
                                     timings
                                 </div>
                             </th>
-                            <th className={`${type !== 'admin'?"read__table__show":"read__table__edit"}`}></th>
+                            <th className={`${type !== 'read admin'?"read__table__edit":"read__table__show"}`}></th>
                             {type!=='read admin'?<th className="read__table__delete"></th>:null}
                         </tr>
 

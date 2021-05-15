@@ -41,9 +41,20 @@ app.use('/images',express.static('images'));
 //   next();
 // })
 
+//using * for cors will not let accept cookies thus auth will not work 
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build'));
-    app.use(cors());
+    var whitelist = ['https://tender-swartz-02e579.netlify.app/']
+    var corsOptions = {
+      origin: (origin, callback) => {
+          var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+          console.log('ORIGIN: ', origin);  // => undefined
+          callback(originIsWhitelisted ? null : 'Bad Request', originIsWhitelisted)
+      },
+      credentials:true
+    }
+    app.use(cors(corsOptions));
+
 }
 
 

@@ -293,7 +293,7 @@ const EditProduct = ({id}) => {
                 </table>
                     <div className="edit__images">
                         {product.img && product.img.map((img,index)=>{
-                            return <div key={index} className="product__edit__img"><img src={`/${img}`} alt=""/></div>
+                            return <div key={index} className="product__edit__img"><img src={`${baseUrl}/${img}`} alt=""/></div>
                         })}
                     </div>
                 <div className="btn-wrapper">
