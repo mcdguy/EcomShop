@@ -11,7 +11,18 @@ const getCurrentTab = () =>{
         return ('product');
     }
 }
+
+export const baseUrl = createBaseUrl();
+function createBaseUrl(){
+    if(process.env.NODE_ENV === 'production'){
+        return 'https://sbcoffeecompany.herokuapp.com';
+    }else{
+        return '';
+    }
+}
+
 export const AppProvider = ({children}) => {
+    // console.log(baseUrl);
     const [currentTab,setCurrentTab] = useState(getCurrentTab());
     const [user,setUser] = useState([]);
     const [isLoggedIn,setIsLoggedIn]= useState(false);
@@ -54,7 +65,7 @@ export const AppProvider = ({children}) => {
 
     useEffect(()=>{
         setShowMainLoader(true);
-        axios('/admin/status')
+        axios(`${baseUrl}/admin/status`)
             .then(res =>{
                 // console.log(res);
                 // console.log(res.data);
@@ -91,7 +102,7 @@ export const AppProvider = ({children}) => {
     const fetchGallery = () =>{
         setIsVideosLoading(true);
         setVideoError(false);
-        axios('/gallery')
+        axios(`${baseUrl}/gallery`)
         .then(res =>{
             if(res.data.videos){
                 setVideos(res.data.videos);
@@ -111,7 +122,7 @@ export const AppProvider = ({children}) => {
     const fetchCoupon = () =>{
         // setIsCouponLoading(true);
         setCouponError(false);
-        axios('/coupon')
+        axios(`${baseUrl}/coupon`)
         .then(res =>{
             if(res.data.coupon){
                 setCoupon(res.data.coupon);
@@ -131,7 +142,7 @@ export const AppProvider = ({children}) => {
     const fetchProduct = () =>{
         setIsProductLoading(true);
         setProductError(false);
-        axios('/product')
+        axios(`${baseUrl}/product`)
         .then(res=>{
             if(res.data.product){
                 setProduct(res.data.product);
@@ -151,7 +162,7 @@ export const AppProvider = ({children}) => {
     const fetchLocation = () =>{
         setIsLocationLoading(true);
         setLocationError(false);
-        axios.get('/location')
+        axios.get(`${baseUrl}/location`)
         .then(res => {
             if(res.data.locations){
                 setLocation(res.data.locations);
@@ -173,7 +184,7 @@ export const AppProvider = ({children}) => {
     useEffect(()=>{
         setIsUserLoading(true);
         setUserError(false);
-        axios.get(`/user?page=${userPage}&limit=20`)
+        axios.get(`${baseUrl}/user?page=${userPage}&limit=20`)
             .then(res=>{
                 if(res.data.users){
                     setUser((oldUser)=>{return[...oldUser,...res.data.users]});
@@ -190,7 +201,7 @@ export const AppProvider = ({children}) => {
     useEffect(()=>{
         setIsOrderLoading(true);
         setOrderError(false);
-        axios.get(`/order?page=${orderPage}&limit=20`)
+        axios.get(`${baseUrl}/order?page=${orderPage}&limit=20`)
             .then(res=>{
                 if(res.data.orders){
                     setOrder(oldOrders =>{
@@ -209,7 +220,7 @@ export const AppProvider = ({children}) => {
     const fetchAdmin = () =>{
         setIsAdminLoading(true);
         setAdminError(false);
-        axios.get('/admin')
+        axios.get(`${baseUrl}/admin`)
             .then(res => {
                 if(res.data.admin){
                     setAdmin(res.data.admin);

@@ -1,6 +1,6 @@
 import React,{useState,useRef} from 'react';
 import './login.css';
-import { useGlobalContext } from '../../context';
+import { useGlobalContext,baseUrl } from '../../context';
 import axios from 'axios';
 import Loader from '../../components/loader';
 
@@ -36,7 +36,7 @@ const Login = () => {
             return;
         }
         setShowSpinner(true);
-        axios.post(`/admin/login`,{email,password})
+        axios.post(`${baseUrl}/admin/login`,{email,password})
         .then(res=>{ 
             // if(spinnerRef.current) spinnerRef.current.classList.remove('show');
             if(res.data.errors){
@@ -53,6 +53,7 @@ const Login = () => {
                 setShowSpinner(false);
         });
     }
+
     const forgotPassword = () =>{
         let msg = 'A password reset link has been sent to your email';
         if(email === ''){

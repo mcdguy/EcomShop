@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React,{useState,useEffect} from 'react';
 import { Link } from 'react-router-dom';
-import { useGlobalContext } from '../../context';
+import { useGlobalContext,baseUrl } from '../../context';
 import {formatPrice} from '../../utils/formatPrice';
 import Loader from '../loader';
 import Error from '../error';
@@ -20,7 +20,7 @@ const Order = () => {
             setFilteredOrder(order);
             return;
         }
-        axios.get(`/order/find?filter=${orderFilter}&query=${orderQuery}`,{
+        axios.get(`${baseUrl}/order/find?filter=${orderFilter}&query=${orderQuery}`,{
                 cancelToken: new axios.CancelToken(c=> {cancel =c})
             })
             .then(res =>{

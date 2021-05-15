@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React,{useState,useEffect} from 'react';
 import { Link } from 'react-router-dom';
-import { useGlobalContext } from '../../context';
+import { useGlobalContext,baseUrl } from '../../context';
 import Loader from '../loader';
 import Error from '../error';
 import './user.css';
@@ -18,7 +18,7 @@ const User = () => {
             setFilteredUser(user);
             return;
         }
-        axios.get(`/user/find-user?filter=${userFilter}&query=${userQuery}`,{
+        axios.get(`${baseUrl}/user/find-user?filter=${userFilter}&query=${userQuery}`,{
                 cancelToken: new axios.CancelToken(c=> {cancel =c})
             })
             .then(res =>{

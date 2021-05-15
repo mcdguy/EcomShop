@@ -3,6 +3,7 @@ import React,{useState,useEffect} from 'react'
 import './viewOrder.css';
 import {formatPrice} from '../../utils/formatPrice';
 import Loader from '../loader';
+import {baseUrl} from '../../context';
 import Error from '../error';
 var moment = require('moment');
 
@@ -14,7 +15,7 @@ const ViewOrder = ({id}) => {
     useEffect(()=>{
         setIsLoading(true);
         setError(false);
-        axios.get(`/order/${id}`)
+        axios.get(`${baseUrl}/order/${id}`)
             .then(res =>{
                 if(res.data.order){
                     setIsLoading(false);

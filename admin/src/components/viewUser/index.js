@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, {useState,useEffect} from 'react'
 import './viewUser.css';
 import Loader from '../loader';
+import {baseUrl} from '../../context';
 import Error from '../error';
 
 const ViewUser = ({id}) => {
@@ -12,7 +13,7 @@ const ViewUser = ({id}) => {
     useEffect(()=>{
         setIsLoading(true);
         setError(false);
-        axios.get(`/user/find/${id}`)
+        axios.get(`${baseUrl}/user/find/${id}`)
             .then(res=>{
                 if(res.data.user){
                     setUser(res.data.user);

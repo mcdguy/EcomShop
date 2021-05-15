@@ -4,7 +4,7 @@ import './editCoupon.css';
 import Loader from '../loader';
 import Error from '../error';
 import Alert from '../alert';
-import { useGlobalContext } from '../../context';
+import { useGlobalContext,baseUrl } from '../../context';
 import ValidateError from '../validateError';
 import {handleEditCouponError} from '../../utils/handleError';
 
@@ -28,7 +28,7 @@ const EditCoupon = ({id}) => {
     useEffect(()=>{
         setIsLoading(true);
         setError(false);
-        axios.get(`/coupon/${id}`)
+        axios.get(`${baseUrl}/coupon/${id}`)
             .then(res=>{
                 if(res.data.coupon){
                     setIsLoading(false);
@@ -54,7 +54,7 @@ const EditCoupon = ({id}) => {
 
         setEditLoader(true);
         //error handling of input
-        axios.patch(`/coupon/${id}`,{discount: discountRef.current.value})
+        axios.patch(`${baseUrl}/coupon/${id}`,{discount: discountRef.current.value})
             .then(res => {
                 if(res.data.success){
                     // console.log('coupon updated');

@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import { useGlobalContext } from '../../context'
+import { useGlobalContext,baseUrl } from '../../context'
 import './createAdmin.css';
 import axios from 'axios';
 import Alert from '../alert';
@@ -45,7 +45,7 @@ const CreateAdmin = () => {
             setCreateError([]);
         }
         setCreateLoader(true);
-        axios.post('/admin',{email:admin.email,password:admin.password,role:admin.role,name:admin.name})
+        axios.post(`${baseUrl}/admin`,{email:admin.email,password:admin.password,role:admin.role,name:admin.name})
             .then(res=>{
                 if(res.data.success){
                     console.log('admin created');

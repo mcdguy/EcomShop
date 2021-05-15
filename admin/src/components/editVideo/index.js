@@ -4,7 +4,7 @@ import './editVideo.css';
 import Loader from '../loader';
 import Error from '../error';
 import Alert from '../alert';
-import { useGlobalContext } from '../../context';
+import { useGlobalContext,baseUrl } from '../../context';
 import ValidateError from '../validateError';
 import {handleVideoError} from '../../utils/handleError';
 
@@ -29,7 +29,7 @@ const EditVideo = ({id}) => {
     useEffect(()=>{
         setIsLoading(true);
         setError(false);
-        axios.get(`/gallery/${id}`)
+        axios.get(`${baseUrl}/gallery/${id}`)
             .then(res=>{
                 if(res.data.video){
                     setVideo(res.data.video);
@@ -59,7 +59,7 @@ const EditVideo = ({id}) => {
             title: titleRef.current.value,
             body: bodyRef.current.value
         }
-        axios.patch(`/gallery/${video._id}`,newVideo)
+        axios.patch(`${baseUrl}/gallery/${video._id}`,newVideo)
             .then(res =>{
                 if(res.data.success){
                     console.log('video updated');

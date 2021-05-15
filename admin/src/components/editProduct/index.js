@@ -4,7 +4,7 @@ import axios from 'axios';
 import Loader from '../loader';
 import Error from '../error';
 import Alert from '../alert';
-import { useGlobalContext } from '../../context';
+import { useGlobalContext,baseUrl } from '../../context';
 import ValidateError from '../validateError';
 import {handleProductError} from '../../utils/handleError';
 import {formatPrice} from '../../utils/formatPrice';
@@ -40,7 +40,7 @@ const EditProduct = ({id}) => {
         let cancel;
         setIsLoading(true);
         setError(false)
-        axios(`/product/shop/${id}`,{
+        axios(`${baseUrl}/product/shop/${id}`,{
             cancelToken: new axios.CancelToken(c=> {cancel =c})
         })
         .then(res =>{
@@ -90,7 +90,7 @@ const EditProduct = ({id}) => {
                 data.append('img',images[i]);
             }
         }
-        axios.patch(`/product/${product._id}`,data)
+        axios.patch(`${baseUrl}/product/${product._id}`,data)
         .then(res=>{
             if(res.data.success){
                 // console.log('product edited successfully');

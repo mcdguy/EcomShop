@@ -32,17 +32,18 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use('/images',express.static('images'));
 
-// app.use((req,res,next)=>{
-//   const origin = req.headers.origin;
-//   const allowedOrigins = ['http://127.0.0.1:8020', 'http://localhost:8020', 'http://127.0.0.1:9000', 'http://localhost:9000'];
-//   if (allowedOrigins.includes(origin)) {
-//        res.setHeader('Access-Control-Allow-Origin', origin);
-//        res.header('Access-Control-Allow-Credentials', true);
-//   }
-//   res.header('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,POST,DELETE');
-//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//   next();
-// })
+app.use((req,res,next)=>{
+  const origin = req.headers.origin;
+  console.log(origin);
+  const allowedOrigins = ['http://127.0.0.1:8022', 'http://localhost:8020'];
+  if (allowedOrigins.includes(origin)) {
+       res.setHeader('Access-Control-Allow-Origin', origin);
+       res.header('Access-Control-Allow-Credentials', true);
+  }
+  res.header('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+})
 
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build'));

@@ -3,7 +3,7 @@ import React,{useState} from 'react';
 import './createCoupon.css';
 import Alert from '../alert';
 import Loader from '../loader';
-import { useGlobalContext } from '../../context';
+import { useGlobalContext,baseUrl } from '../../context';
 import ValidateError from '../validateError';
 import {handleCreateCouponError} from '../../utils/handleError';
 
@@ -40,7 +40,7 @@ const CreateCoupon = () => {
             setCreateError([]);
         }
         setCreateLoader(true);
-        axios.post('/coupon',{code: coupon.code,discount: coupon.discount})
+        axios.post(`${baseUrl}/coupon`,{code: coupon.code,discount: coupon.discount})
             .then(res =>{
                 if(res.data.success){
                     console.log('coupon created');

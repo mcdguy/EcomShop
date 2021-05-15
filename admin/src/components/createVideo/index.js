@@ -3,7 +3,7 @@ import React,{useState} from 'react';
 import './createVideo.css';
 import Alert from '../alert';
 import Loader from '../loader';
-import { useGlobalContext } from '../../context';
+import { useGlobalContext,baseUrl } from '../../context';
 import ValidateError from '../validateError';
 import {handleVideoError} from '../../utils/handleError';
 
@@ -45,7 +45,7 @@ const CreateVideo = () => {
             title: video.title,
             body: video.title
         }
-        axios.post('/gallery',newVideo)
+        axios.post(`${baseUrl}/gallery`,newVideo)
             .then(res=>{
                 if(res.data.success){
                     console.log('video created');

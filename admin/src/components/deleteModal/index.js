@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react';
 import './deleteModal.css';
 import axios from 'axios';
 import Alert from '../alert';
-import { useGlobalContext } from '../../context';
+import { useGlobalContext,baseUrl } from '../../context';
 
 const DeleteModal = ({id,closeModal,source}) => {
     const {fetchGallery,fetchCoupon,fetchProduct,fetchLocation,fetchAdmin} = useGlobalContext();
@@ -15,7 +15,7 @@ const DeleteModal = ({id,closeModal,source}) => {
     }
     const handleDelete = () =>{
         if(source === 'location'){
-            axios.delete(`/location/${id}`)
+            axios.delete(`${baseUrl}/location/${id}`)
                 .then(res => {
                     if(res.data.success){
                         closeModal();
@@ -32,7 +32,7 @@ const DeleteModal = ({id,closeModal,source}) => {
             // i can also trigger rerender of list 
         }
         if(source === 'product'){
-            axios.delete(`/product/${id}`)
+            axios.delete(`${baseUrl}/product/${id}`)
                 .then(res => {
                     if(res.data.success){
                         closeModal();
@@ -48,7 +48,7 @@ const DeleteModal = ({id,closeModal,source}) => {
                 .catch(err => console.log(err));
         }
         if(source === 'coupon'){
-            axios.delete(`coupon/${id}`)
+            axios.delete(`${baseUrl}/coupon/${id}`)
             .then(res => {
                 if(res.data.success){
                     closeModal();
@@ -64,7 +64,7 @@ const DeleteModal = ({id,closeModal,source}) => {
             .catch(err => console.log(err));
         }
         if(source === 'gallery'){
-            axios.delete(`gallery/${id}`)
+            axios.delete(`${baseUrl}/gallery/${id}`)
                 .then(res =>{
                     if(res.data.success){
                         closeModal();
@@ -79,7 +79,7 @@ const DeleteModal = ({id,closeModal,source}) => {
                 })
         }
         if(source === 'admin'){
-            axios.delete(`admin/delete-admin/${id}`)
+            axios.delete(`${baseUrl}/admin/delete-admin/${id}`)
                 .then(res =>{
                     if(res.data.success){
                         closeModal();

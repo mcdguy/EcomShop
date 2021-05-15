@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGlobalContext } from '../../context';
+import { useGlobalContext,baseUrl } from '../../context';
 import './sidebar.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -7,7 +7,7 @@ import axios from 'axios';
 const Sidebar = () => {
     const {currentTab,setCurrentTab,setIsLoggedIn,setType,setAdmin,type} = useGlobalContext();
     const setLogout = () =>{
-      axios.post('/admin/logout')
+      axios.post(`${baseUrl}/admin/logout`)
         .then(res=>{
           if(res.data.success){
             setIsLoggedIn(false);

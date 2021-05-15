@@ -3,7 +3,7 @@ import './createLocation.css';
 import axios from 'axios';
 import Alert from '../alert';
 import Loader from '../loader';
-import { useGlobalContext } from '../../context';
+import { useGlobalContext,baseUrl } from '../../context';
 import ValidateError from '../validateError';
 import {handleLocationError} from '../../utils/handleError';
 
@@ -57,7 +57,7 @@ const CreateLocation = () => {
                 coordinates: [location.longitude,location.latitude]
             }
         }
-        axios.post('/location',{location:newLocation})
+        axios.post(`${baseUrl}/location`,{location:newLocation})
             .then(res=>{
                 if(res.data.success){
                     console.log('location created');

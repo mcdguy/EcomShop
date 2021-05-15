@@ -1,5 +1,5 @@
 import React,{useState,useEffect,useRef} from 'react'
-import { useGlobalContext } from '../../context'
+import { useGlobalContext,baseUrl } from '../../context'
 import Loader from '../loader';
 import Error from '../error';
 import axios from 'axios';
@@ -29,7 +29,7 @@ const EditAdmin = ({id}) => {
         e.preventDefault();
         setEditLoader(true);
         console.log(admin.role);
-        axios.patch(`/admin/edit-role/${id}`,{role: admin.role})
+        axios.patch(`${baseUrl}/admin/edit-role/${id}`,{role: admin.role})
             .then(res =>{
                 if(res.data.success){
                     setShowAlert((prev)=>{
@@ -49,7 +49,7 @@ const EditAdmin = ({id}) => {
     useEffect(()=>{
         setIsLoading(true);
         setError(false);
-        axios.get(`/admin/find/${id}`)
+        axios.get(`${baseUrl}/admin/find/${id}`)
             .then(res=>{
                 if(res.data.admin){
                     setIsLoading(false);

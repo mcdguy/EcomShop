@@ -4,7 +4,7 @@ import axios from 'axios';
 import Loader from '../loader';
 import Error from '../error';
 import Alert from '../alert';
-import { useGlobalContext } from '../../context';
+import { useGlobalContext,baseUrl } from '../../context';
 import ValidateError from '../validateError';
 import {handleLocationError} from '../../utils/handleError';
 
@@ -33,7 +33,7 @@ const EditLocation = ({id}) => {
     useEffect(()=>{ 
         setIsLoading(true);
         setError(false);
-        axios(`/location/${id}`)
+        axios(`${baseUrl}/location/${id}`)
             .then(res =>{
                 console.log(res.data.location);
                 if(res.data.location) setLocation(res.data.location);
@@ -67,7 +67,7 @@ const EditLocation = ({id}) => {
                 coordinates:[longitudeRef.current.value,latitudeRef.current.value]
             }
         }
-        axios.patch(`/location/${id}`,newLocation)
+        axios.patch(`${baseUrl}/location/${id}`,newLocation)
             .then(res => {
                 if(res.data.success){
                     console.log('location updated');

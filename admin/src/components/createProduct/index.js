@@ -3,7 +3,7 @@ import React,{useState} from 'react';
 import './createProduct.css';
 import Alert from '../alert';
 import Loader from '../loader';
-import { useGlobalContext } from '../../context';
+import { useGlobalContext,baseUrl } from '../../context';
 import ValidateError from '../validateError';
 import {handleProductError} from '../../utils/handleError';
 
@@ -73,7 +73,7 @@ const CreateProduct = () => {
         for(let i = 0;i<totalImages;i++){
             data.append('img',images[i]);
         }
-        axios.post('/product',data)
+        axios.post(`${baseUrl}/product`,data)
             .then(res=>{
                 if(res.data.success){
                     console.log('product created successfully');
