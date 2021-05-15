@@ -1,12 +1,15 @@
 import React from 'react'
-import { useParams } from 'react-router'
+import { useParams,Redirect } from 'react-router'
 import { useGlobalContext } from '../../context';
 import ViewUser from '../../components/viewUser';
 import ViewOrder from '../../components/viewOrder';
 
 const View = () => {
     const {id} = useParams();
-    const {currentTab} = useGlobalContext();
+    const {currentTab,isLoggedIn} = useGlobalContext();
+    if(!isLoggedIn){
+        return <Redirect to ="/login"></Redirect>
+    }
     if(currentTab === 'user'){
         return (
             <div className="view page">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router';
+import { Redirect, useParams } from 'react-router';
 import { useGlobalContext } from '../../context';
 import './edit.css';
 import EditLocation from '../../components/editLocation';
@@ -11,7 +11,10 @@ import EditAdmin from '../../components/editAdmin';
 
 const Edit = () => {
     const {id} = useParams();
-    const {currentTab} = useGlobalContext();
+    const {currentTab,isLoggedIn} = useGlobalContext();
+    if(!isLoggedIn){
+        return <Redirect to ="/login"></Redirect>
+    }
     if(currentTab === 'product'){
     return(
         <div className="edit page">

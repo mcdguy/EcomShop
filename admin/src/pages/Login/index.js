@@ -1,12 +1,13 @@
 import React,{useState,useRef} from 'react';
 import './login.css';
+import { Redirect } from 'react-router'
 import { useGlobalContext,baseUrl } from '../../context';
 import axios from 'axios';
 import Loader from '../../components/loader';
 
 
 const Login = () => {
-    const {setIsLoggedIn,setType,fetchAdmin,fetchOrder,fetchUser}= useGlobalContext();
+    const {setIsLoggedIn,setType,fetchAdmin,fetchOrder,fetchUser,isLoggedIn}= useGlobalContext();
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const [error,setError] = useState({email: '',password:''});
@@ -44,8 +45,10 @@ const Login = () => {
                 setShowSpinner(false);
             }
             if(res.data.success){
+                console.log()
                 setIsLoggedIn(true);
                 setType(res.data.type);
+                // setShowSpinner(false);
                 fetchAdmin();//this wasn't erasing if logged in and logged out with different admin roles except on refresh
                 fetchOrder();
                 fetchUser();
@@ -58,27 +61,29 @@ const Login = () => {
 
     const forgotPassword = () =>{
         let msg = 'A password reset link has been sent to your email';
+        setShowSpinner(true);
         if(email === ''){
             setError(error => {return({...error,email: 'please enter your email'})});
             return;
         }
-        setShowSpinner(true);
-        setForgotMessage(msg);
-        setShowForgot(true);
-        // axios.post('/admin/forgotpassword',{email})
-        // .then(res =>{
-        //     console.log(res.data);
-        //     if(res.data.success){
-                    // setForgotMessage(msg);
-        //             setShowForgot(true);
-        //     }
-        //     if(res.data.error){
-        //         setShowSpinner(false);
-        //         setForgotMessage(res.data.error);
-        //         setShowForgot(true);
-        //     }
-        // })
-        // .catch(err => console.log('an error occurred'));
+        axios.post(`${baseUrl}/admin/forgotpassword`,{email})
+        .then(res =>{
+            console.log(res.data);
+            if(res.data.success){
+                    setShowSpinner(false);
+                    setForgotMessage(msg);
+                    setShowForgot(true);
+            }
+            if(res.data.error){
+                setShowSpinner(false);
+                setForgotMessage(res.data.error);
+                setShowForgot(true);
+            }
+        })
+        .catch(err => console.log('an error occurred'));
+    }
+    if(isLoggedIn){
+        return <Redirect to ="/"></Redirect>
     }
 
     return (

@@ -94,18 +94,19 @@ router.get('/status',(req,res)=>{
 
 router.post('/forgotpassword',(req,res)=>{
     const {email} = req.body;
-    User.findOne({email})
+    Admin.findOne({email})
         .then(result=>{
             if(!result) return res.json({error: 'email not registered'});
+            // console.log(result);
             const secret = process.env.FORGOT__PASS + result.password;
             const payload = {email:result.email,id:result._id};
             const token = jwt.sign(payload,secret,{expiresIn:'15m'});
-            const link = `http://localhost:3000/change-password/${result._id}/${token}`;
+            const link = `http://localhost:3000/reset-password/${result._id}/${token}`;
             const mailOptions = {
                 from: process.env.EMAIL,
                 to: result.email,
                 subject: 'reset password',
-                text: forgotPassword(result.username,link)
+                text: forgotPassword(result.name,link)
             }
             // console.log(mailOptions);
             transporter.sendMail(mailOptions, function(error, info){
@@ -121,6 +122,41 @@ router.post('/forgotpassword',(req,res)=>{
     console.log(email);
     console.log('forgot password');
 })
+
+
+router.post('/update-password',async (req,res)=>{
+    let {id,token,password} = req.body;
+    //simple password validation in backend
+    if(password.length < 6){
+        return res.json({error: 'password too short'});
+    }
+    console.log(id);
+    const salt = await bcrypt.genSalt();
+    password = await bcrypt.hash(password,salt);
+    // console.log(password);
+    Admin.findById(id)
+        .then(result=>{
+            console.log(result);
+            if(!result) return res.json({error: 'admin not found'});
+            const secret = process.env.FORGOT__PASS + result.password;
+            jwt.verify(token,secret,(err,decodedToken)=>{
+                if(err){
+                    console.log('token is not valid');
+                    return res.json({error: 'link has expired'});
+                }
+                else{
+                    // console.log(decodedToken);
+                    Admin.findByIdAndUpdate(id,{password},{new:true})
+                        .then(result=>{
+                            return (res.json({success: 'password reset successful'}));
+                        })
+                }
+            })
+        })
+        .catch(err => res.json({error: 'an error occurred'}));
+
+})
+
 
 //update admin
 router.post('/',adminAuth(['admin']),async (req,res)=>{
