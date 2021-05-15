@@ -59,7 +59,7 @@ router.post('/login',(req,res)=>{
 router.post('/logout',(req,res)=>{
     // console.log('logout');
     console.log('logout');
-    res.clearCookie('jwt',{domain:'tender-swartz-02e579.netlify.app',path:'/'});
+    res.clearCookie('jwt',{httpOnly: true,sameSite: 'None', secure: true,domain:'tender-swartz-02e579.netlify.app',path:'/'});
     res.json({success: 'admin logged out'});
 })
 
