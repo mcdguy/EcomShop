@@ -3,8 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const Order = require('./models/order');
-const cors = require('cors');
+// const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
@@ -20,22 +19,10 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));  
 app.use('/images',express.static('images'));
 
-// app.use((req,res,next)=>{
-//   const origin = req.headers.origin;
-//   console.log(origin);
-//   const allowedOrigins = ['http://127.0.0.1:8022', 'http://localhost:8020'];
-//   if (allowedOrigins.includes(origin)) {
-//        res.setHeader('Access-Control-Allow-Origin', origin);
-//        res.header('Access-Control-Allow-Credentials', true);
-//   }
-//   res.header('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,POST,DELETE');
-//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//   next();
-// })
-
 // //using * for cors will not let accept cookies thus auth will not work 
-// if(process.env.NODE_ENV === 'production'){
-//     app.use(express.static('client/build'));
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static('client/build'));
+}
 
 
 //     //only using this middleware is not enough i need to set withCredentials: true with every axios request
@@ -52,7 +39,6 @@ app.use('/images',express.static('images'));
 //     app.use(cors(corsOptions));
     
 
-// }
 
 app.use(cookieParser());
 app.use('/user',require('./routes/auth-route'));
