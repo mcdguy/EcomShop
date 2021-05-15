@@ -1,13 +1,28 @@
 import axios from 'axios';
 import React,{useState} from 'react';
 import './createVideo.css';
+import Alert from '../alert';
+import Loader from '../loader';
+import { useGlobalContext } from '../../context';
+import ValidateError from '../validateError';
+import {handleVideoError} from '../../utils/handleError';
 
 const CreateVideo = () => {
+    const {fetchGallery} = useGlobalContext();
     const [video,setVideo] = useState({
         url:'',
         title: '',
         body: ''
     })
+    const [createError,setCreateError] = useState([]);
+    const [createLoader,setCreateLoader] = useState(false);
+    const [alert,setShowAlert] = useState({msg:'',show:false});
+
+    const hideAlert = () =>{
+        setShowAlert(prev =>{
+            return ({...prev,msg:'',show:false});
+        })
+    }
     const handleChange = (e) =>{
         setVideo(video => {
             return({...video,[e.target.name]:e.target.value})
@@ -16,6 +31,15 @@ const CreateVideo = () => {
 
     const createVideo = (e) =>{
         e.preventDefault();
+        const error = handleVideoError(video.url);
+        if(error.length>0){
+            setCreateError(error);
+            return;
+        }
+        if(error.length === 0){
+            setCreateError([]);
+        }
+        setCreateLoader(true);
         const newVideo ={
             url: video.url,
             title: video.title,
@@ -25,10 +49,17 @@ const CreateVideo = () => {
             .then(res=>{
                 if(res.data.success){
                     console.log('video created');
+                    setShowAlert((prev)=>{
+                        return ({...prev,msg:res.data.success,show:true});
+                    })
+                    fetchGallery();
                 }
                 if(res.data.error){
-                    console.log('could not create video');
+                    setShowAlert((prev)=>{
+                        return ({...prev,msg:res.data.error,show:true});
+                    })
                 }
+                setCreateLoader(false);
             })
         .catch(err => console.log({error: 'could not save location'}));
     }
@@ -66,6 +97,9 @@ const CreateVideo = () => {
                 </table>
                 <div className="btn-wrapper">
                     <button onClick={(e)=>createVideo(e)} className="btn">publish video</button>
+                    {createError.length?<ValidateError error={createError}/>:null}
+                    {createLoader?<div className="inline__loader"><Loader/></div>:null}
+                    {alert.show?<Alert msg={alert.msg} hideAlert={hideAlert}/>:null}
                 </div>
             </form>
         </div>

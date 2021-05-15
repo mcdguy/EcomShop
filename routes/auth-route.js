@@ -8,14 +8,16 @@ const {handleAddressError} = require('../utils/handleAddressError');
 const {checkUser} = require('../utils/userDetails');
 const requireAuth = require('../middleware/auth-middleware');
 const {forgotPassword,transporter} = require('../utils/nodemailer');
+const adminAuth = require('../middleware/admin-middleware');
+
 //i could have seperated auth routes and user routes
 
 const maxAge = 3 * 24 * 60 * 60; //3 days in seconds
 const createToken = (id) =>{
     return jwt.sign({id},process.env.AUTH_SECRET,{expiresIn:maxAge});
 }
-
-router.get('/',(req,res)=>{
+//getting all user admin route
+router.get('/',adminAuth(['all']),(req,res)=>{
     let {page,limit} = req.query;
     if(!page){
         page = 1;
@@ -25,15 +27,16 @@ router.get('/',(req,res)=>{
     }
     limit = parseInt(limit);
     skip = (page - 1) * limit;
-    User.find().skip(skip).limit(limit)
+    User.find().skip(skip).limit(limit).sort({"createdAt": -1})
         .then(result =>{
             res.json({users: result, page,limit});
         })
         .catch(err => res.json({error: 'could not get users'}))
 })
 
-
-router.get('/find/:id',(req,res)=>{
+//don't know if it is used somewhere outside admin panel
+//admin route
+router.get('/find/:id',adminAuth(['all']),(req,res)=>{
     const {id} = req.params;
     User.findById(id)
         .then(result=>{
@@ -43,6 +46,28 @@ router.get('/find/:id',(req,res)=>{
             return res.json({user: result});
         })
         .catch(err => res.json({error: 'an error occured'}));
+})
+
+//admin route
+router.get('/find-user',adminAuth(['all']),(req,res)=>{
+    const {filter,query} = req.query;
+    let search = {};
+    if(filter === 'password'){
+        return res.json({error: 'no results found'});
+    }
+    if(filter === 'contact'){
+        search = {"address.contact": query};
+    }else{
+        search[filter] = query;
+    }
+    // console.log(search);
+    User.find(search)
+        .then(result=>{
+            // console.log(result);
+            if(!result) return res.json({user: []})
+            return res.json({user:result});
+        })
+        .catch(err => res.json({error: 'an error occurred'}));
 })
 
 //creating a user in db
@@ -115,7 +140,7 @@ router.post('/forgotpassword',(req,res)=>{
             const secret = process.env.FORGOT__PASS + result.password;
             const payload = {email:result.email,id:result._id};
             const token = jwt.sign(payload,secret,{expiresIn:'15m'});
-            const link = `http://sbcoffeecompany.herokuapp.com/reset-password/${result._id}/${token}`;
+            const link = `http://localhost:3000/reset-password/${result._id}/${token}`;
             const mailOptions = {
                 from: process.env.EMAIL,
                 to: result.email,

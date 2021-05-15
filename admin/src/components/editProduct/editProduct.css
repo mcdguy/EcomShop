@@ -8,6 +8,9 @@
     display: block;
     padding-bottom: 100%;
 }
+.read__text{
+    white-space: normal;
+}
 .product__edit__img img{
     width: 100%;
     position: absolute;

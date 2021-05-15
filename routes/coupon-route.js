@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Coupon = require('../models/coupon');
+const adminAuth = require('../middleware/admin-middleware');
 
-router.get('/',(req,res)=>{
-    Coupon.find()
+router.get('/',adminAuth(['all']),(req,res)=>{
+    Coupon.find().sort({"createdAt": -1})
         .then(result=>{
             if(!result){
                 return res.json({error: 'could not fetch coupons'});
@@ -42,7 +43,7 @@ router.get('/:id',(req,res)=>{
         })
 })
 
-router.post('/',(req,res)=>{
+router.post('/',adminAuth(['admin','edit admin']),(req,res)=>{
     const {code,discount} = req.body;
     console.log(code,discount);
     Coupon.create({code,discount})
@@ -52,7 +53,7 @@ router.post('/',(req,res)=>{
         .catch(err => res.json({erorr: 'could not create coupon'}));
 })
 
-router.patch('/:id',(req,res)=>{
+router.patch('/:id',adminAuth(['admin','edit admin']),(req,res)=>{
     const {id} = req.params;
     const {discount} = req.body;
     if(!discount){
@@ -71,7 +72,7 @@ router.patch('/:id',(req,res)=>{
     
 })
 
-router.delete('/:id',(req,res)=>{
+router.delete('/:id',adminAuth(['admin','edit admin']),(req,res)=>{
     const {id} = req.params;
     Coupon.findByIdAndDelete(id)
         .then(result=>{

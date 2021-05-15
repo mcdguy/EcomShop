@@ -32,6 +32,18 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use('/images',express.static('images'));
 
+// app.use((req,res,next)=>{
+//   const origin = req.headers.origin;
+//   const allowedOrigins = ['http://127.0.0.1:8020', 'http://localhost:8020', 'http://127.0.0.1:9000', 'http://localhost:9000'];
+//   if (allowedOrigins.includes(origin)) {
+//        res.setHeader('Access-Control-Allow-Origin', origin);
+//        res.header('Access-Control-Allow-Credentials', true);
+//   }
+//   res.header('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,POST,DELETE');
+//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//   next();
+// })
+
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build'));
 }
@@ -46,7 +58,7 @@ app.use('/coupon',require('./routes/coupon-route'));
 app.use('/location',require('./routes/location-route'));
 app.use('/order',require('./routes/order-route'))
 app.use('/gallery',require('./routes/gallery-route'));
-
+app.use('/admin',(require('./routes/admin-route')));
 //for 404 error on refresh we will serve index.html
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname+'/client/build/index.html'));

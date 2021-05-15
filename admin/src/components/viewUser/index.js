@@ -1,21 +1,38 @@
 import axios from 'axios';
 import React, {useState,useEffect} from 'react'
 import './viewUser.css';
+import Loader from '../loader';
+import Error from '../error';
 
 const ViewUser = ({id}) => {
+    const [isLoading,setIsLoading] = useState(true);
+    const [error,setError] = useState(false);
+
     const [user,setUser] = useState(null);
     useEffect(()=>{
+        setIsLoading(true);
+        setError(false);
         axios.get(`/user/find/${id}`)
             .then(res=>{
                 if(res.data.user){
                     setUser(res.data.user);
+                    setIsLoading(false);
                 }
                 if(res.data.error){
+                    setError(true);
                     console.log(res.data.error);
                 }
             })
     },[]);
 
+    if(isLoading){
+        return <Loader/>;
+    }
+    
+    if(error){
+        return <Error/>;
+    }
+    
     if(!user) return null;
 
     return (

@@ -2,43 +2,54 @@ import axios from 'axios';
 import React,{useState,useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { useGlobalContext } from '../../context';
+import Loader from '../loader';
+import Error from '../error';
+import './user.css';
+import { useFilterContext } from '../../filterContext';
 
 const User = () => {
-    const {user,userHasMore,showNextUserPage} = useGlobalContext();
-    // const [filter,setFilter] = useState('username');
-    // const [query,setQuery] = useState('');
-    // const [filteredUser,setFilteredUser] = useState([]);
+    const {user,userHasMore,showNextUserPage,isUserLoading,userError} = useGlobalContext();
+    const {userFilter,setUserFilter,userQuery,setUserQuery} = useFilterContext();
+    const [filteredUser,setFilteredUser] = useState([]);
     
-    // useEffect(()=>{
-    //     if(query===''){
-    //         setFilteredUser(user);
-    //     }
-    //     if(filter === 'contact'){
-    //         let newUsers = user.filter(u =>{
-    //             if(u.address){
-    //                 return(u.address.contact.toString().toLowerCase().indexOf(query.toLowerCase())>=0)
-    //             }else{
-    //                 return false;
-    //             }
-    //         })
-    //         setFilteredUser(newUsers);
-    //         return;
-    //     }
-    //     let newUsers = user.filter(u =>{
-    //         return(u[filter].toString().toLowerCase().indexOf(query.toLowerCase())>=0)
-    //     })
-    //     setFilteredUser(newUsers);
-    // },[query,filter])
+    useEffect(()=>{
+        let cancel;
+        if(userQuery===''){
+            setFilteredUser(user);
+            return;
+        }
+        axios.get(`/user/find-user?filter=${userFilter}&query=${userQuery}`,{
+                cancelToken: new axios.CancelToken(c=> {cancel =c})
+            })
+            .then(res =>{
+                if(res.data.user){
+                    setFilteredUser(res.data.user);
+                }
+                // setIsUserLoading(false);
+            })
+            .catch(err => {
+                if(axios.isCancel(err)) return;
+                console.log(err);
+            })
+        return ()=> cancel();
+        
+    },[userQuery,user,userFilter])
+    if(userError){
+        return <Error/>
+    }
 
     return (
         <div className="read__users action__read">
             <nav className="users__nav control__nav">
-                {/* <input autoComplete="off" type="text" value={query} onChange={(e)=>setQuery(e.target.value)} name="search" placeholder="search"/>
-                <select value={filter} onChange={(e)=>{setFilter(e.target.value)}}>
-                    <option value="username">username</option>
-                    <option value="email">email</option>
-                    <option value="contact">contact</option>
-                </select> */}
+                <div>
+                    <input className="search" autoComplete="off" type="text" value={userQuery} onChange={(e)=>setUserQuery(e.target.value)} name="search" placeholder="search"/>
+                    <select className="search__options" value={userFilter} onChange={(e)=>{setUserFilter(e.target.value)}}>
+                        <option value="username">username</option>
+                        <option value="email">email</option>
+                        <option value="contact">contact</option>
+                        {/* <option value="_id">id</option> */}
+                    </select>
+                </div>
             </nav>
             {user.length?
             <>
@@ -61,7 +72,7 @@ const User = () => {
                         </tr>  
                     </thead>
                     <tbody>
-                    {user.map(u=>{
+                    {filteredUser.map(u=>{
                             return(
                                     <tr key={u._id}>
                                         <td>
@@ -83,14 +94,15 @@ const User = () => {
                     </tbody>
                 </table>
                 {userHasMore?
-                <div className="btn-wrapper">
-                    <button onClick={showNextUserPage} className="btn paginate-btn">show more</button>
-                </div>
-                :
-                <div className="btn-wrapper">End of result</div>
+                    <div className="btn-wrapper">
+                        <button onClick={showNextUserPage} className="btn paginate-btn">show more</button>
+                    </div>
+                    :
+                    <div className="btn-wrapper">End of result</div>
                 }
               </>  
             :null}
+            {isUserLoading?<div className="inline__loader"><Loader/></div>:null}
         </div>
     )
 }

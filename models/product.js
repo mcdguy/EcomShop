@@ -38,6 +38,6 @@ const productSchema = new Schema({
     discount: {
         type: Number,
     }
-})
+},{timestamps:true});
 
 module.exports = mongoose.model('Product',productSchema);

@@ -8,7 +8,7 @@ const couponSchema = new Schema({
     discount:{
         type: Number
     }
-})
+},{timestamps:true})
 
 const Coupon = mongoose.model('Coupon',couponSchema);
 module.exports = Coupon;

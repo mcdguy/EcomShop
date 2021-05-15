@@ -11,7 +11,7 @@ const gallerySchema = new Schema({
     body:{
         type: String
     }
-})
+},{timestamps:true})
 
 const Gallery = mongoose.model('Gallery',gallerySchema);
 module.exports = Gallery;

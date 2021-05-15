@@ -8,11 +8,27 @@ import Error from './pages/Error';
 import Edit from './pages/Edit';
 import View from './pages/View';
 import Create from './pages/Create';
-// import CreateCoupon from './pages/createCoupon';
-// import CreateLocation from './pages/createLocation';
-// import CreateProduct from '../src/components/createProduct';
+import Login from './pages/Login';
+import Loader from './components/loader';
+import { useGlobalContext } from './context';
+
 function App() {
-  const [currentTab,setCurrentTab] = useState('product');
+  const {isLoggedIn,showMainLoader} = useGlobalContext();
+  if(showMainLoader){
+    return(
+      <div className="main__loader">
+        <Loader/>
+      </div>
+    );
+  }
+  //just manipulating this can expose a lot of data which is easy
+  //what i can do is seperate all routes in admin and then lock them
+  //keeping routes open for frontend is not good
+  //try commenting the below condition and see
+  if(!isLoggedIn){
+    return  <Login/>;
+  }
+
   return (
     <Router>
       <Sidebar></Sidebar>
@@ -25,20 +41,8 @@ function App() {
           <Create/>
         </Route>
         
-
-        {/* <Route path="/product/create" exact>
-          <CreateProduct/>
-        </Route> */}
-        
-        {/* 
-        <Route path="/create/coupon" exact>
-          <CreateCoupon/>
-        </Route>
-        <Route path="/create/location" exact>
-          <CreateLocation/>
-        </Route> */}
-
         <Route path="/edit/:id" children={<Edit/>} exact></Route>
+        
         <Route path="/view/:id" children={<View/>} exact></Route>
 
         <Route path="*">

@@ -1,16 +1,17 @@
 const express = require('express');
 const Gallery = require('../models/gallery');
 const router = express.Router();
-
+const adminAuth = require('../middleware/admin-middleware');
+//accessed by frontend
 router.get('/',(req,res)=>{
-    Gallery.find()
+    Gallery.find().sort({"createdAt": -1})
         .then((result)=>{
             if(!result) return res.json({error: 'videos not available'});
             res.json({videos: result});
         })
         .catch(err => res.json({error:err}));
 })
-
+//don't think its that important
 router.get('/:id',(req,res)=>{
     const {id} = req.params;
     Gallery.findById(id)
@@ -20,7 +21,7 @@ router.get('/:id',(req,res)=>{
         })
         .catch(err => {res.json({error: 'an error occured'})});
 })
-router.post('/',(req,res)=>{
+router.post('/',adminAuth(['admin','edit admin']),(req,res)=>{
     const {url,title,body} = req.body;
     const video = {url,title,body};
     Gallery.create(video)
@@ -32,7 +33,7 @@ router.post('/',(req,res)=>{
         })
 })
 
-router.delete('/:id',(req,res)=>{
+router.delete('/:id',adminAuth(['admin','edit admin']),(req,res)=>{
     const {id} = req.params;
     Gallery.findByIdAndDelete(id)
         .then(()=>{
@@ -41,7 +42,7 @@ router.delete('/:id',(req,res)=>{
         .catch((err)=>{res.json({error: 'could not delete video'})});
 })
 
-router.patch('/:id',(req,res)=>{
+router.patch('/:id',adminAuth(['admin','edit admin']),(req,res)=>{
     const {id} = req.params
     const {url,title,body} = req.body;
     const video = {url,title,body};

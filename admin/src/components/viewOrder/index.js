@@ -1,22 +1,46 @@
 import axios from 'axios';
 import React,{useState,useEffect} from 'react'
 import './viewOrder.css';
+import {formatPrice} from '../../utils/formatPrice';
+import Loader from '../loader';
+import Error from '../error';
+var moment = require('moment');
 
 const ViewOrder = ({id}) => {
+    const [isLoading,setIsLoading] = useState(true);
+    const [error,setError] = useState(false);
+
     const [order,setOrder] = useState(null);
     useEffect(()=>{
+        setIsLoading(true);
+        setError(false);
         axios.get(`/order/${id}`)
             .then(res =>{
                 if(res.data.order){
+                    setIsLoading(false);
                     setOrder(res.data.order);
                 }
                 if(res.data.error){
+                    setError(true);
                     console.log(res.data.error);
                 }
             })
+            .catch(err => {
+                console.log(err);
+                setError(true);
+            })
     },[]);
-
+    
+    if(isLoading){
+        return <Loader/>;
+    }
+    
+    if(error){
+        return <Error/>;
+    }
+    
     if(!order) return null;
+    
     return (
         <div className="view__order">
 
@@ -61,7 +85,31 @@ const ViewOrder = ({id}) => {
                                 <div>amount</div>
                             </td>
                             <td>
-                                <div>&#8377; {order.amount}</div>
+                                <div>{formatPrice(order.amount)}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>discount</div>
+                            </td>
+                            <td>
+                                <div>{formatPrice(order.discount)}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>date</div>
+                            </td>
+                            <td>
+                                <div>{moment(order.createdAt).format('DD-MM-YYYY')}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>time</div>
+                            </td>
+                            <td>
+                                <div>{moment(order.createdAt).format('HH:mm:ss')}</div>
                             </td>
                         </tr>
                     </tbody>
@@ -81,6 +129,14 @@ const ViewOrder = ({id}) => {
                             </td>
                             <td>
                                 <div>{order.buyer.name}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>user</div>
+                            </td>
+                            <td>
+                                <div>{order.user || 'not registered'}</div>
                             </td>
                         </tr>
                         <tr>
@@ -212,9 +268,9 @@ const ViewOrder = ({id}) => {
                             </th>
                         </tr>
                     </thead>
-                {order.orderItems.map(item=>{
+                {order.orderItems.map((item,index)=>{
                     return(
-                        <tbody key={item._id}>
+                        <tbody key={index}>
                             <tr>
                                 <td>
                                     <div>{item.itemId}</div>
@@ -223,7 +279,7 @@ const ViewOrder = ({id}) => {
                                     <div>{item.name}</div>
                                 </td>
                                 <td>
-                                    <div>{item.price}</div>
+                                    <div>{formatPrice(item.price)}</div>
                                 </td>
                                 <td>
                                     <div>{item.pqty}</div>

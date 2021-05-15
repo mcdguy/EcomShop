@@ -1,8 +1,20 @@
 import React,{useState,useEffect,useRef} from 'react';
 import './editProduct.css';
 import axios from 'axios';
+import Loader from '../loader';
+import Error from '../error';
+import Alert from '../alert';
+import { useGlobalContext } from '../../context';
+import ValidateError from '../validateError';
+import {handleProductError} from '../../utils/handleError';
+import {formatPrice} from '../../utils/formatPrice';
+
 
 const EditProduct = ({id}) => {
+    const [isLoading,setIsLoading] = useState(true);
+    const [error,setError] = useState(false);
+    const {fetchProduct,type} = useGlobalContext();
+    
     const [product,setProduct] = useState();
     const [images,setImages] = useState();
     const nameRef = useRef(null);
@@ -13,23 +25,51 @@ const EditProduct = ({id}) => {
     const descRef = useRef(null);
     const categoryRef = useRef(null);
     const featuredRef = useRef(null);
+    
+    const [editError,setEditError] = useState([]);
+    const [editLoader,setEditLoader] = useState(false);
+    const [alert,setShowAlert] = useState({msg:'',show:false});
+    
+    const hideAlert = () =>{
+        setShowAlert(prev =>{
+            return ({...prev,msg:'',show:false});
+        })
+    }
 
     useEffect(()=>{
         let cancel;
+        setIsLoading(true);
+        setError(false)
         axios(`/product/shop/${id}`,{
             cancelToken: new axios.CancelToken(c=> {cancel =c})
         })
         .then(res =>{
             if(res.data.error) return;
             setProduct(res.data);
+            setIsLoading(false);
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            if(axios.isCancel(err)) return;
+            setError(true);
+            console.log(err)
+        });
         
         return ()=> cancel();
     },[])
 
     const editProduct = (e) =>{
         e.preventDefault();
+
+        const error = handleProductError(nameRef.current.value,priceRef.current.value,stockRef.current.value,productIdRef.current.value,weightRef.current.value,descRef.current.value);
+        if(error.length>0){
+            setEditError(error);
+            return;
+        }
+        if(error.length === 0){
+            setEditError([]);
+        }
+
+        setEditLoader(true);
         const data = new FormData();
         data.append('name',nameRef.current.value);
         data.append('price',priceRef.current.value);
@@ -53,12 +93,114 @@ const EditProduct = ({id}) => {
         axios.patch(`/product/${product._id}`,data)
         .then(res=>{
             if(res.data.success){
-                console.log('product edited successfully');
+                // console.log('product edited successfully');
+                setShowAlert((prev)=>{
+                    return ({...prev,msg:res.data.success,show:true});
+                })
+                fetchProduct();
             }
+            if(res.data.error){
+                setShowAlert((prev)=>{
+                    return ({...prev,msg:res.data.error,show:true});
+                })
+            }
+            setEditLoader(false);
         })
         .catch(err => console.log(err));
     }
+    if(isLoading){
+        return <Loader/>;
+    }
+    if(error){
+        return <Error/>;
+    }
     if(!product) return null;
+    
+    if(type === 'read admin'){
+        return(
+            <div className="action__create page">
+                <form>
+                    <table className="create__location__table">
+                    <tbody>
+                            <tr>
+                                <td>
+                                    <div>name</div>
+                                </td>
+                                <td>
+                                    <div>{product.name}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>price</div>
+                                </td>
+                                <td>
+                                    {formatPrice(product.price)}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>stock</div>
+                                </td>
+                                <td>
+                                    {product.stock}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>product id</div>
+                                </td>
+                                <td>
+                                    {product.productId}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>weight</div>
+                                </td>
+                                <td>
+                                    {product.weight}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>description</div>
+                                </td>
+                                <td className="textarea__wrapper">
+                                    <div className="read__text">{product.description}</div> 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>category</div>
+                                </td>
+                                <td>
+                                    <div >{product.category}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>featured</div>
+                                </td>
+                                <td>
+                                    <div>{product.featured?'true':'false'}</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                        <div className="edit__images">
+                            {product.img && product.img.map((img,index)=>{
+                                return <div key={index} className="product__edit__img"><img src={`/${img}`} alt=""/></div>
+                            })}
+                        </div>
+                
+                </form>
+            </div>
+        )
+    }
+
+
+    // for other admins
     return (
         <div className="action__create page">
             <form>
@@ -156,6 +298,9 @@ const EditProduct = ({id}) => {
                     </div>
                 <div className="btn-wrapper">
                     <button onClick={(e)=>editProduct(e)} className="btn">edit product</button>
+                    {editError.length?<ValidateError error={editError}/>:null}
+                    {editLoader?<div className="inline__loader"><Loader/></div>:null}
+                    {alert.show?<Alert msg={alert.msg} hideAlert={hideAlert}/>:null}
                 </div>
             </form>
         </div>

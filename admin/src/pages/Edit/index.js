@@ -7,6 +7,8 @@ import EditProduct from '../../components/editProduct';
 // import EditCoupon from '../../components/editCoupon';
 import EditCoupon from '../../components/editCoupon';
 import EditVideo from '../../components/editVideo';
+import EditAdmin from '../../components/editAdmin';
+
 const Edit = () => {
     const {id} = useParams();
     const {currentTab} = useGlobalContext();
@@ -38,7 +40,14 @@ const Edit = () => {
             </div>
         )
     }
-    
+    if(currentTab === 'admin'){
+        return(
+            <div className="edit page">
+                <EditAdmin id={id}/>
+            </div>
+        )
+    }
+    return null;
 }
 
 export default Edit

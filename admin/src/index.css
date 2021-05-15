@@ -37,11 +37,39 @@ code {
   box-sizing: border-box;
   font-size: 12px;
   border: none;
-  margin: 0 5px;
+  margin: 0 5px 0 5px;
   cursor: pointer;
   letter-spacing: 1px;
   font-weight: 500;
 }
+.search{
+  padding: 7px 12px;
+  letter-spacing: 1px;
+  box-sizing: border-box;
+  font-weight: 500;
+  border-radius: 4px;
+  font-size: 15px;
+  outline: none;
+  background-color: whitesmoke;
+  border: 1px solid rgb(214, 212, 212);
+}
+.search__options{
+  padding: 6px 12px;
+  letter-spacing: 1px;
+  box-sizing: border-box;
+  font-weight: 500;
+  border-radius: 4px;
+  font-size: 15px;
+  outline: none;
+  border: none;
+  background-color: rgb(249, 248, 250);
+  border: 1px solid rgb(109, 112, 112);
+  text-transform: uppercase;
+  margin: 0 10px;
+  cursor: pointer;
+  color: black;
+}
+
 .btn:hover{
   background-color: rgb(62, 192, 209);
 }
@@ -77,6 +105,11 @@ code {
   background-color: white;
   border-bottom: 1px solid rgb(231, 231, 231);
   padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 60px;
+  box-sizing: border-box;
 }
 
 
@@ -167,4 +200,18 @@ code {
 }
 .paginate-btn:hover{
   background-color: rgb(233, 235, 233);
+}
+
+/*inline loader*/
+
+.inline__loader .fetch__loader{
+  height: auto;
+  position: static;
+  width: 100%;
+  background-color: inherit;
+  margin: 20px 0;
+}
+.inline__loader .loader__spinner{
+  width: 20px;
+  height: 20px;
 }

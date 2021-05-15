@@ -4,6 +4,8 @@ import CreateLocation from '../../components/createLocation';
 import CreateProduct from '../../components/createProduct';
 import CreateCoupon from '../../components/createCoupon';
 import CreateVideo from '../../components/createVideo';
+import CreateAdmin from '../../components/createAdmin';
+
 const Create = () => {
     const {currentTab} = useGlobalContext();
     if(currentTab === 'product'){
@@ -31,6 +33,13 @@ const Create = () => {
         return(
             <div className="create page">
                 <CreateVideo/>
+            </div>
+        )
+    }
+    if(currentTab === 'admin'){
+        return(
+            <div className="create page">
+                <CreateAdmin/>
             </div>
         )
     }

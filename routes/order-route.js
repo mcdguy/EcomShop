@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Order = require('../models/order');
+const adminAuth = require('../middleware/admin-middleware');
 
-router.get('/',(req,res)=>{
+router.get('/',adminAuth(['all']),(req,res)=>{
+    // console.log('hello');
     let {page,limit} = req.query;
     if(!page){
         page = 1;
@@ -12,7 +14,7 @@ router.get('/',(req,res)=>{
     }
     limit = parseInt(limit);
     skip = (page - 1) * limit;
-    Order.find().skip(skip).limit(limit)
+    Order.find().skip(skip).limit(limit).sort({"createdAt": -1})
         .then(result=>{
                 res.json({orders: result, page,limit})
         })
@@ -20,8 +22,25 @@ router.get('/',(req,res)=>{
             console.log(err)
             res.json({error: 'could not fetch orders'})});
 })
+router.get('/find',adminAuth(['all']),(req,res)=>{
+    const {filter,query} = req.query;
+    let search = {};
+    if(filter === 'email'){
+        search = {"buyer.email":query};
+    }else if(filter === 'contact'){
+        search = {"buyer.contact": query};
+    }else{
+        search[filter] = query;
+    }
+    Order.find(search)
+        .then(result=>{
+            if(!result) return res.json({order: []})
+            return res.json({order:result});
+        })
+        .catch(err => res.json({error: 'an error occurred'}));
+})
 
-router.get('/:id',(req,res)=>{
+router.get('/:id',adminAuth(['all']),(req,res)=>{
     const {id} = req.params;
     Order.findById(id)
         .then(result =>{

@@ -1,6 +1,11 @@
 import axios from 'axios';
 import React,{useState} from 'react';
 import './createProduct.css';
+import Alert from '../alert';
+import Loader from '../loader';
+import { useGlobalContext } from '../../context';
+import ValidateError from '../validateError';
+import {handleProductError} from '../../utils/handleError';
 
 const CreateProduct = () => {
     const [product,setProduct] = useState({
@@ -13,7 +18,19 @@ const CreateProduct = () => {
         category: 'coffee',
         featured: 'true',
     })
+
+    const [createError,setCreateError] = useState([]);
+    const {fetchProduct} = useGlobalContext();
     const [images,setImages] = useState();
+    const [createLoader,setCreateLoader] = useState(false);
+    const [alert,setShowAlert] = useState({msg:'',show:false});
+    
+    const hideAlert = () =>{
+        setShowAlert(prev =>{
+            return ({...prev,msg:'',show:false});
+        })
+    }
+
     const handleImages = (e) =>{
         setImages(e.target.files);
     }
@@ -25,16 +42,26 @@ const CreateProduct = () => {
 
     const createProduct = (e) =>{
         e.preventDefault();
+        let totalImages;
+        const error = handleProductError(product.name,product.price,product.stock,product.productId,product.weight,product.description);
         if(!images){
-            console.log('no images attached');
+            error.push('images are required');
+        }else{
+            totalImages = images.length;
+            if(totalImages > 6){
+                error.push('maximum image upload limit is 6');
+            }
+        }
+
+        if(error.length>0){
+            setCreateError(error);
             return;
         }
-        let totalImages = images.length;
+        if(error.length === 0){
+            setCreateError([]);
+        }
+        setCreateLoader(true);
         const data = new FormData();
-        if(totalImages > 6){
-            console.log("can't upload more than 6 images")
-            return;
-        }
         data.append('name',product.name);
         data.append('price',product.price);
         data.append('stock',product.stock);
@@ -50,7 +77,17 @@ const CreateProduct = () => {
             .then(res=>{
                 if(res.data.success){
                     console.log('product created successfully');
+                    setShowAlert((prev)=>{
+                        return ({...prev,msg:res.data.success,show:true});
+                    })
+                    fetchProduct();
                 }
+                if(res.data.error){
+                    setShowAlert((prev)=>{
+                        return ({...prev,msg:res.data.error,show:true});
+                    })
+                }
+                setCreateLoader(false);
             })
             .catch(err => console.log(err));
     }
@@ -149,6 +186,9 @@ const CreateProduct = () => {
                 </table>
                 <div className="btn-wrapper">
                     <button onClick={(e)=>createProduct(e)} className="btn">create product</button>
+                    {createError.length?<ValidateError error={createError}/>:null}
+                    {createLoader?<div className="inline__loader"><Loader/></div>:null}
+                    {alert.show?<Alert msg={alert.msg} hideAlert={hideAlert}/>:null}
                 </div>
             </form>
         </div>

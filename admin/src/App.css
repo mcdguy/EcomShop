@@ -34,3 +34,7 @@
     box-sizing: border-box;
     overflow-y: scroll;
 }
+.main__loader .fetch__loader{
+    width: 100%;
+    left: 0;
+}

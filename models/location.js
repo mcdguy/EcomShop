@@ -29,7 +29,7 @@ const locationSchema = new Schema({
         type: String
     },
     geometry: geoSchema
-})
+},{timestamps: true})
 
 const Location  = mongoose.model('Location',locationSchema);
 module.exports = Location;

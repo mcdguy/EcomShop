@@ -3,7 +3,7 @@ const router = express.Router();
 const Location = require('../models/location');
 
 router.get('/',(req,res)=>{
-    Location.find()
+    Location.find().sort({"createdAt": -1})
         .then(result=>{
             if(!result) return res.json({error: 'locations not available'});
             res.json({locations: result});
@@ -38,9 +38,12 @@ router.post('/',(req,res)=>{
     console.log(state,address,timings,pin,subLocation,geometry);
     Location.create({state,address,timings,pin,subLocation,geometry})
         .then(result =>{
-            res.json({success: 'location added successfully'});
+            res.json({success: 'location created successfully'});
         })
-        .catch(err => res.json({error: 'could not create location'}));
+        .catch(err => {
+            console.log(err);
+            res.json({error: 'could not create location'})
+        });
 })
 
 router.patch('/:id',(req,res)=>{

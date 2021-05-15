@@ -73,7 +73,7 @@ const userSchema = new Schema({
         type: [SingleOrder],
         // default: () => ([])
     }
- });
+ },{timestamps:true});
 
 // userSchema.pre('save',async function(next){
 //     const salt = await bcrypt.genSalt();

@@ -16,10 +16,13 @@
     padding: 20px;
     border-radius: 5px;
 }
-
+.delete__modal .btn{
+    margin-left: 0;
+}
 .delete__modal .btn__delete{
     background-color: whitesmoke;
     color: black;
+    margin: 0;
 }
 .delete__modal .btn__delete:hover{
     background-color: rgb(240, 240, 240);

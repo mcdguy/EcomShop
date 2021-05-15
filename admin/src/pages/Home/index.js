@@ -7,6 +7,7 @@ import Order from '../../components/order';
 import User from '../../components/user';
 import Coupon from '../../components/coupon';
 import Video from '../../components/video';
+import Admin from '../../components/admin';
 const Home = () => {
     const {currentTab} = useGlobalContext();
     
@@ -49,6 +50,13 @@ const Home = () => {
         return(
             <div className="home page">
                 <Video/>
+            </div>
+        )
+    }
+    if(currentTab === 'admin'){
+        return(
+            <div className="home page">
+                <Admin/>
             </div>
         )
     }

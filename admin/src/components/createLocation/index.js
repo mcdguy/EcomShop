@@ -1,8 +1,14 @@
 import React,{useState} from 'react';
 import './createLocation.css';
 import axios from 'axios';
+import Alert from '../alert';
+import Loader from '../loader';
+import { useGlobalContext } from '../../context';
+import ValidateError from '../validateError';
+import {handleLocationError} from '../../utils/handleError';
 
 const CreateLocation = () => {
+    const {fetchLocation} = useGlobalContext();
     const [location,setLocation] = useState({
         state: '',
         address:'',
@@ -12,6 +18,16 @@ const CreateLocation = () => {
         latitude:'',
         timings: ''
     })
+    const [createError,setCreateError] = useState([]);
+    const [createLoader,setCreateLoader] = useState(false);
+    const [alert,setShowAlert] = useState({msg:'',show:false});
+    
+    const hideAlert = () =>{
+        setShowAlert(prev =>{
+            return ({...prev,msg:'',show:false});
+        })
+    }
+
     const handleChange = (e) =>{
         setLocation((prevLocation)=>{
             return(
@@ -21,6 +37,15 @@ const CreateLocation = () => {
     }
     const createLocation = (e) =>{
         e.preventDefault();
+        const error = handleLocationError(location.state,location.address,location.pin,location.subLocation,location.timings,location.longitude,location.latitude);
+        if(error.length>0){
+            setCreateError(error);
+            return;
+        }
+        if(error.length === 0){
+            setCreateError([]);
+        }
+        setCreateLoader(true);
         const newLocation ={
             state: location.state,
             address: location.address,
@@ -36,10 +61,17 @@ const CreateLocation = () => {
             .then(res=>{
                 if(res.data.success){
                     console.log('location created');
+                    setShowAlert((prev)=>{
+                        return ({...prev,msg:res.data.success,show:true});
+                    })
+                    fetchLocation();
                 }
                 if(res.data.error){
-                    console.log('could not save location');
+                    setShowAlert((prev)=>{
+                        return ({...prev,msg:res.data.error,show:true});
+                    })
                 }
+                setCreateLoader(false);
             })
             .catch(err => console.log({error: 'could not save location'}));
         // console.log(newLocation);
@@ -62,7 +94,7 @@ const CreateLocation = () => {
                                 <div>address</div>
                             </td>
                             <td>
-                                <div><input type="text" value={location.address} name="address" onChange={(e)=>handleChange(e)}/></div>
+                                <div><input autoComplete="off" type="text" value={location.address} name="address" onChange={(e)=>handleChange(e)}/></div>
                             </td>
                         </tr>
                         <tr>
@@ -78,7 +110,7 @@ const CreateLocation = () => {
                                 <div>sub location</div>
                             </td>
                             <td>
-                                <div><input type="text" value={location.subLocation} name="subLocation" onChange={(e)=>handleChange(e)}/></div>
+                                <div><input autoComplete="off" type="text" value={location.subLocation} name="subLocation" onChange={(e)=>handleChange(e)}/></div>
                             </td>
                         </tr>
                         <tr>
@@ -109,6 +141,9 @@ const CreateLocation = () => {
                 </table>
                 <div className="btn-wrapper">
                     <button onClick={(e)=>createLocation(e)} className="btn">create location</button>
+                    {createError.length?<ValidateError error={createError}/>:null}
+                    {createLoader?<div className="inline__loader"><Loader/></div>:null}
+                    {alert.show?<Alert msg={alert.msg} hideAlert={hideAlert}/>:null}
                 </div>
             </form>
         </div>

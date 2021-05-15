@@ -3,12 +3,13 @@ const router = express.Router();
 const {upload} = require('../utils/multer');
 const Product = require('../models/product');
 const fs = require('fs');
+const adminAuth = require('../middleware/admin-middleware');
 
 
 //getting all products
 router.get('/',(req,res)=>{
     // console.log('getting all products');
-    Product.find()
+    Product.find().sort({"createdAt": -1})
         .then((result)=>{
             if(!result){
                 res.json({error: 'products not available'});
@@ -38,27 +39,27 @@ router.get('/shop/:id',(req,res)=>{
 })
 
 //getting a single product from product id 
-router.get('/find/',(req,res,next)=>{
-    // console.log('in find');
-    console.log(req.query.p);
-    const {p} = req.query;
-    //if i don't pass query this will run page not found middleware in app.js
-    if(!p){
-        res.json({error: 'product not found'});
-        return;
-    }
+// router.get('/find/',(req,res,next)=>{
+//     // console.log('in find');
+//     console.log(req.query.p);
+//     const {p} = req.query;
+//     //if i don't pass query this will run page not found middleware in app.js
+//     if(!p){
+//         res.json({error: 'product not found'});
+//         return;
+//     }
 
-    Product.find({productId:p})//if id is unique findOne will work
-        .then((result) => res.json(result))
-        .catch(err =>{
-            console.log(err.message);
-            res.json({error: "product id doesn't match"});
-        })
-        //it returns empty array if i pass invalid p so i should check if it's empty array the product id doesn't match
-})
+//     Product.find({productId:p})//if id is unique findOne will work
+//         .then((result) => res.json(result))
+//         .catch(err =>{
+//             console.log(err.message);
+//             res.json({error: "product id doesn't match"});
+//         })
+//         //it returns empty array if i pass invalid p so i should check if it's empty array the product id doesn't match
+// })
 
 //creating a new product
-router.post('/',upload.array('img',6),(req,res)=>{//setting max count to 6
+router.post('/',adminAuth(['admin','edit admin']),upload.array('img',6),(req,res)=>{//setting max count to 6
     // console.log('creating new product');
     const product = {
         name : req.body.name,
@@ -81,7 +82,7 @@ router.post('/',upload.array('img',6),(req,res)=>{//setting max count to 6
 
 
 //deleting a product
-router.delete('/:id',(req,res)=>{
+router.delete('/:id',adminAuth(['admin','edit admin']),(req,res)=>{
     const {id} = req.params;
     console.log(id);
     Product.findByIdAndDelete(id)
@@ -98,7 +99,7 @@ router.delete('/:id',(req,res)=>{
 })
 
 //updating a product
-router.patch('/:id',upload.array('img',6),(req,res)=>{
+router.patch('/:id',adminAuth(['admin','edit admin']),upload.array('img',6),(req,res)=>{
     const {id} = req.params;
     const update = {
         name : req.body.name,
@@ -121,7 +122,7 @@ router.patch('/:id',upload.array('img',6),(req,res)=>{
         .then(result=>{
             res.json({success: 'product edited successfully'});
         })
-        .catch(err => res.json({err: 'could not update product'}));
+        .catch(err => res.json({error: 'could not update product'}));
     }
     else{//if files are sent delete old files and then upload new ones
         Product.findById(id)
@@ -136,7 +137,7 @@ router.patch('/:id',upload.array('img',6),(req,res)=>{
         .then(result=>{
             res.json({success: 'product edited successfully'});
         })
-        .catch(err => res.json({err: 'could not update product'}));
+        .catch(err => res.json({error: 'could not update product'}));
     }
     
 })
