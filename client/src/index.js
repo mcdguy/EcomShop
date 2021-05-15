@@ -6,9 +6,9 @@ import { AddressProvider } from './addressContext';
 import {CheckoutProvider} from './checkoutContext';
 import {CartProvider} from './cartContext';
 import App from './App';
-import axios from 'axios';
-// axios.defaults.baseURL=
-axios.defaults.withCredentials = true
+// import axios from 'axios';
+// // axios.defaults.baseURL=
+// axios.defaults.withCredentials = true
 ReactDOM.render(
   <React.StrictMode>
     <AppProvider>

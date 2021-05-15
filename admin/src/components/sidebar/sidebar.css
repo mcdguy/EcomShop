@@ -41,3 +41,9 @@
 .sidebar a.active{
     background-color: rgb(223, 223, 223);
 }
+.sidebar__logout{
+    position: absolute;
+    bottom: 50px;
+    text-align: center;
+    width: 100%;
+}

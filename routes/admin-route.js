@@ -59,7 +59,11 @@ router.post('/login',(req,res)=>{
 router.post('/logout',(req,res)=>{
     // console.log('logout');
     console.log('logout');
-    res.clearCookie('jwt',{httpOnly: true,sameSite: 'None', secure: true, path:'/'});
+    if(process.env.NODE_ENV === 'production'){
+        res.clearCookie('jwt',{httpOnly: true,sameSite: 'None', secure: true, path:'/'});//had to pass options for it to work also some people said put domain too but i guess that does not work for heroku
+    }else{
+        res.clearCookie('jwt');
+    }
     res.json({success: 'admin logged out'});
 })
 

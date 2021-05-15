@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Sidebar = () => {
-    const {currentTab,setCurrentTab,setIsLoggedIn,setType,setAdmin,type} = useGlobalContext();
+    const {currentTab,setCurrentTab,setIsLoggedIn,setType,setAdmin,type,fetchOrder,fetchUser,setUser,setOrder} = useGlobalContext();
     const setLogout = () =>{
       axios.post(`${baseUrl}/admin/logout`)
         .then(res=>{
@@ -13,6 +13,8 @@ const Sidebar = () => {
             setIsLoggedIn(false);
             setType('read admin');
             setAdmin([]);
+            setUser([]);
+            setOrder([]);
           }
         })
         .catch(err =>{
@@ -29,7 +31,7 @@ const Sidebar = () => {
         <Link to="/" className={`${currentTab==='gallery'?'active':'null'}`} onClick={()=>setCurrentTab('gallery')}>gallery</Link>
         {type==='admin'?<Link to="/" className={`${currentTab==='admin'?'active':'null'}`} onClick={()=>setCurrentTab('admin')}>admin</Link>:null}
         {/* <Link to="/" className={`${currentTab==='admin'?'active':'null'}`} onClick={()=>setCurrentTab('admin')}>admin</Link> */}
-        <button to="/" className={`${currentTab==='admin'?'active':'null'}`} onClick={setLogout}>LOGOUT</button>
+        <button to="/" className={`${currentTab==='admin'?'active sidebar__logout':'sidebar__logout'}`} onClick={setLogout}>LOGOUT</button>
       </div>
     )
 }

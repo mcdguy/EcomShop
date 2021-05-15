@@ -6,7 +6,7 @@ import Loader from '../../components/loader';
 
 
 const Login = () => {
-    const {setIsLoggedIn,setType,fetchAdmin}= useGlobalContext();
+    const {setIsLoggedIn,setType,fetchAdmin,fetchOrder,fetchUser}= useGlobalContext();
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const [error,setError] = useState({email: '',password:''});
@@ -47,6 +47,8 @@ const Login = () => {
                 setIsLoggedIn(true);
                 setType(res.data.type);
                 fetchAdmin();//this wasn't erasing if logged in and logged out with different admin roles except on refresh
+                fetchOrder();
+                fetchUser();
             }
         })
         .catch(err =>{

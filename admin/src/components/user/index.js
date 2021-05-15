@@ -8,7 +8,7 @@ import './user.css';
 import { useFilterContext } from '../../filterContext';
 
 const User = () => {
-    const {user,userHasMore,showNextUserPage,isUserLoading,userError} = useGlobalContext();
+    const {user,userHasMore,showNextUserPage,isUserLoading,userError,setIsUserLoading} = useGlobalContext();
     const {userFilter,setUserFilter,userQuery,setUserQuery} = useFilterContext();
     const [filteredUser,setFilteredUser] = useState([]);
     
@@ -18,6 +18,7 @@ const User = () => {
             setFilteredUser(user);
             return;
         }
+        setIsUserLoading(true);
         axios.get(`${baseUrl}/user/find-user?filter=${userFilter}&query=${userQuery}`,{
                 cancelToken: new axios.CancelToken(c=> {cancel =c})
             })
@@ -25,11 +26,12 @@ const User = () => {
                 if(res.data.user){
                     setFilteredUser(res.data.user);
                 }
-                // setIsUserLoading(false);
+                setIsUserLoading(false);
             })
             .catch(err => {
                 if(axios.isCancel(err)) return;
                 console.log(err);
+                setIsUserLoading(false);
             })
         return ()=> cancel();
         

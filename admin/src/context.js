@@ -182,7 +182,7 @@ export const AppProvider = ({children}) => {
     // const fetchUser = () =>{
         
     // }
-    useEffect(()=>{
+    const fetchUser = () =>{
         setIsUserLoading(true);
         setUserError(false);
         axios.get(`${baseUrl}/user?page=${userPage}&limit=20`)
@@ -197,9 +197,13 @@ export const AppProvider = ({children}) => {
                 console.log(err);
                 setUserError(true);
             });
-    },[userPage,isLoggedIn])
+    }
 
     useEffect(()=>{
+        fetchUser();
+    },[userPage])
+
+    const fetchOrder = () =>{
         setIsOrderLoading(true);
         setOrderError(false);
         axios.get(`${baseUrl}/order?page=${orderPage}&limit=20`)
@@ -216,7 +220,10 @@ export const AppProvider = ({children}) => {
                 console.log(err);
                 setOrderError(true);
             })
-    },[orderPage,isLoggedIn])
+    }
+    useEffect(()=>{
+        fetchOrder();
+    },[orderPage])
 
     const fetchAdmin = () =>{
         setIsAdminLoading(true);
@@ -272,12 +279,18 @@ export const AppProvider = ({children}) => {
                 fetchProduct,
                 fetchLocation,
                 fetchAdmin,
+                fetchOrder,
+                fetchUser,
                 isLoggedIn,
                 setIsLoggedIn,
                 type,
                 setType,
                 setAdmin,
-                showMainLoader
+                showMainLoader,
+                setIsUserLoading,
+                setIsOrderLoading,
+                setUser,
+                setOrder
             }}>
             {children}
         </AppContext.Provider>

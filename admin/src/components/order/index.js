@@ -10,7 +10,7 @@ import { useFilterContext } from '../../filterContext';
 
 //add date field
 const Order = () => {
-    const {order, showNextOrderPage,orderHasMore,isOrderLoading,orderError} = useGlobalContext();
+    const {order, showNextOrderPage,orderHasMore,isOrderLoading,orderError,setIsOrderLoading} = useGlobalContext();
     const [filteredOrder,setFilteredOrder] = useState([]);
     const {orderFilter,setOrderFilter,orderQuery,setOrderQuery} = useFilterContext();
 
@@ -20,6 +20,7 @@ const Order = () => {
             setFilteredOrder(order);
             return;
         }
+        setIsOrderLoading(true);
         axios.get(`${baseUrl}/order/find?filter=${orderFilter}&query=${orderQuery}`,{
                 cancelToken: new axios.CancelToken(c=> {cancel =c})
             })
@@ -27,10 +28,13 @@ const Order = () => {
                 if(res.data.order){
                     setFilteredOrder(res.data.order);
                 }
+                setIsOrderLoading(false);
+
             })
             .catch(err => {
                 if(axios.isCancel(err)) return;
                 console.log(err);
+                setIsOrderLoading(false);
             })
         return ()=> cancel();
     },[orderQuery,order,orderFilter]);
