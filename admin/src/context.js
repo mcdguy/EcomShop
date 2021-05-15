@@ -1,5 +1,5 @@
 import React,{useState,useEffect,useContext} from 'react';
-import axios from 'axios';
+import axios from './axios';
 
 const AppContext = React.createContext();
 const getCurrentTab = () =>{
@@ -135,9 +135,10 @@ export const AppProvider = ({children}) => {
         });
     }
 
+    //as soon as someone is logged in i wanna fetch these coupons again
     useEffect(()=>{
         fetchCoupon();
-    },[])
+    },[isLoggedIn])
     
     const fetchProduct = () =>{
         setIsProductLoading(true);
@@ -196,7 +197,7 @@ export const AppProvider = ({children}) => {
                 console.log(err);
                 setUserError(true);
             });
-    },[userPage])
+    },[userPage,isLoggedIn])
 
     useEffect(()=>{
         setIsOrderLoading(true);
@@ -215,7 +216,7 @@ export const AppProvider = ({children}) => {
                 console.log(err);
                 setOrderError(true);
             })
-    },[orderPage])
+    },[orderPage,isLoggedIn])
 
     const fetchAdmin = () =>{
         setIsAdminLoading(true);

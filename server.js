@@ -25,7 +25,6 @@ mongoose.connect(process.env.MONGODB_URI,{useUnifiedTopology: true,useNewUrlPars
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));  
-app.use(cookieParser());
 app.use('/images',express.static('images'));
 
 // app.use((req,res,next)=>{
@@ -44,32 +43,38 @@ app.use('/images',express.static('images'));
 //using * for cors will not let accept cookies thus auth will not work 
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build'));
-    // var whitelist = ['https://tender-swartz-02e579.netlify.app']//pass domains you wanna whitelist
-    // var corsOptions = {
-    //   origin: (origin, callback) => {
-    //       var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-    //       console.log('ORIGIN: ', origin); 
-    //       callback(originIsWhitelisted ? null : 'Bad Request', originIsWhitelisted)
-    //   },
-    //   credentials:true
-    // }
-    // app.use(cors(corsOptions));
-    app.use((req,res,next)=>{
-        const origin = req.headers.origin;
-        // console.log(origin);
-        const allowedOrigins = ['https://tender-swartz-02e579.netlify.app'];
-        if (allowedOrigins.includes(origin)) {
-            res.setHeader('Access-Control-Allow-Origin', origin);
-            res.header('Access-Control-Allow-Credentials', true);
-        }
-        res.header('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,POST,DELETE');
-        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-        next();
-    })
+
+
+    //only using this middleware is not enough i need to set withCredentials: true with every axios request
+    //we need to pass origin and not * for cookies to work
+    var whitelist = ['https://tender-swartz-02e579.netlify.app']//pass domains you wanna whitelist
+    var corsOptions = {
+      origin: (origin, callback) => {
+          var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+          console.log('ORIGIN: ', origin); 
+          callback(originIsWhitelisted ? null : 'Bad Request', originIsWhitelisted)
+      },
+      credentials:true//for cookie parsing
+    }
+    app.use(cors(corsOptions));
+    
+    //without my middleware this also works
+    // app.use((req,res,next)=>{
+    //     const origin = req.headers.origin;
+    //     // console.log(origin);
+    //     const allowedOrigins = ['https://tender-swartz-02e579.netlify.app'];
+    //     if (allowedOrigins.includes(origin)) {
+    //         res.setHeader('Access-Control-Allow-Origin', origin);
+    //         res.header('Access-Control-Allow-Credentials', true);
+    //     }
+    //     res.header('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,POST,DELETE');
+    //     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    //     next();
+    // })
 
 }
 
-
+app.use(cookieParser());
 app.use('/user',require('./routes/auth-route'));
 
 app.use('/product',require('./routes/product-route'));

@@ -41,7 +41,7 @@ router.post('/login',(req,res)=>{
              .then((isMatch)=>{
                 if(!isMatch) return res.send({errors: {email: '',password: 'invalid password'}});
                 const token = createToken(result._id);
-                res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true});
+                res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true,sameSite: 'None', secure: true});
                 res.send({success: 'admin logged in',type:result.role});
             }).catch(err=>{
                 console.log(err);
