@@ -44,7 +44,7 @@ router.post('/login',(req,res)=>{
 
                 //this is to access cookies in cors
                 if(process.env.NODE_ENV === 'production'){
-                    res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true,sameSite: 'None', secure: true});
+                    res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true,sameSite: 'None', secure: true, domain:'tender-swartz-02e579.netlify.app', path:'/'});
                 }else{
                     res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true});
                 }
@@ -59,7 +59,7 @@ router.post('/login',(req,res)=>{
 router.post('/logout',(req,res)=>{
     // console.log('logout');
     console.log('logout');
-    res.clearCookie('jwt');
+    res.clearCookie('jwt',{domain:'tender-swartz-02e579.netlify.app',path:'/'});
     res.json({success: 'admin logged out'});
 })
 
