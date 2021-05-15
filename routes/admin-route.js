@@ -41,7 +41,13 @@ router.post('/login',(req,res)=>{
              .then((isMatch)=>{
                 if(!isMatch) return res.send({errors: {email: '',password: 'invalid password'}});
                 const token = createToken(result._id);
-                res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true,sameSite: 'None', secure: true});
+
+                //this is to access cookies in cors
+                if(process.env.NODE_ENV === 'production'){
+                    res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true,sameSite: 'None', secure: true});
+                }else{
+                    res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true});
+                }
                 res.send({success: 'admin logged in',type:result.role});
             }).catch(err=>{
                 console.log(err);
