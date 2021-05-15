@@ -16,13 +16,6 @@ mongoose.connect(process.env.MONGODB_URI,{useUnifiedTopology: true,useNewUrlPars
     .catch(err => console.log(err));
 
 
-// mongoose.connect('mongodb://localhost/poc',{useUnifiedTopology: true,useNewUrlParser:true,useFindAndModify: false})
-//     .then(()=>{
-//         app.listen(process.env.PORT || 5000);
-//     })
-//     .catch(err => console.log(err));
-
-
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));  
 app.use('/images',express.static('images'));
