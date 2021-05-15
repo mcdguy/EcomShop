@@ -34,8 +34,27 @@ function App() {
 
   return (
     <Router>
+      {/* <Sidebar></Sidebar> */}
       {isLoggedIn?<Sidebar></Sidebar>:null}
       <Switch>
+        {/* <Route path="/" exact>
+          <Home/>
+        </Route>
+
+        <Route path="/create">
+          <Create/>
+        </Route>
+        
+        <Route path="/edit/:id" children={<Edit/>} exact></Route>
+        
+        <Route path="/view/:id" children={<View/>} exact></Route>
+
+        <Route path="/reset-password/:id/:token" children={<Forgot/>} exact></Route>
+        
+        <Route path="*">
+            <Error/>
+        </Route> */}
+
         <Route path="/" exact>
           {!isLoggedIn?<Redirect to='/login'/>:<Home/>}
         </Route>
@@ -48,7 +67,7 @@ function App() {
         
         <Route path="/view/:id" children={<View/>} exact></Route>
 
-        <Route path="/login">
+        <Route path="/login" exact>
           <Login/>
         </Route>
 
