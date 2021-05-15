@@ -4,14 +4,10 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const Order = require('./models/order');
+const cors = require('cors');
 require('dotenv').config();
 
-
-
 const app = express();
-
-
-
 
 mongoose.connect(process.env.MONGODB_URI,{useUnifiedTopology: true,useNewUrlParser:true,useFindAndModify: false})
     .then(()=>{
@@ -32,21 +28,22 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use('/images',express.static('images'));
 
-app.use((req,res,next)=>{
-  const origin = req.headers.origin;
-  console.log(origin);
-  const allowedOrigins = ['http://127.0.0.1:8022', 'http://localhost:8020'];
-  if (allowedOrigins.includes(origin)) {
-       res.setHeader('Access-Control-Allow-Origin', origin);
-       res.header('Access-Control-Allow-Credentials', true);
-  }
-  res.header('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-})
+// app.use((req,res,next)=>{
+//   const origin = req.headers.origin;
+//   console.log(origin);
+//   const allowedOrigins = ['http://127.0.0.1:8022', 'http://localhost:8020'];
+//   if (allowedOrigins.includes(origin)) {
+//        res.setHeader('Access-Control-Allow-Origin', origin);
+//        res.header('Access-Control-Allow-Credentials', true);
+//   }
+//   res.header('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,POST,DELETE');
+//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//   next();
+// })
 
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build'));
+    app.use(cors());
 }
 
 
