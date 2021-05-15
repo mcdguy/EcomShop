@@ -86,7 +86,11 @@ router.post('/signup',async (req,res)=>{
     User.create({email,password,username})
         .then(result=>{
             const token = createToken(result._id);
-            res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true})
+            if(process.env.NODE_ENV === 'production'){
+                res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true, sameSite: 'None', secure: true})
+            }else{
+                res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true})
+            }
             res.send({success: 'user created successfully'});
             
         })
@@ -110,7 +114,11 @@ router.post('/login',(req,res)=>{
              .then((isMatch)=>{
                 if(!isMatch) return res.send({errors: {email: '',password: 'invalid password'}});
                 const token = createToken(result._id);
-                res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true});
+                if(process.env.NODE_ENV === 'production'){
+                    res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true, sameSite: 'None', secure: true});
+                }else{
+                    res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true});
+                }
                 res.send({success: 'user logged in'});
             }).catch(err=>{
                 res.json({errors: {email: '',password: 'invalid password'}});
