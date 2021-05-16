@@ -93,7 +93,7 @@ const Checkout = () => {
                                     </svg>
                                     {couponError===''?null:<span className="anim--inp--error coupon__error">{couponError}</span>}
                                 </div>
-                                <button onClick={verifyCoupon} >apply</button>
+                                <button className="button__effect" onClick={verifyCoupon} >apply</button>
                             </div>
                         </div>
                         <p className="checkout__checkbox">

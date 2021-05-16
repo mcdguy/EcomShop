@@ -43,7 +43,7 @@ const Shop = () => {
                 <div className="shop" onClick={()=>setShowFilters(false)}>
                         <div className="shop__filter center">
                             <span className={`${filterName==='none'?'shop__filter__indicator':'shop__filter__indicator show'}`}></span>
-                            <span className="filter__icon" onClick={(e)=>{e.stopPropagation();setShowFilters(!showFilters)}}><AiFillFilter/></span>
+                            <span className="filter__icon button__effect" onClick={(e)=>{e.stopPropagation();setShowFilters(!showFilters)}}><AiFillFilter/></span>
                             <div className={`${showFilters?'filter__options show': 'filter__options'}`}>
                                 <span onClick={()=>setFilter('none')}>none</span>
                                 <span className={`${filterName==='featured'?'active':null}`} onClick={()=>setFilter('featured')}>featured</span>

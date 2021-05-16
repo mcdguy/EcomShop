@@ -60,7 +60,8 @@
     position: absolute;
     width: 100%;
     height: 2px;
-    background-color: rgb(78, 76, 76);
+    /* background-color: rgb(78, 76, 76); */
+    background-color: var(--clr-sec);
     left: 0;
     bottom: -30px;
 }
@@ -71,7 +72,8 @@
 }
 .about__employee__container::after{
     content: '';
-    background-color: rgb(78, 76, 76);
+    /* background-color: rgb(78, 76, 76); */
+    background-color: var(--clr-sec);
     position: absolute;
     width: 350px;
     bottom: 0;
@@ -108,10 +110,10 @@
 }
 .employee1,
 .employee2{
-    border-left: 2px solid rgb(78, 76, 76);
+    border-left: 2px solid var(--clr-sec);
 }
 .employee2{
-    border-right: 2px solid rgb(78, 76, 76);
+    border-right: 2px solid var(--clr-sec);
 }
 .employee p{
     width: 73%;

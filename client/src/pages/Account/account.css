@@ -24,7 +24,8 @@ input[type=number] {
 
 .address__header{
   /* background-color: rgb(240, 240, 240); */
-  background-color: rgb(240, 240, 240);
+  /* background-color: rgb(240, 240, 240); */
+  background-color: var(--clr-light);
   padding: 10px 10px;
   display: flex;
   align-items: center;
@@ -74,7 +75,8 @@ input[type=number] {
   cursor: pointer;
 }
 .address__form{
-  background-color: rgb(240, 240, 240);/*these two properties repeat*/
+  /* background-color: rgb(240, 240, 240); */
+  background-color: var(--clr-light);
   padding: 10px 10px;
   /*above one and this one */
 }
@@ -133,7 +135,8 @@ input[type=number] {
   margin-left: 10px;
 }
 .address__details{
-  background-color: rgb(240, 240, 240);
+  /* background-color: rgb(240, 240, 240); */
+  background-color: var(--clr-light);
   padding: 10px 10px;
   border-radius: 4px;
 }

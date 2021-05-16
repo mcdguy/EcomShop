@@ -28,9 +28,9 @@ const CartItem = ({img,name,price,pqty,_id,cartProducts,stock,source,checked}) =
                     <p className="cart__item__name">{name}</p>
                     <p className="cart__item__price">{formatPrice(price)}</p>
                     <span className="cart__item__qty">
-                            <span className='cart__item__qty__inc' onClick={decreaseQuantity}><BiMinus/></span>     
+                            <span className='cart__item__qty__inc control' onClick={decreaseQuantity}><BiMinus/></span>     
                             <span>{quantity}</span>     
-                            <span className='cart__item__qty__dec' onClick={increaseQuantity}><BiPlus/></span>
+                            <span className='cart__item__qty__dec control' onClick={increaseQuantity}><BiPlus/></span>
                     </span>
                 </div>
                 <button className="cart__item__remove" onClick={()=>removeCartItem(_id)}><GrClose/><span className="cart__item__tooltip">remove</span></button>

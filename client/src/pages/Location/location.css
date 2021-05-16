@@ -26,7 +26,7 @@
     width: 100%;
     height: 80%;
     z-index: 7;
-    box-shadow: 0 0 6px rgb(156, 156, 156);
+    box-shadow: 0 0 6px var(--clr-sec);
 }
 /* .leaflet-control-attribution{
     display: none;
@@ -64,7 +64,7 @@
     margin-bottom: 20px;
 }
 .custom__select__head{
-    background-color: #242424;
+    background-color: var(--clr-sec);
     /* background-color: rgb(221, 221, 221); */
     padding: 10px;
     border-radius: 4px;
@@ -72,7 +72,7 @@
     letter-spacing: 1px;
     cursor: pointer;
     /* box-shadow: 0 0 3px 2px rgb(216, 213, 213);*/
-    box-shadow: 0 0 0 2px rgba(223, 221, 221, 0.726);
+    box-shadow: 0 0 3px 2px var(--clr-light);
     color: white;
 }
 .custom__select__head::after{
@@ -119,7 +119,7 @@
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 4px;
-    background-color: rgb(247, 247, 247);
+    background-color: var(--clr-light);
     border: 2px solid transparent;
     cursor: pointer;
     transition: 200ms border;
@@ -128,7 +128,8 @@
     border: 2px solid rgb(223, 220, 220);
 }
 .location__address.selected{
-    border: 2px solid rgb(121, 212, 255);
+    /* border: 2px solid rgb(121, 212, 255); */
+    border: 2px solid var(--clr-sec);
 }
 .location__address h1{
     font-size: 16px;

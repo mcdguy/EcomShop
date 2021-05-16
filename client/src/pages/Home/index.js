@@ -60,30 +60,30 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-                <div className="slider__hidden">
+                {featuredProducts.length?<div className="slider__hidden">
                     <div className="center">
                         <div className="slider__head__wrapper">
                             <h1 className="slider__head">featured products</h1>
                             {/* <h1></h1> */}
-                            <Link onClick={()=>setFilterName('featured')} className="btn-shopall btn" to="/shop">see all</Link>
+                            <Link onClick={()=>setFilterName('featured')} className="btn-shopall" to="/shop">see all</Link>
                         </div>
                             <div>
                                 {/* <h1 className="slider__">featured products</h1> */}
                                 <div className="slider__wrapper">
-                                    <span onClick={()=>{productsRef.current.scrollLeft -=250}} className="prev"><GrPrevious/></span>
+                                    <span onClick={()=>{productsRef.current.scrollLeft -=250}} className="prev button__effect"><GrPrevious/></span>
                                         <div ref={productsRef} className="slider__products ">
                                             {featuredProducts.length ? featuredProducts.map(product =>{
                                                 return <Product key={product._id} {...product}></Product>
                                             }):null}
                                         </div>
-                                    <span onClick={()=>{productsRef.current.scrollLeft +=250}} className="next"><GrNext/></span>
+                                    <span onClick={()=>{productsRef.current.scrollLeft +=250}} className="next button__effect"><GrNext/></span>
                                 </div>
                             </div>
                         {/* <div className="btn-wrapper">
                                 <Link className="btn-shopall btn" to="/shop">shop all</Link>
                         </div> */}
                     </div>
-                </div>
+                </div>:null}
             </section>
             
             <section className="home__stores">
@@ -95,7 +95,7 @@ const Home = () => {
                             <p>Sardar-Ji-Bakhsh, founded in 2015 as SardarBuksh Coffee & Coffee, is an Indian specialty coffee brand that aims to cater to every Indian coffee drinker’s taste.</p>
                             {/* <p>Since renaming the brand and becoming recognised as a specialty café for great coffee, SJB has continued to expand their experience, from their signature coffee to bottled cold brews, and of course expanding to locations around the country.</p> */}
                             <div className="about-btn-wrapper">
-                                <Link className="about-btn" to="/about">know more</Link>
+                                <Link className="btn__general" to="/about">know more</Link>
                             </div>
                         </div>
                     </div>

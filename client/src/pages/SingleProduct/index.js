@@ -78,7 +78,7 @@ const SingleProduct = () => {
                                 {item.stock?
                                     <>
                                     <div className="btn-wrapper">
-                                        <a onClick={()=>{setShowMsg(true); addCartItem(item._id,1)}}>add to cart</a>
+                                        <span className="btn__general" onClick={()=>{setShowMsg(true); addCartItem(item._id,1)}}>add to cart</span>
                                     </div>
                                     </>
                                     :<div className="item__outofstock">

@@ -19,7 +19,17 @@ code,button,a,h1,p,span,div {
   /* --clr-primary: rgb(1, 37, 1); */
   --clr-btn: rgb(223, 226, 224);
   --clr-bg: rgb(253, 255, 255);
+  
   --clr-sec: rgb(25, 28, 29);
+  --clr-sec-rgb: 25, 28, 29;
+  /* --clr-sec: rgb(112, 96, 4); */
+  /* --clr-sec-rgb: 112, 96, 4; */
+
+  /* --clr-light:  rgb(240, 240, 240);
+  --clr-light-rgb: 240, 240, 240; */
+  --clr-light: rgb(252, 252, 252);
+   --clr-light-rgb: rgb(252, 252, 252);
+
 }
 /*this will stop scrolling when modal is open*/
 .body.no_scroll{
@@ -38,4 +48,35 @@ a{
 .mobile #modal{
   height: auto;
 }
+.btn__general{
+  background-color: var(--clr-sec);
+  padding: .6em 1.5em;
+  border-radius: 3px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 14px;
+  color: white;
+  transition: 300ms;
+  display: inline-block;
+  margin: 20px 0 0;
+  cursor: pointer;
+}
+.button__effect{
+  cursor: pointer;
+  transition: 300ms;
+}
+.btn__general:hover,
+.button__effect:hover{
+  background-color: rgba(var(--clr-sec-rgb),.8) !important;
+}
+.btn__general:hover:active,
+.button__effect:active{
+  background-color: rgba(var(--clr-sec-rgb),.5) !important;
+}
+/* @media screen and (max-width:420px){
+  :root{
+    --wdth: 90%;
+  }
+} */
 

@@ -28,7 +28,7 @@ const CartSummary = ({source}) => {
                 </div>
             </div>
             {source==='cart'?
-                <Link to='/checkout' className="btn-checkout">checkout</Link>
+                <Link to='/checkout' className="btn__general">checkout</Link>
                 :null
             }
         </div>

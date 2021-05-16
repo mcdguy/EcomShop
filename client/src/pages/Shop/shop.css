@@ -21,9 +21,11 @@
 .shop__filter > span.filter__icon{
     cursor: pointer;
     background-color: white;
-    padding: 4px 6px;
+    padding: 6px 6px;
     background-color: var(--clr-sec);
     border-radius: 3px;
+    display: flex;
+    
 }
 .shop__filter > span svg{
     font-size: 16px;
@@ -90,9 +92,10 @@
     font-weight: 400; 
 }
 
-@media screen and (max-width: 420px){/*depends on when product goes into 1 in a line*/
+/*depends on when product goes into 1 in a line*/
+/* @media screen and (max-width: 420px){
     .shop__filter{
         width: 64%;
     }
-}
+} */
 

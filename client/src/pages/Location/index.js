@@ -86,7 +86,7 @@ const Location = () => {
                 <div className="map__info">
                     <div>
                         <div className="custom__select">
-                            <div className="custom__select__head" onClick={()=>setShowDropdown(!showDropdown)}>{queryLocation}</div>
+                            <div className="custom__select__head button__effect" onClick={()=>setShowDropdown(!showDropdown)}>{queryLocation}</div>
                             {showDropdown?<div className="custom__select__options">
                                 {locationStates.length?
                                     locationStates.map((state,index)=> <div key={index} onClick={e=>{setQueryLocation(state);setShowDropdown(!showDropdown);}}>{state}</div>)
