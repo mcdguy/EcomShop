@@ -67,7 +67,7 @@ const Account = () => {
                 {!showForm?
                     <div className="save__address__prompt">
                         <span>you have no saved addresses</span>
-                        <button onClick={()=>setShowForm(true)}>add address</button>
+                        <button className="btn__general" onClick={()=>setShowForm(true)}>add address</button>
                     </div>
                 :null}
                 {showForm?
@@ -89,7 +89,9 @@ const Account = () => {
                         <div className="address__input__error">{error.pin}</div>
                         <input value={address.contact} onChange={handleChange} name="contact" type="number" placeholder="contact"/>
                         <div className="address__input__error">{error.contact}</div>
-                        <button className="save__address__btn" onClick={(e)=>{e.preventDefault();saveAddress(address)}}>save address</button>
+                        <div className="btn-wrapper">
+                            <span className="btn__general" onClick={(e)=>{e.preventDefault();saveAddress(address)}}>save address</span>
+                        </div>
                     </form>
                 </>
                 :null}
@@ -112,24 +114,24 @@ const Account = () => {
                     {!editMode?
                         <div className="account__address__text">
                             <div>
-                                <span className="address__text__head">street line: </span>
-                                <span className="address__text__desc">{address.addressLine}</span>
+                                <div className="address__text__head">street line: </div>
+                                <div className="address__text__desc">{address.addressLine}</div>
                             </div>
                             <div>
-                                <span className="address__text__head">state: </span>
-                                <span className="address__text__desc">{address.state}</span>
+                                <div className="address__text__head">state: </div>
+                                <div className="address__text__desc">{address.state}</div>
                             </div>
                             <div>
-                                <span className="address__text__head">city: </span>
-                                <span className="address__text__desc">{address.city}</span>
+                                <div className="address__text__head">city: </div>
+                                <div className="address__text__desc">{address.city}</div>
                             </div>
                             <div>
-                                <span className="address__text__head">pin: </span>
-                                <span className="address__text__desc">{address.pin}</span>
+                                <div className="address__text__head">pin: </div>
+                                <div className="address__text__desc">{address.pin}</div>
                             </div>
                             <div>
-                                <span className="address__text__head">contact: </span>
-                                <span className="address__text__desc">{address.contact}</span>
+                                <div className="address__text__head">contact: </div>
+                                <div className="address__text__desc">{address.contact}</div>
                             </div>
                         </div>
                     : <div className="account__address__edit">
@@ -166,10 +168,10 @@ const Account = () => {
                     <div>
                         {editMode?
                             <div className="edit__address__wrapper">
-                                <button className="cancel__edit__btn" onClick={()=>setEditMode(false)}>cancel</button>
-                                <button className="save__edit__btn" onClick={saveChanges}>save</button>
+                                <button className="cancel__edit__btn btn__general" onClick={()=>setEditMode(false)}>cancel</button>
+                                <button className="save__edit__btn btn__general" onClick={saveChanges}>save</button>
                             </div>
-                        : <div className="edit__address__wrapper"><button className="edit__address__btn" onClick={()=>setEditMode(true)}>edit</button></div>
+                        : <div className="edit__address__wrapper"><button className="edit__address__btn btn__general" onClick={()=>setEditMode(true)}>edit</button></div>
                         }
                     </div>
                 </div>
