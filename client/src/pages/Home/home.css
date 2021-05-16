@@ -265,6 +265,60 @@
     transform: translateX(0);
 }
 
+.home__subscribe{
+    padding: 80px 0;
+    background-color: rgb(248, 66, 66);
+}
+.home__subscribe .subscribe__letter{
+    background-color: white;
+    padding: 50px;
+    max-width: 500px;
+    margin: auto;
+}
+.home__subscribe h1{
+    text-align: center;
+    font-size: 25px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: black;
+}
+.home__subscribe .sub__input{
+    max-width: 450px;
+    margin: 40px auto;
+    display: flex;
+    height: 50px;
+    width: 100%;
+    box-sizing: border-box;
+}
+.home__subscribe .sub__input input{
+    letter-spacing: 1px;
+    border-radius: 4px 0 0 4px;
+    border: none;
+    font-size: 16px;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 0 10px;
+    width: 100%;
+    border: 2px solid rgb(82, 80, 80);
+    box-sizing: border-box;
+}
+.home__subscribe .sub__input button{
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 0 4px 4px 0;
+    border: none;
+    box-sizing: border-box;
+    font-size: 16px;
+    outline: none;
+    margin: 0;
+    padding: 0;
+    padding: 0 14px;
+    flex-shrink: 0;
+    color: white;
+    background-color: rgb(82, 80, 80);
+}
+
 
 .home__logo__display{
     padding: 100px 0 50px;
@@ -296,6 +350,8 @@
     cursor: pointer;
     display: block;
 }
+
+
 
 @media screen and (max-width:1200px){
     .hero__img{

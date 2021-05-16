@@ -16,6 +16,7 @@ const Home = () => {
     const {featuredProducts,setFilterName} = useGlobalContext();
     const sliderRef = useRef(null);
     const productsRef = useRef(null)
+    const [subEmail,setSubEmail]= useState('');
     useEffect(()=>{
         const sliderObserver = new IntersectionObserver((entries,sliderObserver)=>{
             entries.forEach(entry=>{
@@ -121,6 +122,19 @@ const Home = () => {
                                 </div>
                             {/* </div> */}
 
+                    </div>
+                </div>
+            </section>
+            <section className="home__subscribe">
+                <div className="home__subscribe__form center">
+                    <div className="subscribe__letter">
+                        <h1>subscribe to our newsletter</h1>
+                        <div className="subscribe__email">
+                            <div className="sub__input">
+                                <input value={subEmail} onChange={e=>{setSubEmail(e.target.value)}} type="text"/>
+                                <button className="sub__btn">subscribe</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

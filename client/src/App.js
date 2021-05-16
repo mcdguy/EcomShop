@@ -40,7 +40,7 @@ const App = () => {
             <Contact/>
           </Route>
 
-          <Route path="/gallery" exact>
+          <Route path="/video-gallery" exact>
             <Gallery/>
           </Route>
           

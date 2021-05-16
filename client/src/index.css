@@ -27,8 +27,8 @@ code,button,a,h1,p,span,div {
 
   /* --clr-light:  rgb(240, 240, 240);
   --clr-light-rgb: 240, 240, 240; */
-  --clr-light: rgb(252, 252, 252);
-   --clr-light-rgb: rgb(252, 252, 252);
+  --clr-light: rgb(238, 234, 234);
+   --clr-light-rgb: rgb(238, 234, 234);
 
 }
 /*this will stop scrolling when modal is open*/
