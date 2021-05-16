@@ -12,18 +12,22 @@
 .shop__filter{/*will increase the clickable area of this*/
     display: flex;
     justify-content: flex-end;
-    /* background-color: orange; */
     position: relative;
     z-index: 9;
     margin-bottom: 30px;
-    padding-bottom: 5px;
+    padding-bottom: 3px;
     /* width: 64%; */
 }
-.shop__filter > span{
+.shop__filter > span.filter__icon{
     cursor: pointer;
+    background-color: white;
+    padding: 4px 6px;
+    background-color: var(--clr-sec);
+    border-radius: 3px;
 }
 .shop__filter > span svg{
-    font-size: 30px;
+    font-size: 16px;
+    fill: white;
 }
 .shop__filter__indicator{
     width: 10px;
@@ -33,8 +37,8 @@
     background-color: rgb(255, 166, 0);
     border-radius: 50%;
     position: absolute;
-    right: -2px;
-    top: -2px;
+    right: -4.5px;
+    top: -4.5px;
     font-size: 14px;
     color: white;
     display: none;

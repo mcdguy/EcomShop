@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react';
 import { useGlobalContext } from '../../context';
 import './shop.css';
 import Product from '../../components/product';
-import {BsFilterRight} from "react-icons/bs";
+import {AiFillFilter} from "react-icons/ai";
 import Loader from '../../components/loader';
 import Error from '../../components/error';
 
@@ -40,10 +40,10 @@ const Shop = () => {
             {/* <Loader/>
             <Error/> */}
             {filteredProducts.length?
-                <div className="shop">
+                <div className="shop" onClick={()=>setShowFilters(false)}>
                         <div className="shop__filter center">
                             <span className={`${filterName==='none'?'shop__filter__indicator':'shop__filter__indicator show'}`}></span>
-                            <span onClick={()=>setShowFilters(!showFilters)}><BsFilterRight/></span>
+                            <span className="filter__icon" onClick={(e)=>{e.stopPropagation();setShowFilters(!showFilters)}}><AiFillFilter/></span>
                             <div className={`${showFilters?'filter__options show': 'filter__options'}`}>
                                 <span onClick={()=>setFilter('none')}>none</span>
                                 <span className={`${filterName==='featured'?'active':null}`} onClick={()=>setFilter('featured')}>featured</span>

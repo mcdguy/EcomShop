@@ -130,7 +130,7 @@
     }
 } */
 
-@media screen and (max-width: 1000px){/*if i change this then in singleproduct.css i need to change the media query value for item added and i think this is only valid if i go below 520px*/
+@media screen and (max-width: 1100px){/*if i change this then in singleproduct.css i need to change the media query value for item added and i think this is only valid if i go below 520px*/
     .nav__logo img{
         padding: 8px 0;
     }

@@ -163,7 +163,7 @@
     width: 100%;
     background-color: white;
     z-index: 5;
-    padding: 75px 0 15px;/*navbar is 60px*/
+    padding: 73px 0 15px;/*navbar is 60px*/
     border-bottom: 1px solid rgb(236, 234, 234);
     transition: transform 300ms,
                 opacity 300ms;
@@ -241,16 +241,11 @@
     }
 
 }
-@media screen and (max-width: 768px){ /*as per navigation*/
-    .item__added{
-        padding: 65px 0 15px;/*navbar is 50px*/
-    }
-}
+
 
 @media screen and (max-width: 520px){/*this should be 900 as per my comment in navbar.css but i am leaving it here rn*/
     .item__thumb{
         width: 40px;
         height: 40px;
     }
-   
 }
