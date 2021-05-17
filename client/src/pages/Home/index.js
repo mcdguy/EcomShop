@@ -16,7 +16,7 @@ import Footer from '../../components/footer';
 const Home = () => {
     const [currentImage,setCurrentImage] = useState(0);
     const {featuredProducts,setFilterName} = useGlobalContext();
-    const [error,setError] = useState({show:false,msg:'could not save email'})
+    const [alert,setAlert] = useState({show:false,msg:'could not save email',type:''})
     const sliderRef = useRef(null);
     const productsRef = useRef(null)
     const [subEmail,setSubEmail]= useState('');
@@ -50,15 +50,18 @@ const Home = () => {
         }
     }); 
     const saveEmail = () =>{
-        setError(err => {return({show:false ,msg:''})});
+        setAlert(alert => {return({...alert,show:false ,msg:''})});
         axios.post('/subscribe',{email:subEmail})
             .then(res =>{
-                console.log(res.data);
+                // console.log(res.data);
                 if(res.data.success){
-                    console.log('subcription successfull');
+                    // console.log('subcription successfull');
+                    setAlert(alert => {return({...alert,show:true ,msg:'your subscription was successful',type: 'success'})});
+
                 }
                 if(res.data.error){
-                    setError(err => {return({show:true ,msg:res.data.error})});
+                    setAlert(alert => {return({...alert,show:true ,msg:res.data.error,type: 'error'})});
+                    // setError(err => {return({show:true ,msg:res.data.error})});
                 }
             })
             .catch(err =>{
@@ -150,11 +153,9 @@ const Home = () => {
                         <h1>subscribe to our newsletter</h1>
                         <div className="subscribe__email">
                             <div className="sub__input">
-                                <div className="sub__inp__wrapper">
                                     <input value={subEmail} onChange={e=>{setSubEmail(e.target.value)}} type="text"/>
-                                    {error.show?<span className="sub__error"><BiErrorCircle/> { error.msg}</span>:null} 
-                                </div>
-                                <button className="sub__btn" onClick={saveEmail}>subscribe</button>
+                                    <button className="sub__btn" onClick={saveEmail}>subscribe</button>
+                                    {alert.show?<span className={`${alert.type==='success'?'sub__error success':'sub__error'}`}>{ alert.msg}</span>:null} 
                             </div>
                         </div>
                     </div>
