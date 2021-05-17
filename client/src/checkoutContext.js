@@ -86,8 +86,16 @@ export const CheckoutProvider = ({children}) =>{
         localStorage.setItem('siad',JSON.stringify(shippingAddress));
     },[shippingAddress])
    
-
-
+    //need seperate function for state since it's a custom dropdown and i can't use onchange on it
+    const handleShippingState = (state) =>{
+        setShippingError(shippingError=>{return{...shippingError,sAddressLine:'',sState:'',sCity:'',sPin:'',}});
+        setShippingAddress(shippingAddress=>{
+            return({
+                ...shippingAddress,
+                shippingstate: state
+            })
+        })
+    }
     const handleShippingAddress = (e) =>{
         setShippingError(shippingError=>{return{...shippingError,sAddressLine:'',sState:'',sCity:'',sPin:'',}});
         setShippingAddress(shippingAddress=>{
@@ -97,7 +105,16 @@ export const CheckoutProvider = ({children}) =>{
             })
         })
     }
-    
+    //need seperate function for state since it's a custom dropdown and i can't use onchange on it
+    const handleBillingState = (state) =>{
+        setBillingError(billingError=>{return{...billingError,bAddressLine:'',bState:'',bCity:'',bPin:'',bContact:''}});
+        setBillingAddress(billingAddress=>{
+            return({
+                ...billingAddress,
+                billingstate:state
+            })
+        })
+    }
     const handleBillingAddress = (e) =>{
         setBillingError(billingError=>{return{...billingError,bAddressLine:'',bState:'',bCity:'',bPin:'',bContact:''}});
         setBillingAddress(billingAddress=>{
@@ -247,7 +264,8 @@ export const CheckoutProvider = ({children}) =>{
             handleUserDetails,
             showAlert,
             setShowAlert,
-  
+            handleShippingState,
+            handleBillingState
         }}>
         {children}
     </CheckoutContext.Provider>

@@ -1,10 +1,13 @@
-import React from 'react';
+import React,{useState} from 'react';
 // import { useAddressContext } from '../../addressContext';
 import { useCheckoutContext } from '../../checkoutContext';
 import './shippingAddress.css';
+import {state} from '../../data';
+
 
 const ShippingAddress = () => {
-    const {shippingAddress,shippingError,handleShippingAddress} = useCheckoutContext();   
+    const {shippingAddress,shippingError,handleShippingAddress,handleShippingState} = useCheckoutContext();   
+    const [showDropdown,setShowDropDown] = useState(false);
     return (
         <div className="shipping">
             <form> 
@@ -13,10 +16,26 @@ const ShippingAddress = () => {
                     <label className="address__inp__label anim--inp--label" htmlFor="shippingaddressLine"> <span>street</span>  </label>
                     {shippingError.sAddressLine?<span className="address__inp__error anim--inp--error">{shippingError.sAddressLine}</span>:null}
                 </div>
-                <div className="address__inp__wrapper anim--inp--wrapper">
+                {/* <div className="address__inp__wrapper anim--inp--wrapper">
                     <input required className="address__inp anim--inp" onChange={(e)=>handleShippingAddress(e)} value={shippingAddress.shippingstate} name="shippingstate" type="text" />
                     <label className="address__inp__label anim--inp--label" htmlFor="shippingstate "> <span>state</span>  </label>
                     {shippingError.sState?<span className="address__inp__error anim--inp--error">{shippingError.sState}</span>:null}
+                </div> */}
+                <div className="address__inp__wrapper anim--inp--wrapper" onClick={()=>setShowDropDown(!showDropdown)}>
+                    <div className="state__dropdown">
+                        <div className="state__option__head">
+                            {shippingAddress.shippingstate}
+                            <label className={`${shippingAddress.shippingstate===''?"address__inp__label anim--inp--label":"address__inp__label anim--inp--label anim__text__head__label"}`} htmlFor="billingstate"> <span>state</span> </label>
+                            {shippingError.sState?<span className="address__inp__error anim--inp--error">{shippingError.sState}</span>:null}                            
+                        </div>
+                        {showDropdown?<div className="state__options">
+                            {state.map(s=>{
+                                return (
+                                    <div key={s} onClick={()=>handleShippingState(s)} className="state__op">{s}</div>
+                                )
+                            })}
+                        </div>:null}
+                    </div>
                 </div>
                 <div className="address__inp__wrapper anim--inp--wrapper">
                     <input required className="address__inp anim--inp" onChange={(e)=>handleShippingAddress(e)} value={shippingAddress.shippingcity} name="shippingcity" type="text" />

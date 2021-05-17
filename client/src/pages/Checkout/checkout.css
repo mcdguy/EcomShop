@@ -20,13 +20,65 @@
     border-radius: 4px;
     /* background-color: rgba(var(--clr-light-rgb),.2); */
 }
+
 .anim--inp--wrapper{
     position: relative;
     /* width: 250px; */
     width: 100%;
     height: 40px;
     margin: 25px 0;
-    background-color: rgb(247, 247, 247);
+    /* background-color: rgb(247, 247, 247); */
+}
+.state__dropdown{
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+.state__option__head{
+    height: 100%;
+    width: calc(100% - 16px);
+    border: 3px solid rgb(177, 168, 168);
+    border-radius: 4px;
+    padding: 0 5px;
+    color: rgb(46, 44, 44);
+    font-family: inherit;
+    letter-spacing: 1px;
+    display: flex;
+    font-size: 14px;
+    align-items: center;
+    /* position: relative; */
+    /* justify-content: center; */
+    text-transform: lowercase;
+    /* text-align:center; */
+}
+/* .state__option__head::after{
+    content: ''
+} */
+.state__options{
+    background-color: white;
+    height: 180px;
+    overflow-y: scroll;
+    border: 1px solid rgb(201, 201, 201);
+    box-shadow: 0 0 5px 3px rgb(238, 238, 238);
+    /* display: none; */
+    position: absolute;
+    width: 100%;
+    top: calc(100% + 8px);
+    z-index: 5;
+    color: rgb(46, 44, 44);
+    font-family: inherit;
+    letter-spacing: 1px;
+    box-sizing: border-box;
+}
+.state__op{
+    padding: 8px 10px;
+    cursor: pointer;
+    text-transform: uppercase;
+    /* text-align: center; */
+}
+.state__op:hover{
+    /* padding: 8px 10px; */
+    background-color: rgb(243, 243, 243);
 }
 .anim--inp{
     position: relative;
@@ -40,9 +92,10 @@
     border-radius: 4px;
     padding: 0 5px;
     color: rgb(46, 44, 44);
-    /* box-sizing: border-box; */
     font-family: inherit;
     letter-spacing: 1px;
+    font-size: 14px;
+    /* box-sizing: border-box; */
     /* background-color: inherit; */
 }
 .anim--inp--label{
@@ -55,7 +108,8 @@
     padding: 0px 3px;
     transition: all .3s;
     pointer-events: none;
-    font-size: 17px;
+    font-size: 17px ;
+    text-transform: lowercase;
     letter-spacing: 1px;
 }
 .anim--inp--error{
@@ -83,6 +137,7 @@
 .coupon__error{
    top: calc(100% + 5px); 
 }
+.anim__text__head__label,
 .anim--inp:focus + .anim--inp--label,
 .anim--inp:valid + .anim--inp--label{
     top: 0;
