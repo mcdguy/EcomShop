@@ -55,7 +55,7 @@ app.use('/location',require('./routes/location-route'));
 app.use('/order',require('./routes/order-route'))
 app.use('/gallery',require('./routes/gallery-route'));
 app.use('/admin',(require('./routes/admin-route')));
-
+app.use('/subscribe',require('./routes/subscriber-route'));
 //for 404 error on refresh we will serve index.html
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname+'/client/build/index.html'));

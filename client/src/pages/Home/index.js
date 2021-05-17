@@ -2,6 +2,7 @@ import React,{useEffect,useState,useRef} from 'react';
 import './home.css';
 import {Link} from 'react-router-dom';
 import { useGlobalContext } from '../../context';
+import axios from 'axios';
 import Product from '../../components/product';
 // import {FaFacebook,FaEnvelope,FaInstagram,FaTwitterSquare} from "react-icons/fa";
 // import {SiGmail} from "react-icons/si";
@@ -10,10 +11,12 @@ import Facebook from '../../assets/images/facebook.png';
 import Instagram from '../../assets/images/instagram.png';
 import Gmail from '../../assets/images/gmail.png';
 import {GrPrevious,GrNext} from "react-icons/gr";
+import {BiErrorCircle} from "react-icons/bi";
 import Footer from '../../components/footer';
 const Home = () => {
     const [currentImage,setCurrentImage] = useState(0);
     const {featuredProducts,setFilterName} = useGlobalContext();
+    const [error,setError] = useState({show:false,msg:'could not save email'})
     const sliderRef = useRef(null);
     const productsRef = useRef(null)
     const [subEmail,setSubEmail]= useState('');
@@ -46,6 +49,22 @@ const Home = () => {
             clearInterval(x);
         }
     }); 
+    const saveEmail = () =>{
+        setError(err => {return({show:false ,msg:''})});
+        axios.post('/subscribe',{email:subEmail})
+            .then(res =>{
+                console.log(res.data);
+                if(res.data.success){
+                    console.log('subcription successfull');
+                }
+                if(res.data.error){
+                    setError(err => {return({show:true ,msg:res.data.error})});
+                }
+            })
+            .catch(err =>{
+                console.log('an error occurred');
+            })
+    }
     return (
         <div className="home">
             <section className="home__hero">
@@ -131,8 +150,11 @@ const Home = () => {
                         <h1>subscribe to our newsletter</h1>
                         <div className="subscribe__email">
                             <div className="sub__input">
-                                <input value={subEmail} onChange={e=>{setSubEmail(e.target.value)}} type="text"/>
-                                <button className="sub__btn">subscribe</button>
+                                <div className="sub__inp__wrapper">
+                                    <input value={subEmail} onChange={e=>{setSubEmail(e.target.value)}} type="text"/>
+                                    {error.show?<span className="sub__error"><BiErrorCircle/> { error.msg}</span>:null} 
+                                </div>
+                                <button className="sub__btn" onClick={saveEmail}>subscribe</button>
                             </div>
                         </div>
                     </div>

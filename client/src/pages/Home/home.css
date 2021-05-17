@@ -267,7 +267,8 @@
 
 .home__subscribe{
     padding: 80px 0;
-    background-color: rgb(248, 66, 66);
+    /* background-color: #675f6b; */
+    background-color: var(--clr-sec);
 }
 .home__subscribe .subscribe__letter{
     background-color: white;
@@ -280,7 +281,8 @@
     font-size: 25px;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: black;
+    /* color: black; */
+    color:rgb(243, 39, 39);
 }
 .home__subscribe .sub__input{
     max-width: 450px;
@@ -290,6 +292,29 @@
     width: 100%;
     box-sizing: border-box;
 }
+.home__subscribe .sub__input .sub__inp__wrapper{
+    width: 100%;
+    position: relative;
+}
+/* .home__subscribe .sub__input .sub__inp__wrapper svg{
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    font-size: 20px;
+} */
+.home__subscribe .sub__input .sub__inp__wrapper svg path{
+    /* stroke:rgb(243, 39, 39); */
+    fill: rgb(243, 39, 39);
+    
+}
+.home__subscribe .sub__input .sub__inp__wrapper svg{
+    /* stroke:rgb(243, 39, 39); */
+    /* fill: rgb(243, 39, 39); */
+    margin-right: 5px;
+    font-size: 16px;
+}
+
 .home__subscribe .sub__input input{
     letter-spacing: 1px;
     border-radius: 4px 0 0 4px;
@@ -297,9 +322,9 @@
     font-size: 16px;
     box-sizing: border-box;
     height: 100%;
-    padding: 0 10px;
     width: 100%;
-    border: 2px solid rgb(82, 80, 80);
+    padding: 0 10px 0 10px;
+    border: 2px solid rgb(35, 29, 36);
     box-sizing: border-box;
 }
 .home__subscribe .sub__input button{
@@ -316,9 +341,27 @@
     padding: 0 14px;
     flex-shrink: 0;
     color: white;
-    background-color: rgb(82, 80, 80);
+    background-color: rgb(35, 29, 36);
+    transition: background-color 300ms;
 }
+.home__subscribe .sub__input button:hover{
+    background-color: rgb(83, 79, 83);
+}
+.home__subscribe .sub__input button:active{
+    /* background-color: rgb(245, 153, 153); */
+    background-color: rgb(129, 125, 129);
 
+}
+.sub__error{
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: rgb(243, 39, 39);
+    position: absolute;
+    bottom: -28px;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
 
 .home__logo__display{
     padding: 100px 0 50px;
@@ -407,7 +450,19 @@
         width: 46%;
         margin-right: 8%;
     }
-  
+    .home__subscribe h1{
+        font-size: 20px;
+    }
+    .home__subscribe .sub__input{
+        height: 35px;
+    }
+    .home__subscribe .sub__input button{
+        font-size: 13px;
+        padding: 0 10px;
+    }
+    .home__subscribe .sub__input{
+        margin: 40px auto 0;
+    }
 }
 @media screen and (max-width:420px){
     .home__hero{
@@ -456,4 +511,45 @@
     .slider__hidden .slider__head{
         font-size: 14px;
     }
+    .home__subscribe h1{
+        font-size: 14px;
+
+    }
+    .home__subscribe .subscribe__letter{
+        padding: 30px 10px 40px;
+    }
+    .home__subscribe .sub__input{
+        margin: 30px auto 5px;
+    }
+    .home__subscribe .sub__input button{
+        font-size: 11px;
+        /* padding: 0 10px; */
+    }
+    .sub__error{
+        font-size: 10px;
+        bottom: -23px;
+    }
+    .home__subscribe .sub__input .sub__inp__wrapper svg{
+        /* stroke:rgb(243, 39, 39); */
+        /* fill: rgb(243, 39, 39); */
+        margin-right: 3px;
+        font-size: 13px;
+    }
+    /* .home__subscribe{
+        padding: 80px 0;
+        background-color: var(--clr-sec);
+    }
+    .home__subscribe .subscribe__letter{
+        background-color: white;
+        padding: 50px;
+        max-width: 500px;
+        margin: auto;
+    }
+    .home__subscribe h1{
+        text-align: center;
+        font-size: 25px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color:rgb(243, 39, 39);
+    } */
 }
