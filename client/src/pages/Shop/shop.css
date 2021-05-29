@@ -5,11 +5,10 @@
 
 .shop__center{
     display: flex;
-    /* background-color: yellow; */
-    flex-wrap: wrap;/*using margins instead of justify content because at end last element was wierdly positioned*/
+    flex-wrap: wrap;
 }
 
-.shop__filter{/*will increase the clickable area of this*/
+.shop__filter{
     display: flex;
     justify-content: flex-end;
     position: relative;
@@ -92,10 +91,5 @@
     font-weight: 400; 
 }
 
-/*depends on when product goes into 1 in a line*/
-/* @media screen and (max-width: 420px){
-    .shop__filter{
-        width: 64%;
-    }
-} */
+
 

@@ -1,7 +1,5 @@
 import React,{useState} from 'react';
-// import { useAddressContext } from '../../addressContext';
 import { useCheckoutContext } from '../../checkoutContext';
-import './shippingAddress.css';
 import {state} from '../../data';
 
 
@@ -16,11 +14,6 @@ const ShippingAddress = () => {
                     <label className="address__inp__label anim--inp--label" htmlFor="shippingaddressLine"> <span>street</span>  </label>
                     {shippingError.sAddressLine?<span className="address__inp__error anim--inp--error">{shippingError.sAddressLine}</span>:null}
                 </div>
-                {/* <div className="address__inp__wrapper anim--inp--wrapper">
-                    <input required className="address__inp anim--inp" onChange={(e)=>handleShippingAddress(e)} value={shippingAddress.shippingstate} name="shippingstate" type="text" />
-                    <label className="address__inp__label anim--inp--label" htmlFor="shippingstate "> <span>state</span>  </label>
-                    {shippingError.sState?<span className="address__inp__error anim--inp--error">{shippingError.sState}</span>:null}
-                </div> */}
                 <div className="address__inp__wrapper anim--inp--wrapper" onClick={()=>setShowDropDown(!showDropdown)}>
                     <div className="state__dropdown">
                         <div className="state__option__head">

@@ -25,7 +25,6 @@
 .cart__item__qty__dec{
 
     cursor: pointer;
-    /* background-color: rgb(240, 240, 240); */
     background-color: var(--clr-light);
     background-color: var(--clr-light);
     border-radius: 2px;
@@ -69,7 +68,7 @@
 .cart__item__name{
     letter-spacing: 1px;
     text-transform: capitalize;
-    width: 33.33%; /*so that price stays at fixed position*/
+    width: 33.33%;
 }
 
 .cart__item__remove{
@@ -88,7 +87,6 @@
     cursor: pointer;
 }
 .cart__item__remove svg path{
-    /* stroke: rgb(219, 217, 217); */
     stroke: rgba(var(--clr-sec-rgb),.9);
 }
 .cart__item__tooltip{
@@ -97,7 +95,6 @@
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
-    /* background-color: var(--clr-sec); */
     background-color: rgba(0, 0, 0, 0.9);
     color: white;
     padding: 4px 8px;
@@ -126,12 +123,6 @@
         width: 50px;
         height: 50px;
     }
-    /* .cart__item__qty span{
-        width: 12px;
-        height: 13px;
-        padding: 0;
-
-    } */
     .cart__item{
         padding: 15px 0;
     }

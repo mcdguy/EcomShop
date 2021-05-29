@@ -37,7 +37,6 @@ const Order = () => {
     return (
         <div className="orders">
             {orders.map(o =>{
-                // console.log(o);
                 return <div key={o.orderId} className="single__order">
                     <h1> <span>order id :</span> {o.orderId}</h1>
                     <h1> <span>total : </span> {formatPrice(o.amount)}</h1>

@@ -6,24 +6,30 @@ import {GrClose} from "react-icons/gr";
 import {BiLoaderAlt} from "react-icons/bi";
 
 const Login = () => {
-    const {setCart,cart,isLoggedIn,setLogin,showLogin,setHideLoginModal}= useGlobalContext();
+    const {setCart,cart,setLogin,showLogin,setHideLoginModal}= useGlobalContext();
     const [authType,setAuthType] = useState('login');
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const [username,setUsername] = useState('');
     const [error,setError] = useState({email: '',password:'',username:''});
     const [showForgot,setShowForgot] = useState(false);
-    const spinnerRef = useRef(null)
     const [forgotMessage,setForgotMessage] = useState('');
+    const spinnerRef = useRef(null)
+    
+    //email-setting state and removing whitespace
     const handleEmail = (e) =>{ 
-        setEmail( e.target.value.trim());//setting email as well as removing whitespace
+        setEmail( e.target.value.trim());
         setError({email: '',password:'',username:''})
     }
 
+
+    //authentication request
     const handleAuth = (e) =>{
         e.preventDefault();
         setEmail(email => {return email.replaceAll(" ","")});
         setError({email: '',password:'',username:''});
+       
+        //basic validation
         if(email===''){
             setError(error => {return({...error,email: 'please enter an email'})});
             return;
@@ -32,57 +38,48 @@ const Login = () => {
             setError(error => {return({...error,password: 'please enter a password'})});
             return;
         }
-        // if(username === ''){
-        //     setError(error => {return({...error,username: 'please enter a username'})});
-        //     return;
-        // }
-        //only if the fields have something i will show spinner
+
         spinnerRef.current.classList.add('show');
-        axios.post(`/user/${authType}`,{email,password,username})//sending username for login too which is empty for login but i will not destructure it on backend
+        //sending request
+        axios.post(`/user/${authType}`,{email,password,username})
         .then(res=>{ 
-            console.log(res.data);
             if(spinnerRef.current) spinnerRef.current.classList.remove('show');
-            //i observed that when user is not logged in or signed in due to any error the spinner will hide but modal will stay open
             if(res.data.errors){
                 setError({email:res.data.errors.email,password: res.data.errors.password, username: res.data.errors.username});
             }
             if(res.data.success){
                 setHideLoginModal();
-                //if user is logged in i will merge localstorage cart with db one and then fetch the new cart and replace the localstorage one
-                
+                //user logged in - merging cart and updating the frontend cart with merged cart
                 axios.post('/user/mergecart',{cart})
                 .then(res => {
-                    // console.log(res.data);
-                    if(res.data.cart){
-                        // alert("inside the you know");
-                      
-                        console.log('cart',res.data.cart);
+                    if(res.data.cart){                      
                         setCart(res.data.cart);
-                    }else{
-                        console.log('cart not received');
                     }
                 })
-                .catch(err => console.log(err));           
-                //if this is success that means user must have entered valid credentials and jwt is sent back(either he is logged in or he is signed in)
+                .catch(err => console.log(err));   
+                //setting login state - credentials are valid
                 setLogin();
             }
-            //here i would like to do different things depending on the auth type
         })
-        .catch(err =>{
+        .catch(() =>{
                 if(spinnerRef.current) spinnerRef.current.classList.remove('show');
-                console.log(err);
+                setError(error => {return({...error,password: 'an error occurred'})});
         });
     }
+
+    //forgot password action
     const forgotPassword = () =>{
         let msg = 'A password reset link has been sent to your email';
-        spinnerRef.current.classList.add('show');
+        //validation for email
         if(email === ''){
             setError(error => {return({...error,email: 'please enter your email'})});
             return;
         }
+        
+        //sending request
+        spinnerRef.current.classList.add('show');
         axios.post('/user/forgotpassword',{email})
         .then(res =>{
-            console.log(res.data);
             if(res.data.success){
                 if(spinnerRef.current) spinnerRef.current.classList.remove('show');
                     setForgotMessage(msg);
@@ -100,7 +97,6 @@ const Login = () => {
     return (
         <>
             {showLogin === true?
-                // its very imp to have setShowForgot on dismiss because otherwise i can't reverse state after that
                 <div className="auth_wrapper" onClick={()=>{setHideLoginModal();setShowForgot(false)}}>
                 <div className="auth" onClick={e=>e.stopPropagation()}>
                     <div className="auth__close" onClick={()=>{setHideLoginModal();setShowForgot(false)}}><GrClose/></div>

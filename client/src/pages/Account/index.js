@@ -6,11 +6,6 @@ import Order from '../../components/order';
 import Loader from '../../components/loader';
 import Error from '../../components/error';
 
-//the concept of editing is not manipulating the state directly but using it as default value(talking about editing and not saving)
-//if user cancels state is unchanged but if he saves i won't change state immediately but check with backend if data is valid and then save it to db
-//and then update the state and set editFlag to false
-//this is because i might update the state with corrupt data on press of save button but db will reject it and now user can't cancel the edit because i have no track of it
-//due to this change i have to pass address explicitly to saveAddress function because i am not directly saving state to db in case of edit mode
 const Account = () => {
     const {address,setAddress,saveAddress,error,setError,editMode,setEditMode,isLoading,loadingError} = useAddressContext();
     const {isLoggedIn} = useGlobalContext();
@@ -25,10 +20,12 @@ const Account = () => {
         setError(error => {return ({...error,addressLine:'',state:'',city:'',contact:'',pin:''})});
         setAddress({...address,[e.target.name]:e.target.value});
     }
-    //not using onchange because of refs so i will use onFocus
+    
     const resetError = () =>{
         setError(error => {return ({...error,addressLine:'',state:'',city:'',contact:'',pin:''})});
     }
+
+
     const saveChanges = () =>{
         setError(error => {return ({...error,addressLine:'',state:'',city:'',contact:'',pin:''})});
         saveAddress({
@@ -60,8 +57,6 @@ const Account = () => {
         return <div className="address__save">
             <div className="address__center center">
                 <div className="address__header">
-                    {/* <p>hello, {address.username}</p> */}
-                    {/* {address.email && <p> <span> Logged in as :</span>  {address.email}</p>} */}
                     {address.email && <p> {address.email}</p>}
                 </div>
                 {!showForm?
@@ -105,8 +100,6 @@ const Account = () => {
         <div className="account">
             <div className="address__center center">
                 <div className="address__header">
-                    {/* <p>hello, {address.username}</p> */}
-                    {/* {address.email && <p> <span> Logged in as :</span>   {address.email}</p>} */}
                     {address.email && <p> {address.email}</p>}
                 </div>
 

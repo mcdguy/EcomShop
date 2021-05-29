@@ -1,8 +1,5 @@
-// import { useCheckoutContext } from "../checkoutContext";
-// const {billingAddress, billingError,setBillingError} = useCheckoutContext();
 
 export const handleBillingError=(billingAddress, billingError,setBillingError)=>{
-    // console.log(billingAddress, billingError,setBillingError);
     if(billingAddress.billingaddressLine === ''){
         setBillingError(billingError =>{return{...billingError,bAddressLine: 'this field is required'}});
         return false;

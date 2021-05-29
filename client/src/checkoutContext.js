@@ -8,6 +8,7 @@ import { handleUserError } from './utils/handleUserError';
 import { useGlobalContext } from './context';
 
 const CheckoutContext = React.createContext();
+
 // getting shipping address from local storage
 const getsiad = () =>{
     let siad = localStorage.getItem('siad');
@@ -70,8 +71,8 @@ export const CheckoutProvider = ({children}) =>{
         billingpin:'',
         billingcontact:''
     })
-    //every time address change this will run which will change when user save address in account section or when page is refreshed
-    //this prepopulates the state
+
+    //this prepopulates the billing address
     useEffect(()=>{
         setUser(user=>{return{...user,name: address.username,email: address.email}});
         setBillingAddress({
@@ -80,13 +81,15 @@ export const CheckoutProvider = ({children}) =>{
             billingcity:address.city,
             billingpin:address.pin,
             billingcontact:address.contact})
-    },[address])
+    },[address])//every time user changes address in 'account page' this will run
 
+
+    //setting shipping adddress in local storage
     useEffect(()=>{
         localStorage.setItem('siad',JSON.stringify(shippingAddress));
     },[shippingAddress])
    
-    //need seperate function for state since it's a custom dropdown and i can't use onchange on it
+    //seperate function for setting shipping state since it's custom dropdown
     const handleShippingState = (state) =>{
         setShippingError(shippingError=>{return{...shippingError,sAddressLine:'',sState:'',sCity:'',sPin:'',}});
         setShippingAddress(shippingAddress=>{
@@ -105,7 +108,8 @@ export const CheckoutProvider = ({children}) =>{
             })
         })
     }
-    //need seperate function for state since it's a custom dropdown and i can't use onchange on it
+
+    //seperate function for setting biliing state since it's custom dropdown
     const handleBillingState = (state) =>{
         setBillingError(billingError=>{return{...billingError,bAddressLine:'',bState:'',bCity:'',bPin:'',bContact:''}});
         setBillingAddress(billingAddress=>{
@@ -125,6 +129,7 @@ export const CheckoutProvider = ({children}) =>{
         })
     }
     
+
     const handleUserDetails = (e) =>{
         setUserError(userError=>{return{...userError,name:'',email:''}});
         setUser(user=>{
@@ -142,8 +147,10 @@ export const CheckoutProvider = ({children}) =>{
         })
     }
 
+
+    //making payment
     const makePayment = async () =>{
-        // console.log(showShipping);
+        //validating all fields
         let succeed = false;
         succeed = handleBillingError(billingAddress, billingError,setBillingError);
         succeed= handleUserError(user,setUserError);
@@ -151,41 +158,35 @@ export const CheckoutProvider = ({children}) =>{
             succeed = handleShippingError(shippingAddress,shippingError,setShippingError);
         }
         if(!succeed){
-            console.log('fill the fields');
             return;
         }
         if(!cartProducts.length){
-            console.log('there is nothing in cart');
+            console.log('no items in cart');
             return;
         }
+
         //only proceed if there is no error in above functions
         axios.post('/makepayment',{cartProducts,billingAddress,shippingAddress,user,showShipping,code:couponCode,saveDetails})
             .then(res =>{
                 if(res.data.mismatch){
-                    //now i should update cart
-                    //will create a popup informing user about this now
-                    console.log('need to update cart');
+                    //if cart items don't match then update cart(stock is less than required or item doesn't exist)
                     getProducts();
                     setShowAlert(true);
                     return;
                 }
-                console.log(res.data);
                  if(res.status !==200){
                     return;
                 } 
                 const options = {
                 "key": "rzp_test_qlKfA8K3Z1aaLP", //put this in .env file
-                "amount": res.data.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                "amount": res.data.amount, 
                 "currency": "INR",
                 "name": "bakhsh",
                 "timeout": 600,
                 "description": "payment for beans",
                 // "image": "https://example.com/your_logo",
-                "order_id": res.data.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                "order_id": res.data.id, 
                 "handler": function (response){
-                    // alert(response.razorpay_payment_id);
-                    // alert(response.razorpay_order_id);
-                    // alert(response.razorpay_signature);
                     axios.post('/verify',{order_id:res.data.id,payment_id:response.razorpay_payment_id,payment_sign:response.razorpay_signature})
                         .then(res => {
                             if(res.data.success){
@@ -199,9 +200,8 @@ export const CheckoutProvider = ({children}) =>{
                 "modal": {
                     "escape": false,
                     "ondismiss": function(){
-                        // alert('modal closed');
                         axios.delete('/deleteorder',{data:{order_id:res.data.id}})
-                        .then(res => console.log(res.data))
+                        // .then(res => console.log(res.data))
                         .catch(err => console.log(err));
                      }
                 },
@@ -210,35 +210,20 @@ export const CheckoutProvider = ({children}) =>{
                     "email": user.email,
                     "contact": billingAddress.billingcontact
                 },
-                // "notes": {
-                //     "address": "Razorpay Corporate Office"
-                // },
                 "theme": {
                     "color": "#1d1c19"
                 }
-        };
-        var rzp1 = new window.Razorpay(options);
-        rzp1.open();
-        rzp1.on('payment.failed', function (response){
-                alert('payment failed');
-                // axios.delete('/deleteorder',{data:{order_id:res.data.id}})
-                //     .then(res => console.log(res.data))
-                //     .catch(err => console.log(err));
-                // alert(response.error.code);
-                // alert(response.error.description);
-                // alert(response.error.source);
-                // alert(response.error.step);
-                // alert(response.error.reason);
-                // alert(response.error.metadata.order_id);
-                // alert(response.error.metadata.payment_id);
-        });
-            })
-            .catch(err => console.log(err));
+            };
+            var rzp1 = new window.Razorpay(options);
+            rzp1.open();
+            rzp1.on('payment.failed', function (response){
+                    alert('payment failed');
+            });
+        })
+        .catch(err => console.log(err));
         
     }
     
-
-    // const [checkoutState,dispatch] = useReducer(reducer,defaultCheckoutState);
     return <CheckoutContext.Provider 
     value={
         {

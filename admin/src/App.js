@@ -24,17 +24,14 @@ function App() {
       </div>
     );
   }
-  //just manipulating this can expose a lot of data which is easy
-  //what i can do is seperate all routes in admin and then lock them
-  //keeping routes open for frontend is not good
-  //try commenting the below condition and see
+
   // if(!isLoggedIn){
   //   return  <Login/>;
   // }
 
   return (
     <Router>
-      {/* <Sidebar></Sidebar> */}
+
       {isLoggedIn?<Sidebar></Sidebar>:null}
       <Switch>
         {/* <Route path="/" exact>
@@ -72,7 +69,7 @@ function App() {
         </Route>
 
         <Route path="/reset-password/:id/:token" children={<Forgot/>} exact></Route>
-        
+       
         <Route path="*">
             {!isLoggedIn?<Redirect to='/login'/>:<Error/>}
         </Route>

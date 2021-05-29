@@ -1,6 +1,3 @@
-/*so i will remove quantity from the item and in the cart i will put another component
-which will be cartItem and will have the quantity state
-so quantity will be 1 by default */
 .cart__empty{
     min-height: 100vh;
     display: flex;
@@ -38,8 +35,4 @@ so quantity will be 1 by default */
     .cart__products{
         width: 100%
     }
-    /* .cart__summary{
-        width: 100%;
-        margin: 40px 0 40px;
-    } */
 }

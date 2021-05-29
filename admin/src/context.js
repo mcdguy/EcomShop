@@ -22,7 +22,6 @@ function createBaseUrl(){
 }
 
 export const AppProvider = ({children}) => {
-    // console.log(baseUrl);
     const [currentTab,setCurrentTab] = useState(getCurrentTab());
     const [user,setUser] = useState([]);
     const [isLoggedIn,setIsLoggedIn]= useState(false);
@@ -67,8 +66,6 @@ export const AppProvider = ({children}) => {
         setShowMainLoader(true);
         axios(`${baseUrl}/admin/status`)
             .then(res =>{
-                // console.log(res);
-                // console.log(res.data);
                 if(res.data.error){
                     setType('read admin');
                     setShowMainLoader(false);
@@ -78,7 +75,6 @@ export const AppProvider = ({children}) => {
                     setType(res.data.type);
                     setShowMainLoader(false);
                     setIsLoggedIn(true);
-                    // fetchAdmin();
                 }
                 setShowMainLoader(false);
             })
@@ -135,7 +131,7 @@ export const AppProvider = ({children}) => {
         });
     }
 
-    //as soon as someone is logged in i wanna fetch these coupons again
+    //fetch coupon again after login
     useEffect(()=>{
         fetchCoupon();
     },[isLoggedIn])
@@ -179,9 +175,7 @@ export const AppProvider = ({children}) => {
         fetchLocation();
     },[]);
 
-    // const fetchUser = () =>{
-        
-    // }
+ 
     const fetchUser = () =>{
         setIsUserLoading(true);
         setUserError(false);
@@ -236,7 +230,6 @@ export const AppProvider = ({children}) => {
                 setIsAdminLoading(false);
             })
             .catch(err => {
-                // console.log(err);
                 setAdminError(false);
             });
     }

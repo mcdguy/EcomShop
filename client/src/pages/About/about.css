@@ -16,7 +16,7 @@
     position: absolute;
     bottom: 10px;
     margin: 0;
-    left: 400px; /*more than image width*/
+    left: 400px; 
     text-transform: uppercase;
     letter-spacing: 2px;
     font-size: 50px;
@@ -33,7 +33,6 @@
     width: 330px;
     height: 440px;
     top: -120px;
-    /* transform: translateY(-50%); */
 }
 
 .about__hero__img__wrapper img{
@@ -72,7 +71,6 @@
 }
 .about__employee__container::after{
     content: '';
-    /* background-color: rgb(78, 76, 76); */
     background-color: var(--clr-sec);
     position: absolute;
     width: 350px;
@@ -191,11 +189,10 @@
         width: 300px;
         height: 400px;
         top: -120px;
-        /* transform: translateY(-50%); */
     }
     .about__hero__top h1,
     .about__hero__text{
-        left: 350px; /*more than image width*/
+        left: 350px; 
     }
     .employee{
         padding: 10px;

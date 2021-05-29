@@ -11,8 +11,6 @@ const Cart = () => {
     const {cart,productError,productLoading} = useGlobalContext();
     const {cartProducts} = useCartContext();
     
-    //the cart is dependent on products so it will load after products load
-
     if(productLoading){
         return <Loader/>
     }

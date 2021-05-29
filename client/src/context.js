@@ -4,7 +4,7 @@ import axios from 'axios';
 const AppContext = React.createContext();
 
 const getLocalStorage = () =>{
-    let cart = localStorage.getItem('cart');//using the same name(list) i used in localStorage.setItem
+    let cart = localStorage.getItem('cart');
     if(cart){
         return JSON.parse(cart);
     }else{
@@ -111,36 +111,41 @@ export const AppProvider = ({children}) =>{
     const setGalleryError = (value) =>{
         dispatch({type: 'SET_GALLERY_ERROR',payload: value});
     }
-    //replacing cart with new one
     const setCart = (newCart) =>{
-        // console.log('hello');
         dispatch({type: 'SET_CART',payload: newCart})
     }
     const setVideos = (videos) =>{
         dispatch({type: 'SET_VIDEO',payload:videos});
     }
+
+    //adding item in cart
     const addCartItem = (productId,pqty) =>{
         let alreadyExists = false;
         let newCart = [];
         if(state.cart.length){
             newCart = state.cart.map(cartItem=>{
-                if(cartItem.productId === productId){//if the item already exists i only update qty and wont add it again
+                if(cartItem.productId === productId){//if the item already exists only update qty
                     cartItem.pqty +=pqty;
                     alreadyExists = true;
                 }
                 return cartItem;
             })
         }
-        if(!alreadyExists){//if it doesn't then i will add it to the cart 
-            if(state.cart.length){//if cart has something copy it
+        if(!alreadyExists){//if it doesn't exist then add it to the cart 
+            
+            //if cart has something copy it
+            if(state.cart.length){
                 newCart = [...newCart,{productId,pqty}];
             }
-            else{//if cart is empty just push the item
+            //if cart is empty just push the item
+            else{
                 newCart = [{productId,pqty}];
             }
         }
         dispatch({type: 'SET_CART_ITEM',payload: newCart});
     }
+    
+    //updates purchase quantity of already existing cart item
     const updateCartItem = (pqty,_id) =>{
         let updatedCart = state.cart.map(item =>{
             if(item.productId === _id){
@@ -150,23 +155,24 @@ export const AppProvider = ({children}) =>{
         })
         dispatch({type: 'UPDATE_CART_ITEM',payload: updatedCart});
     }
+
+    //removes item from cart
     const removeCartItem = (_id) =>{
         let newCart = state.cart.filter(item => item.productId !== _id);
         dispatch({type: 'REMOVE_CART_ITEM',payload: newCart});
     }
 
-    //checking if user is logged in on mount
+    //checking if user is logged in on mount - refresh or initial load
     useEffect(()=>{
         axios('/user/status')
             .then(res =>{
-                console.log(res.data);
                 if(res.data.error) return;
-                if(res.data.success) setLogin();//if it is success i will set login
+                if(res.data.success) setLogin();
             })
             .catch(err => console.log(err));
     },[]);
  
-    //anytime logged in status changes i will change localStorage
+    //anytime logged in status changes change localStorage
     useEffect(()=>{
         if(state.isLoggedIn){
             localStorage.setItem('status',true);
@@ -175,30 +181,55 @@ export const AppProvider = ({children}) =>{
         }
     },[state.isLoggedIn]);
 
-
-    //every time cart changes set the cart in localStorage or in db if user is logged in
-    //but cart might also change if user refresh the db but there is no real change in cart 
-    // at that time we will fetch cart from db because other device might have made a change to the db and refreshing this page will revert that change so sessions will never sync
-    //because every session will try to replace db cart with localstorage
-
+    //every time cart changes save it in local storage
     useEffect(()=>{
             localStorage.setItem('cart',JSON.stringify(state.cart));
-            console.log(state.cart);
+            //save it in db if user is logged in
             if(state.isLoggedIn){
                 axios.post('/user/cart',{cart:state.cart})
-                    .then(res =>{
-                        //basically i don't need to do anything here or i can see if user is logged out i can set loggedout here
-                        console.log('updated cart');
-                    })
                     .catch(err => console.log(err));
-            }
-
-            //i need to cancel this request before another is made
-        
+            }        
     },[state.cart])
    
-    //setting up videos
+   
+    //cart might also change on mount or refresh - replace frontend cart with db cart if user is logged in and page is refreshed 
     useEffect(()=>{
+        let status = localStorage.getItem('status');
+        if(status){
+            axios.get('/user/cart')
+                .then(res => {
+                    if(res.data.cart){
+                        setCart(res.data.cart);
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+    },[]);
+
+    //fetches the products
+    const getProducts = () =>{
+        setProductLoading(true);
+        setProductError(false);
+        axios('/product')
+        .then(res=>{
+            if(res.data.product){
+                setProducts(res.data.product);
+                setProductLoading(false);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            setProductError(true);
+        })
+    }
+
+
+    useEffect(()=>{
+        getProducts();
+    },[]);
+
+     //fetches the videos
+     useEffect(()=>{
         setGalleryError(false);
         setGalleryLoading(true);
         axios('/gallery')
@@ -215,40 +246,7 @@ export const AppProvider = ({children}) =>{
             });
     },[]);
 
-
-    useEffect(()=>{
-        let status = localStorage.getItem('status');
-        if(status){
-            axios.get('/user/cart')
-                .then(res => {
-                    if(res.data.cart){
-                        setCart(res.data.cart);
-                    }
-                })
-                .catch(err => console.log(err));
-        }
-    },[]);
-
-    //setting the products
-    const getProducts = () =>{
-        setProductLoading(true);
-        setProductError(false);
-        axios('/product')
-        .then(res=>{
-            if(res.data.product){
-                setProducts(res.data.product);
-                setProductLoading(false);
-            }
-        })
-        .catch(err => {
-            console.log(err);
-            setProductError(true);
-        })
-    }
-    useEffect(()=>{
-        getProducts();
-    },[]);
-
+    //extracts featured products from all products
     useEffect(()=>{
         if(state.products){
             let featured = state.products.filter(product=>product.featured === true);

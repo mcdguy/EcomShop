@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navbar from './pages/Navbar';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
-import Contact from './pages/Contact';
-import Brew from './pages/Brew';
 import SingleProduct from './pages/SingleProduct';
 import Cart from './pages/Cart';
 import Login from './components/login';
@@ -36,18 +34,10 @@ const App = () => {
             <About/>
           </Route>
 
-          <Route path="/contact" exact>
-            <Contact/>
-          </Route>
-
           <Route path="/video-gallery" exact>
             <Gallery/>
           </Route>
           
-          <Route path="/howtobrew" exact>
-            <Brew/>
-          </Route>
-
           <Route path="/reset-password/:id/:token" children={<Forgot/>} exact></Route>
           
           <Route path="/shop/:id" children={<SingleProduct/>} exact></Route>
@@ -67,9 +57,6 @@ const App = () => {
           <Route path="/findastore" exact>
             <Location/>
           </Route>
-          {/* <Route path="/signin">
-            <Login/>
-          </Route> */}
 
           <Route path="*">
             <Error/>

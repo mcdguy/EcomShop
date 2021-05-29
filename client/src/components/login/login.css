@@ -14,29 +14,25 @@
     width: 80%;
     max-width: 320px;
     background-color: white;
-    /* border-radius: 4px; */
     padding: 30px 25px;
     position: relative;
     box-sizing: border-box;
     border-radius: 4px;
 }
-/* .auth__form__wrapper{
-    padding: 20px 20px 20px;
-} */
-.auth__close{
+.auth .auth__close{
     position: absolute;
     top: 15px;
     right: 15px;
     cursor: pointer;
 }
-.auth__forgot{
+.auth .auth__forgot{
     text-align: center;
     line-height: 1.5;
     padding: 50px 20px;
     letter-spacing: 1px;
     font-size: 14px;
 }
-.auth__headers h1{
+.auth .auth__headers h1{
     cursor: default;
     text-align: center;
     font-size: 24px;
@@ -48,12 +44,11 @@
     color: black;
 }
 
-.auth__form input{
+.auth .auth__form input{
     display: block;
     width: 100%;
     padding: 7px 12px;
     box-sizing: border-box;
-    /* border-radius: 50px; */
     border-radius: 2px;
     border: none;
     letter-spacing: 1px;
@@ -62,21 +57,19 @@
     border: 2px solid black;
 }
 ::placeholder{
-    /* color: black; */
     letter-spacing: 1px;
     font-weight: 300;
     font-size: 14px;
     opacity: 1;/* for firefox */
-    /*this is for firefox*/
 }
-input:focus{
+.auth input:focus{
     outline: none;
 }
-.auth__field{
+.auth .auth__field{
     padding-bottom: 35px;
     position: relative;
 }
-.auth__error{
+.auth .auth__error{
     position: absolute;
     color: rgb(255, 140, 140);
     margin: 8px 0 0;
@@ -86,14 +79,10 @@ input:focus{
     align-items: center;
 }
 
-
-
-.auth__form button{
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+.auth .auth__form button{
     border: none;
     color: white; 
     padding: 10px 18px;
-    /* border-radius: 50px; */
     border-radius: 2px;
     background-color: var(--clr-sec);    
     font-size: 12px;
@@ -109,21 +98,22 @@ input:focus{
     cursor: pointer;
     outline: none;
 }
-.auth__toggle{
+
+.auth .auth__toggle{
     padding: 18px 0px;
 }
 
-.auth__toggle span{
+.auth .auth__toggle span{
     width: 100%;
     display: block;
     text-align: center;
 }
-.auth__toggle  div{
+.auth .auth__toggle  div{
     text-align: center;
     margin: 5px 0;
     font-size: 12px;
 }
-.auth__toggle button{
+.auth .auth__toggle button{
     font-size: 12px;
     color: rgb(77, 159, 214);
     padding: 0;
@@ -134,15 +124,15 @@ input:focus{
     cursor: pointer;
     letter-spacing: 1px;
 }
-.auth__spinner{
+.auth .auth__spinner{
     text-align: center;
     padding: 4px;
     font-size: 24px;
 }
-.auth__spinner svg{
+.auth .auth__spinner svg{
     opacity: 0;
 }
-.auth__spinner.show svg{
+.auth .auth__spinner.show svg{
     animation: spin 1.2s infinite;
     opacity: 1;
 }
@@ -155,7 +145,6 @@ input:focus{
     }
 }
 @media screen and (max-width: 420px){
-
     .auth{
         width: 90%;
         max-width: 420px;

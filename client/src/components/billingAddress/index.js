@@ -1,6 +1,5 @@
 import React,{useState} from 'react'
 import {state} from '../../data';
-// import { useAddressContext } from '../../addressContext';
 import {useCheckoutContext} from '../../checkoutContext';
 const BillingAddress = () => {
     const {billingAddress,billingError,handleBillingAddress,handleBillingState} = useCheckoutContext();
@@ -13,10 +12,6 @@ const BillingAddress = () => {
                     <label className="address__inp__label anim--inp--label" htmlFor="billingaddressLine"> <span>street</span>  </label>
                     {billingError.bAddressLine?<span className="address__inp__error anim--inp--error">{billingError.bAddressLine}</span>:null}
                 </div>
-                {/* <div className="address__inp__wrapper anim--inp--wrapper">
-                    <input required className="address__inp anim--inp" value={billingAddress.billingstate} onChange={handleBillingAddress} name="billingstate" type="text" />
-                    {billingError.bState?<span className="address__inp__error anim--inp--error">{billingError.bState}</span>:null}
-                </div> */}
                 <div className="address__inp__wrapper anim--inp--wrapper" onClick={()=>setShowDropDown(!showDropdown)}>
                     <div className="state__dropdown">
                         <div className="state__option__head">

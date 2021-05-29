@@ -14,9 +14,6 @@
     width: calc(100% + 50px);
     top: -20px;
     left: -55px;
-    /* top: 35px;
-    left: 50%;
-    transform: translateX(-50%); */
 }
 .footer__center::before{
     content: '';
@@ -26,10 +23,6 @@
     border-right: 1px solid white;
     top: -40px;
     left: -30px;
-    /* transform: translateY(-50%);
-    top: 50%;
-    width: 0;
-    left: 35px; */
 }
 .footer__center{
     display: flex;

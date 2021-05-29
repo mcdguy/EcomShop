@@ -96,41 +96,8 @@
 .gallery__link{
     display: none;
 }
-/* @media screen and (max-width: 900px){
-    .nav__hamburger{
-        display: block;
-    }
-    .nav__logo{
-        padding: 10px 0;
-    }
-    .nav__links{
-        position: absolute;
-        top: 100%;
-        overflow:hidden;
-        left: 0;
-        height: 0;
-        transition: height 400ms;
-        width: 100%;
-        background-color: rgb(28, 28, 29,.99);
-        display: block;
-        backdrop-filter: blur(5px);
-    }
-    .nav__links.open{
-        height: 100vh;
-    }
-    .nav__links li{
-        max-width: var(--mx-wdth);
-        margin: auto;
-        width: var(--wdth);
-        padding: 10px 0;
-    }
-    .nav__links a{
-        margin-left: 0;
-        font-size: 22px;
-    }
-} */
 
-@media screen and (max-width: 1100px){/*if i change this then in singleproduct.css i need to change the media query value for item added and i think this is only valid if i go below 520px*/
+@media screen and (max-width: 1100px){
     .nav__logo img{
         padding: 8px 0;
     }

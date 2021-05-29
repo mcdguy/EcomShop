@@ -11,40 +11,39 @@ export const AddressProvider = ({children}) =>{
     const [isLoading,setIsLoading] = useState(true);
     const [loadingError,setLoadingError] = useState(false);
 
+    //this function is also called by saveChanges
     const saveAddress=({addressLine,state,city,pin,contact})=>{
         axios.post('/user/account/address',{address:{addressLine,state,city,pin,contact}})
             .then(res=>{
                 if(res.data.errors){
-                    // console.log(res.data.errors);
                     setError({addressLine:res.data.errors.addressLine,state:res.data.errors.state,pin: res.data.errors.pin,city: res.data.errors.city,contact: res.data.errors.contact})
                 }else{
-                    // console.log(res.data);
-                    //however my res is also sending hashed password
-                    // maybe instead i need to use res.data.success type thing
-                    //so when i successfully save data i will set state instead of already setting it
-                    setAddress(address => {return{...address,exists: true,addressLine,state,city,pin,contact}});
-                    //this is specifically for function called sent via saveChanges
-                    setEditMode(false);
+                    if(res.data.success){
+                        setAddress(address => {return{...address,exists: true,addressLine,state,city,pin,contact}});
+
+                        //below statement is specifically for function called by saveChanges
+                        setEditMode(false);
+                    }
+                    
                 }
             })
             .catch(err=> console.log(err))
     }
+
     useEffect(()=>{
         setIsLoading(true);
         setLoadingError(false);
-        //getting from db
+        
         if(isLoggedIn){
             axios.get('/user/account/address')
                 .then(res =>{
-                    //this is error which comes from jwt
-                    if(res.data.error==='user not logged in'){//this means user is not logged in and state is manipulated
-                        //i can even set logout here specifically if error message is could not find user  
+                    if(res.data.error==='user not logged in'){
                         setIsLoading(false);
                         return;
                     }
                     if(res.data.success){
-                        //setting up email and username because they surely exist but can't say about address 
                         setAddress({...address,username:res.data.username,email:res.data.email})
+                        //address may or may not be available
                         if(!res.data.address){
                             setAddress((address) => {return{...address,exists: false}})
                         }else{
@@ -53,13 +52,12 @@ export const AddressProvider = ({children}) =>{
                         }
                         setIsLoading(false);
                     }
-                    // setIsLoading(false);
                 })
                 .catch(err => {
-                    console.log(err)
                     setLoadingError(true);
                 });
-        }else{//when user logs out clearing up the state
+        }else{
+            //when user logs out clearing up the state
             setAddress({email: '',username:'', exists:false, addressLine: '',state: '', city: '', contact: '', pin:''});
         }
     },[isLoggedIn])

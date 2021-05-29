@@ -16,6 +16,7 @@ const SingleProduct = () => {
     const [isLoading,setIsLoading] = useState(true);
     const [currentImage,setCurrentImage] = useState(0);
     const [showMsg,setShowMsg] = useState(false);
+    
     useEffect(()=>{
         setError(false);
         setIsLoading(true);

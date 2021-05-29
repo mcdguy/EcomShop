@@ -5,8 +5,6 @@ import './forgot.css';
 import axios from 'axios';
 import {BiLoaderAlt} from "react-icons/bi";
 
-// import Loader from '../../components/loader';
-// import Error from '../../components/error';
 
 const Forgot = () => {
     const {id,token} = useParams();
@@ -52,7 +50,6 @@ const Forgot = () => {
     }
     
     const changeToText = (field) =>{
-        //will check which field i am referring to
         if(field === 'p1'){
             if(passwordRef.current) passwordRef.current.setAttribute('type','text');
             if(p1Ref.current) p1Ref.current.classList.add('visible');
@@ -77,7 +74,6 @@ const Forgot = () => {
     return (
         <div className="forgot">
             <div className="forgot__center center">
-                {/* forgot password form */}
                 <div className="forgot__form">
                     <form>
                         <h1>create new password</h1>

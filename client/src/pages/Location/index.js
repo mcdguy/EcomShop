@@ -1,21 +1,12 @@
-import React,{useEffect, useState,useRef} from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import React,{useEffect, useState} from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import './location.css';
 import axios from 'axios';
-// import {Icon} from 'leaflet';
 import Loader from '../../components/loader';
 import Error from '../../components/error';
-// import CoffeeCup from '../../assets/images/coffee_marker2.png'
 const Location = () => {
     const [map,setMap] = useState(null);
     const [selectedMarker,setSelectedMarker] = useState(null);
-    // const customMarker = new Icon({
-    //     iconUrl: CoffeeCup,
-    //     iconSize: [46,53]
-    // })
-
-    //this ref was to open popup when a location was selected
-    // const markerRef = useRef(null)
     const [queryLocation,setQueryLocation] = useState('delhi');
     const [locations, setLocations] = useState([]);
     const [locationStates,setLocationStates] = useState([]);
@@ -23,6 +14,7 @@ const Location = () => {
     const [loading,setLoading] = useState(true);
     const [error,setError] = useState(false);
 
+    //marker popup
     const handleMarkerClick = (id) =>{
         for(let i=0;i<locations.length;i++){
             if(locations[i]._id === id){
@@ -34,19 +26,13 @@ const Location = () => {
             }
         }
     }
-    //this can be used to open popup
-    // useEffect(()=>{
-    //     if(selectedMarker){
-    //         markerRef.current.openPopup();
-    //     }
-    // },[selectedMarker])
 
+    //fetching locations
     useEffect(()=>{
         setLoading(true);
         setError(false);
         axios(`/location`)
             .then(res =>{
-                // console.log(res.data.locations);
                 if(res.data.locations){
                     setLocations(res.data.locations);
                     const stateArray = new Set(res.data.locations.map(loc => loc.state));
@@ -55,11 +41,11 @@ const Location = () => {
                 }
             })
             .catch(err => {
-                console.log(err);
                 setError(true);
             });
     },[]);
     
+    //selects a location on map
     useEffect(()=>{
         for(let i=0;i<locations.length;i++){
             if(locations[i].state === queryLocation){
@@ -103,7 +89,6 @@ const Location = () => {
                                             <p>{loc.address}</p>
                                         </div>
                                     )
-
                                 }
                             })}
                         </div>

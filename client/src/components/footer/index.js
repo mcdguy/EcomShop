@@ -31,8 +31,8 @@ const Footer = () => {
                     <div className="footer__social footer-col">
                         <span className="social__head head">follow us on</span>
                         <div className="social__info">
-                            <a target="_blank" href="https://www.instagram.com/sardarjibakhshcoffee/?hl=en"><FaInstagramSquare/> <span>instagram</span> </a>
-                            <a target="_blank" href="https://www.facebook.com/sardarjibakhshcoffee/"><FaFacebookSquare/> <span>facebook</span> </a>
+                            <a target="_blank" rel="noreferrer" href="https://www.instagram.com/sardarjibakhshcoffee/?hl=en"><FaInstagramSquare/> <span>instagram</span> </a>
+                            <a target="_blank" rel="noreferrer" href="https://www.facebook.com/sardarjibakhshcoffee/"><FaFacebookSquare/> <span>facebook</span> </a>
                         </div>
                     </div>
 

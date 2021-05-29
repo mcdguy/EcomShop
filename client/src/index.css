@@ -35,7 +35,9 @@ code,button,a,h1,p,span,div {
 .body.no_scroll{
   overflow: hidden;
 }
-
+.btn-wrapper{
+  text-align: center;
+}
 .center{
   max-width: var(--mx-wdth);
   margin: auto;

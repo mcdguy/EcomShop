@@ -338,7 +338,7 @@ router.post('/account/address',requireAuth,(req,res)=>{
     }
     User.findByIdAndUpdate(id,{address:req.body.address},{new:true})
         .then(result=>{
-            res.json(result);
+            res.json({success:'address updated'});
         })
         .catch(err =>res.json({error: 'an error occured while updating address'}));
 })

@@ -29,7 +29,7 @@ router.get('/shop/:id',(req,res)=>{
     Product.findById(id)
     .then(result => 
         {
-            if(!result) return res.json({error: 'could not find product'});
+            if(!result) return res.json({error: 'product not found'});
             res.json(result)
         })
     .catch(err =>{

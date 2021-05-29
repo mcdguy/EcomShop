@@ -23,16 +23,6 @@ const Checkout = () => {
             showShippingAddress();
         }
     }
-    // if(!isLoggedIn){
-    //     return <div className="checkout__notlogged">
-    //         <div>
-    //             <button>log in</button>
-    //         </div>
-    //         <div>
-    //             <button>guest checkout</button>
-    //         </div>
-    //     </div>
-    // }
 
     return (
         <div className="checkout">

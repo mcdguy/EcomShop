@@ -7,18 +7,18 @@ import Logo from '../../assets/images/logo.png';
 const Navbar = () => {
     const {setFilterName,setLogout,setCart,isLoggedIn,setShowLoginModal} = useGlobalContext();
     const [openMenu,setOpenMenu] = useState(false);
+    
+    //logging out user
     const handleLogout = () =>{
-        //here i would like to send req to backend to logout
-        //and after the success of the request
         axios('/user/logout')
             .then(res =>{
-                // console.log(res.data);
-                setLogout();   
+                setLogout();
+                //emptying cart   
                 setCart([]);
             })
             .catch(err => console.log(err));
-        
     }
+
     return (
         <nav className="nav">
             <div className="nav__center center">
@@ -37,9 +37,6 @@ const Navbar = () => {
                     <li>
                         <Link to="/about">about</Link>
                     </li>
-                    {/* <li>
-                        <Link to="/howtobrew">brew guide</Link>
-                    </li> */}
                     <li>
                         <Link to="/cart">cart</Link>
                     </li>
