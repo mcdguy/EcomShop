@@ -6,32 +6,40 @@ const jwt = require('jsonwebtoken');
 const {handleAdminAuth} = require('../utils/handleAdminAuth');
 const {forgotPassword,transporter} = require('../utils/nodemailer');
 const adminAuth = require('../middleware/admin-middleware');
-//admin, read-only, edit-only
 
 const maxAge = 3 * 24 * 60 * 60; //3 days in seconds
+
+//create a jwt token
 const createToken = (id) =>{
     return jwt.sign({id},process.env.AD_SEC,{expiresIn:maxAge});
 }
-//find all admins
+
+//admin route - find all admins
 router.get('/',adminAuth(['admin']),(req,res)=>{
     Admin.find().sort({"createdAt": -1})
         .then(result=>{
             res.json({admin: result});
         })
         .catch(err =>{
+            logger.log('error',`path: ${req.path}, ${err}`);
             res.json({error: 'an error occurred'});
         })
 })
-//find an admin
+
+//admin route - find admin by id
 router.get('/find/:id',adminAuth(['admin']),(req,res)=>{
     const {id} = req.params;
     Admin.findById(id)
         .then(result=>{
             res.json({admin: result});
         })
-        .catch(err =>{res.json({error: 'an  error occurred'})});
+        .catch(err =>{
+            logger.log('error',`path: ${req.path}, ${err}`);
+            res.json({error: 'an  error occurred'})
+        });
 })
 
+//admin login
 router.post('/login',(req,res)=>{
     const {email,password} = req.body;
     Admin.findOne({email})
@@ -48,27 +56,32 @@ router.post('/login',(req,res)=>{
                 }else{
                     res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true});
                 }
+                logger.log('info',`${email} logged in`)
                 res.send({success: 'admin logged in',type:result.role});
-            }).catch(err=>{
-                console.log(err);
+            })
+            .catch(err=>{
+                logger.log('error',`path: ${req.path}, ${err}`);
                 res.json({errors: {email: '',password: 'an error occurred'}});
             })
         })
-        .catch(err => res.json({errors: {email: 'email does not exist',password: ''}}));
+        .catch(err => {
+            logger.log('error',`path: ${req.path}, ${err}`);
+            res.json({errors: {email: 'email does not exist',password: ''}})
+        });
 })
+
+//admin logout
 router.post('/logout',(req,res)=>{
-    // console.log('logout');
-    console.log('logout');
     if(process.env.NODE_ENV === 'production'){
-        res.clearCookie('jwt',{httpOnly: true,sameSite: 'None', secure: true, path:'/'});//had to pass options for it to work also some people said put domain too but i guess that does not work for heroku
+        res.clearCookie('jwt',{httpOnly: true,sameSite: 'None', secure: true, path:'/'});//had to pass options for it to work also some said put domain too but i guess that does not work for heroku
     }else{
         res.clearCookie('jwt');
     }
     res.json({success: 'admin logged out'});
 })
 
+//checks admin login status
 router.get('/status',(req,res)=>{
-    // console.log('hello');
     const token = req.cookies.jwt;
     if(token){
         jwt.verify(token,process.env.AD_SEC,(err,decodedToken)=>{
@@ -79,11 +92,12 @@ router.get('/status',(req,res)=>{
             else{
                 Admin.findById(decodedToken.id)
                     .then(result=>{
-                        // console.log(result);
                         return res.json({success: 'admin logged in',type: result.role})
                     })
-                    .catch(err =>{res.json({error: 'an error occurred'})});
-                // console.log(decodedToken);
+                    .catch(err =>{
+                        logger.log('error',`path: ${req.path}, ${err}`);
+                        res.json({error: 'an error occurred'})
+                    });
             }
         })
     }
@@ -92,12 +106,13 @@ router.get('/status',(req,res)=>{
     }
 })
 
+
+//forgot password - creates reset link
 router.post('/forgotpassword',(req,res)=>{
     const {email} = req.body;
     Admin.findOne({email})
         .then(result=>{
             if(!result) return res.json({error: 'email not registered'});
-            // console.log(result);
             const secret = process.env.FORGOT__PASS + result.password;
             const payload = {email:result.email,id:result._id};
             const token = jwt.sign(payload,secret,{expiresIn:'15m'});
@@ -108,32 +123,28 @@ router.post('/forgotpassword',(req,res)=>{
                 subject: 'reset password',
                 text: forgotPassword(result.name,link)
             }
-            // console.log(mailOptions);
             transporter.sendMail(mailOptions, function(error, info){
                 if (error) {
-                    console.log(error);
+                    logger.log('error',`path: ${req.path}, email: ${result.email}, ${err}`);
                     res.json({error: 'could not send email'});
                 } else {
-                    console.log('Email sent: ' + info.response);
+                    logger.log('info',`path:${req.path}, email sent: ${info.response}`);
                     res.json({success: 'email sent'});
                 }
             });
         })
-    console.log(email);
-    console.log('forgot password');
 })
 
 
+//change password
 router.post('/update-password',async (req,res)=>{
     let {id,token,password} = req.body;
-    //simple password validation in backend
     if(password.length < 6){
         return res.json({error: 'password too short'});
     }
     console.log(id);
     const salt = await bcrypt.genSalt();
     password = await bcrypt.hash(password,salt);
-    // console.log(password);
     Admin.findById(id)
         .then(result=>{
             console.log(result);
@@ -141,7 +152,7 @@ router.post('/update-password',async (req,res)=>{
             const secret = process.env.FORGOT__PASS + result.password;
             jwt.verify(token,secret,(err,decodedToken)=>{
                 if(err){
-                    console.log('token is not valid');
+                    // console.log('token is not valid');
                     return res.json({error: 'link has expired'});
                 }
                 else{
@@ -153,12 +164,14 @@ router.post('/update-password',async (req,res)=>{
                 }
             })
         })
-        .catch(err => res.json({error: 'an error occurred'}));
-
+        .catch(err =>{
+            logger.log('error',`path: ${req.path}, ${err}`);
+            res.json({error: 'an error occurred'});
+        });
 })
 
 
-//update admin
+//admin route - create admin
 router.post('/',adminAuth(['admin']),async (req,res)=>{
     let {email,password,role,name} = req.body;
     const errors = handleAdminAuth(email,password,role,name);
@@ -183,12 +196,14 @@ router.post('/',adminAuth(['admin']),async (req,res)=>{
         .catch(err =>{
             if(err.code === 11000){
                 return res.json({error: 'email already exists'}); 
+            }else{
+                logger.log('error',`path: ${req.path}, ${err}`);
             }
             return res.json({error: 'an error occurred'});
         })
 })
 
-//edit admin
+//admin route - edit admin
 router.patch('/edit-role/:id',adminAuth(['admin']),(req,res)=>{
     const {role} = req.body;
     const {id} = req.params;
@@ -202,10 +217,13 @@ router.patch('/edit-role/:id',adminAuth(['admin']),(req,res)=>{
             res.json({success: 'admin updated successfully'});
         })
         .catch(err =>{
+            logger.log('error',`path: ${req.path}, ${err}`);
             res.json({error: 'could not update admin'});
         })
 })
-//delete admin
+
+
+//admin route - delete admin
 router.delete('/delete-admin/:id',adminAuth(['admin']),(req,res)=>{
     const {id} = req.params;
     Admin.findByIdAndDelete(id)
@@ -213,6 +231,7 @@ router.delete('/delete-admin/:id',adminAuth(['admin']),(req,res)=>{
             res.json({success: 'admin deleted successfully'});
         })
         .catch(err =>{
+            logger.log('error',`path: ${req.path}, ${err}`);
             res.json({error: 'could not delete admin'});
         })
 })

@@ -1,14 +1,9 @@
-// const { request } = require('express');
 const express = require('express');
 const router = express.Router();
 const request = require('request')
-// router.get('/',(req,res)=>{
-//     Subscriber.find
-// })
 
 router.post('/',(req,res)=>{
     const {email} = req.body;
-    // console.log(email);
     if(!email){
         return res.json({error: 'please enter an email'});
     }
@@ -31,6 +26,7 @@ router.post('/',(req,res)=>{
     }
     request(options,(err,response,body)=>{
         if(err){
+            logger.log('error',`path: ${req.path}, ${err}`);
             return res.json({error: 'subscription failed'})
         }else{
             if(res.statusCode === 200){

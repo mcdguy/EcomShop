@@ -1,3 +1,4 @@
+//https://www.youtube.com/watch?v=DK304_E9mVo
 const express = require('express');
 const router = express.Router();
 const razorpay = require('razorpay');
@@ -10,13 +11,15 @@ const User = require('../models/user');
 const {orderEmail,transporter} = require('../utils/nodemailer');
 const Coupon = require('../models/coupon');
 const crypto = require('crypto');
+
 const instance = new razorpay({
     key_id:process.env.KEY_ID,
     key_secret:process.env.KEY_SECRET
 })
 
 
-const deleteOrder = (order_id) =>{//this function returns a promise
+//this function returns a promise
+const deleteOrder = (order_id) =>{
     return new Promise((resolve,reject)=>{
         Order.findOne({orderId:order_id})
             .then(result => {
@@ -50,50 +53,34 @@ const deleteOrder = (order_id) =>{//this function returns a promise
     })
 }
 
-//can this be a cron job?
-// timeout to clean up pending orders
+
+//interval - cleans pending orders after 10 mins
 setInterval(()=>{
     let tenMinutesOld = new Date();
     tenMinutesOld.setMinutes(tenMinutesOld.getMinutes()-10)
     Order.find({validity:{$lt:tenMinutesOld}})
         .then((orders)=>{
-
-            // i have to resolve promises sequentially otherwise stock will not increase properly as all promises will treat db stock as current stock 
-            //this is irrelevant now since i am using $inc which is atomic and i don't need to worry about data being modified between finding record and updating its stock
-            //https://www.youtube.com/watch?v=DK304_E9mVo
-            // const orderIds = orders.map(item => item.orderId);
-            // console.log(orderIds);
-            // const result = orderIds.reduce((prevPromise,currArg)=>{
-            //     return prevPromise
-            //         .then((acc)=> deleteOrder(currArg)
-            //             .then(resp => [...acc,resp])
-            //         );
-            // },Promise.resolve([]));
-
-            // result.then(console.log('deleted all pending orders'));
-            
-            // i am using $inc operator to increase quantity so i don't have to find and then update
-            //this $inc operator is atomic and does the job in 1 command(instead of two) so i don't need to worry about sequence
             orders.forEach(item=>{
                 deleteOrder(item.orderId)
                     .then(res =>{
-                        console.log('removed pending orders');
-                        // do nothing
+                        logger.log('info',`removed pending orders`);
                     })
                     .catch(err =>{
-                        console.log('failed to remove item');
+                        logger.log('error',`could not delete pending orders`);
                     })
             })
         })
-        .catch(err => {console.log('failed')});
+        .catch(err => {
+            logger.log('error',`could not delete pending orders`);
+        });
 },120000);//runs after 2 mins
+
 
 
 
 router.post('/makepayment',(req,res)=>{
     const {code,cartProducts,billingAddress,shippingAddress,user,showShipping,saveDetails} = req.body;
     const token = req.cookies.jwt;
-    //this can be manipulated like someone can send an id of cheap item and name and product id of expensive item and since price is calculated using id he can successfully cheat us
     let orderItems = [];
     let mismatch = false; //this variable will trigger cart refresh if product is out of stock or deleted
     let amount = 0;
@@ -116,7 +103,7 @@ router.post('/makepayment',(req,res)=>{
         pending: true,
         isAddressSame:!showShipping,
     }
-    //this means shipping and billing address are different and i will add billing address
+    //this means shipping and billing address are different
     if(showShipping){
         newOrder.shippingAddress = {
             addressLine: shippingAddress.shippingaddressLine,
@@ -131,8 +118,8 @@ router.post('/makepayment',(req,res)=>{
     if(orderError !== '') return res.status(422).json({error:'details not provided'});
     if(!cartProducts) return res.status(404).json({error:'no products found'});
     
-    //now i want to save address and order in user without worrying about its completion
     productIds = cartProducts.map(item=>{return item._id});
+
     Coupon.findOne({code})
     .then(coupon=>{
         if(!coupon){
@@ -142,13 +129,13 @@ router.post('/makepayment',(req,res)=>{
             discount = coupon.discount;
             console.log("discount", coupon.discount)
         }
-            //now i want to find all cart documents at once
+            //now find all cart documents at once
             Product.find({'_id' : {$in: productIds} })
                 .then(result=>{
                     result.forEach(item=>{
                         //nested loops because i want the purchase qty after finding items and the order in which items come back is not same
                         cartProducts.forEach(cartItem=>{
-                            if(item._id == cartItem._id){//this also means i  have found the product in db
+                            if(item._id == cartItem._id){
                                 amount += item.price*cartItem.pqty;
                                 const singleOrderItem = {
                                     img: item.img[0],
@@ -163,8 +150,8 @@ router.post('/makepayment',(req,res)=>{
                         })
                     })
                     discountAmount = amount/100*discount;
-                    console.log(discountAmount);
                     newOrder.discount = discountAmount;
+                    
                     //creating array of promise
                     let stockUpdatePromise = [];
                     cartProducts.forEach(item =>{
@@ -174,6 +161,7 @@ router.post('/makepayment',(req,res)=>{
                                     resolve(updatedProduct);
                                 })
                                 .catch((err)=>{
+                                    logger.log('error',`path: ${req.path}, ${err}`);
                                     reject(err);
                                 })
                         })
@@ -196,7 +184,7 @@ router.post('/makepayment',(req,res)=>{
                         }
                     }
 
-                    //updating backend
+                    //updating db
                     instance.orders.create({amount:(amount-discountAmount),currency: 'INR',receipt,payment_capture:1},(error,order)=>{
                         if(error) return res.status(500).json(error);
                         newOrder.orderItems = orderItems;
@@ -221,6 +209,7 @@ router.post('/makepayment',(req,res)=>{
                                                         resolve(result);
                                                     })
                                                     .catch((err)=>{
+                                                        logger.log('error',`path: ${req.path}, ${err}`);
                                                         reject(err);
                                                     })
                                             })
@@ -241,10 +230,12 @@ router.post('/makepayment',(req,res)=>{
                     })
             })
             .catch(err =>{
+                logger.log('error',`path: ${req.path}, ${err}`);
                 return res.status(500).json({error: 'an error occurred'});
             })
 })
 
+//webhook
 router.post('/webhook',(req,res)=>{
     res.json({status: 'ok'});
     const digest = crypto
@@ -259,19 +250,13 @@ router.post('/webhook',(req,res)=>{
             console.log('webhook running');
             Order.findOne({orderId:order_id})
                 .then(result =>{
-                    //before updating i can check if order exists and if not it means timer deleted it and this is late authorization so i should issue refund
-                    
+                    //before updating i can check if order exists and if not it means timer deleted it and this is late authorization so i should issue refund                    
                     // if(!result){
                         //issue refund
                     //     return;
                     // }
-                    console.log('webhook',result);
-                    // const mailOptions = {
-                    //     from: 'youremail@gmail.com',
-                    //     to: 'myfriend@yahoo.com',
-                    //     subject: 'order confirmation mail',
-                    //     text: 'That was easy!'
-                    // }
+
+                    //or send order confirmation mail here
                     Order.findOneAndUpdate({orderId:order_id},{pending:false,paymentId:payment_id,$unset: {validity: 1}},{new:true})
                     .then((result)=>{
                         console.log('updated');
@@ -280,9 +265,10 @@ router.post('/webhook',(req,res)=>{
         }
     }
     else{
-        //fake request
+        //not legit request
     }
 })
+
 //deleting order
 router.delete('/deleteorder',(req,res)=>{
     const {order_id} = req.body;
@@ -296,11 +282,12 @@ router.delete('/deleteorder',(req,res)=>{
                 return res.json({success: 'order deleted successfully'});
             }
             else{
-                console.log('there');
+                logger.log('error',`path: ${req.path}, ${err}`);
                 return res.json({error: 'could not delete order'});
             }
         })
         .catch(err => {
+            logger.log('error',`path: ${req.path}, ${err}`);
             return res.json({error: 'could not delete order'});
         });
 });
@@ -316,20 +303,22 @@ router.post('/verify',(req,res)=>{
 
     // comaparing our digest with the actual signature
     if (digest !== payment_sign){
-        
         deleteOrder(order_id)
         .then(res => {
             if(res === 'order deleted'){
                 return res.json({success: 'order deleted successfully'});
             }
             else{
+                logger.log('error',`path: ${req.path}, ${err}`);
                 return res.json({error: 'could not delete order'});
             }
         })
         .catch(err => {
+            logger.log('error',`path: ${req.path}, ${err}`);
             return res.json({error: 'could not delete order'});
         });
     }
+    //order verified
     //adding order to user's orders
     const token = req.cookies.jwt;
     if(token){
@@ -338,11 +327,9 @@ router.post('/verify',(req,res)=>{
             Order.findOne({orderId: order_id})
                 .then(result=>{
                     if(result){
-                        // console.log(result.orderItems);
                         User.findByIdAndUpdate(id,{$push:{"orders":{order:result.orderItems,amount:result.amount,orderId:result.orderId}}},{new:true})
                             .then(result=>{
                                 console.log('orders added to user');
-                                // console.log(result);
                             })
                     }
                 })
@@ -352,27 +339,27 @@ router.post('/verify',(req,res)=>{
     //instead of updating order here i can leave that on webhook and just send success so that order alert popup shows up 
     Order.findOneAndUpdate({orderId:order_id},{pending:false,paymentId:payment_id,$unset: {validity: 1}},{new:true})//deleting the validity key
     .then((result)=>{
-        // console.log('order',result);
         //here i am sending mail
-        // console.log(process.env.EMAIL,result.buyer.email,orderEmail(result.buyer.name,result.orderId))
        const mailOptions = {
             from: process.env.EMAIL,
             to: result.buyer.email,
             subject: 'order confirmation mail',
             text: orderEmail(result.buyer.name,result.orderId)
         }
-        // console.log(mailOptions);
         transporter.sendMail(mailOptions, function(error, info){
             if (error) {
-                console.log(error);
+                logger.log('error',`path: ${req.path}, email: ${result.buyer.email}, ${err}`);
             } else {
-                console.log('Email sent: ' + info.response);
+                logger.log('info',`path:${req.path}, email sent: ${info.response}`);
             }
         });
 
         //the mail portion ends here i can paste it in webhook instead
         return res.json({success:'singature matched, updated record'});
     })
-    .catch((err)=>{res.json({error: err})});
+    .catch((err)=>{
+        logger.log('error',`path: ${req.path}, ${err}`);
+        res.json({error: err})
+    });
 })
 module.exports = router;

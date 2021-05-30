@@ -8,7 +8,6 @@ const adminAuth = require('../middleware/admin-middleware');
 
 //getting all products
 router.get('/',(req,res)=>{
-    // console.log('getting all products');
     Product.find().sort({"createdAt": -1})
         .then((result)=>{
             if(!result){
@@ -17,14 +16,13 @@ router.get('/',(req,res)=>{
             res.json({product:result})
         })
         .catch(err =>{
-            console.log(err.message);
+            logger.log('error',`path: ${req.path}, ${err}`);
             res.json({error: 'unable to load products'});
         })
 })
 
 //getting a single product
 router.get('/shop/:id',(req,res)=>{
-    // console.log('getting single product');
     const {id} = req.params;
     Product.findById(id)
     .then(result => 
@@ -33,34 +31,13 @@ router.get('/shop/:id',(req,res)=>{
             res.json(result)
         })
     .catch(err =>{
-        console.log(err.message);
+        logger.log('error',`path: ${req.path}, ${err}`);
         res.json({error: "product doesn't exist"});
     })
 })
 
-//getting a single product from product id 
-// router.get('/find/',(req,res,next)=>{
-//     // console.log('in find');
-//     console.log(req.query.p);
-//     const {p} = req.query;
-//     //if i don't pass query this will run page not found middleware in app.js
-//     if(!p){
-//         res.json({error: 'product not found'});
-//         return;
-//     }
-
-//     Product.find({productId:p})//if id is unique findOne will work
-//         .then((result) => res.json(result))
-//         .catch(err =>{
-//             console.log(err.message);
-//             res.json({error: "product id doesn't match"});
-//         })
-//         //it returns empty array if i pass invalid p so i should check if it's empty array the product id doesn't match
-// })
-
-//creating a new product
+//admin route - creating a new product 
 router.post('/',adminAuth(['admin','edit admin']),upload.array('img',6),(req,res)=>{//setting max count to 6
-    // console.log('creating new product');
     const product = {
         name : req.body.name,
         price: req.body.price,
@@ -77,11 +54,13 @@ router.post('/',adminAuth(['admin','edit admin']),upload.array('img',6),(req,res
         .then(result=>{
             res.json({success: 'product created successfully'});
         })
-        .catch(err =>{res.json({error: 'an error occured'})});//here i need validation
+        .catch(err =>{
+            logger.log('error',`path: ${req.path}, ${err}`);
+            res.json({error: 'an error occured'})});
 })
 
 
-//deleting a product
+//admin route - deletes a product
 router.delete('/:id',adminAuth(['admin','edit admin']),(req,res)=>{
     const {id} = req.params;
     console.log(id);
@@ -95,10 +74,13 @@ router.delete('/:id',adminAuth(['admin','edit admin']),(req,res)=>{
             });
             res.json({success: 'product deleted successfully'});
         })
-        .catch(err => res.json({error: 'could not delete product'}));
+        .catch(err => {
+            logger.log('error',`path: ${req.path}, ${err}`);
+            res.json({error: 'could not delete product'})
+        });
 })
 
-//updating a product
+//admin route - updates a product
 router.patch('/:id',adminAuth(['admin','edit admin']),upload.array('img',6),(req,res)=>{
     const {id} = req.params;
     const update = {
@@ -122,7 +104,10 @@ router.patch('/:id',adminAuth(['admin','edit admin']),upload.array('img',6),(req
         .then(result=>{
             res.json({success: 'product edited successfully'});
         })
-        .catch(err => res.json({error: 'could not update product'}));
+        .catch(err => {
+            logger.log('error',`path: ${req.path}, ${err}`);
+            res.json({error: 'could not update product'})
+        });
     }
     else{//if files are sent delete old files and then upload new ones
         Product.findById(id)
@@ -137,7 +122,10 @@ router.patch('/:id',adminAuth(['admin','edit admin']),upload.array('img',6),(req
         .then(result=>{
             res.json({success: 'product edited successfully'});
         })
-        .catch(err => res.json({error: 'could not update product'}));
+        .catch(err => {
+            logger.log('error',`path: ${req.path}, ${err}`);
+            res.json({error: 'could not update product'})
+        });
     }
     
 })

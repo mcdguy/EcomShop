@@ -3,6 +3,7 @@ const router = express.Router();
 const Order = require('../models/order');
 const adminAuth = require('../middleware/admin-middleware');
 
+//admin route - getting all orders
 router.get('/',adminAuth(['all']),(req,res)=>{
     // console.log('hello');
     let {page,limit} = req.query;
@@ -19,9 +20,11 @@ router.get('/',adminAuth(['all']),(req,res)=>{
                 res.json({orders: result, page,limit})
         })
         .catch(err => {
-            console.log(err)
+            logger.log('error',`path: ${req.path}, ${err}`);
             res.json({error: 'could not fetch orders'})});
 })
+
+//admin route - find order by query
 router.get('/find',adminAuth(['all']),(req,res)=>{
     const {filter,query} = req.query;
     let search = {};
@@ -37,9 +40,13 @@ router.get('/find',adminAuth(['all']),(req,res)=>{
             if(!result) return res.json({order: []})
             return res.json({order:result});
         })
-        .catch(err => res.json({error: 'an error occurred'}));
+        .catch(err => {
+            logger.log('error',`path: ${req.path}, ${err}`);
+            res.json({error: 'an error occurred'})
+        });
 })
 
+//admin route - find order by id
 router.get('/:id',adminAuth(['all']),(req,res)=>{
     const {id} = req.params;
     Order.findById(id)
@@ -50,6 +57,7 @@ router.get('/:id',adminAuth(['all']),(req,res)=>{
             res.json({order: result});
         })
         .catch(err => {
+            logger.log('error',`path: ${req.path}, ${err}`);
             res.json({error: 'an error occured'});
         })
 })
