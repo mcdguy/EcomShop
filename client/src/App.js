@@ -38,7 +38,7 @@ const App = () => {
 
 
             <Suspense fallback={<Loader/>}>
-                
+              
                 <Route path="/shop" exact>
                   <Shop/>
                 </Route>

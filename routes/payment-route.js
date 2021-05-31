@@ -250,11 +250,7 @@ router.post('/webhook',(req,res)=>{
             console.log('webhook running');
             Order.findOne({orderId:order_id})
                 .then(result =>{
-                    //before updating i can check if order exists and if not it means timer deleted it and this is late authorization so i should issue refund                    
-                    // if(!result){
-                        //issue refund
-                    //     return;
-                    // }
+
 
                     //or send order confirmation mail here
                     Order.findOneAndUpdate({orderId:order_id},{pending:false,paymentId:payment_id,$unset: {validity: 1}},{new:true})
