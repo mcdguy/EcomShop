@@ -4,6 +4,7 @@ const {upload} = require('../utils/multer');
 const Product = require('../models/product');
 const fs = require('fs');
 const adminAuth = require('../middleware/admin-middleware');
+const logger = require('../utils/logger');
 
 
 //getting all products
@@ -16,7 +17,7 @@ router.get('/',(req,res)=>{
             res.json({product:result})
         })
         .catch(err =>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'unable to load products'});
         })
 })
@@ -31,7 +32,7 @@ router.get('/shop/:id',(req,res)=>{
             res.json(result)
         })
     .catch(err =>{
-        logger.log('error',`path: ${req.path}, ${err}`);
+        logger.log('error',`path: ${req.baseUrl}, ${err}`);
         res.json({error: "product doesn't exist"});
     })
 })
@@ -55,7 +56,7 @@ router.post('/',adminAuth(['admin','edit admin']),upload.array('img',6),(req,res
             res.json({success: 'product created successfully'});
         })
         .catch(err =>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'an error occured'})});
 })
 
@@ -75,7 +76,7 @@ router.delete('/:id',adminAuth(['admin','edit admin']),(req,res)=>{
             res.json({success: 'product deleted successfully'});
         })
         .catch(err => {
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'could not delete product'})
         });
 })
@@ -105,7 +106,7 @@ router.patch('/:id',adminAuth(['admin','edit admin']),upload.array('img',6),(req
             res.json({success: 'product edited successfully'});
         })
         .catch(err => {
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'could not update product'})
         });
     }
@@ -123,7 +124,7 @@ router.patch('/:id',adminAuth(['admin','edit admin']),upload.array('img',6),(req
             res.json({success: 'product edited successfully'});
         })
         .catch(err => {
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'could not update product'})
         });
     }

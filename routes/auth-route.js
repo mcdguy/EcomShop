@@ -20,25 +20,66 @@ const createToken = (id) =>{
 }
 
 //admin route - getting all user
-router.get('/',adminAuth(['all']),(req,res)=>{
-    let {page,limit} = req.query;
-    if(!page){
-        page = 1;
-    }
-    if(!limit){
-        limit = 1;
-    }
-    limit = parseInt(limit);
-    skip = (page - 1) * limit;
-    User.find().skip(skip).limit(limit).sort({"createdAt": -1})
-        .then(result =>{
-            res.json({users: result, page,limit});
+router.get('/',(req,res)=>{
+    console.log('hello');
+    let {cursor} = req.query;
+    const limit = 2;
+    if(!cursor){//send first page with 'limit' number of items
+        //log res.data in console on frontend to see what happens in last call
+        User.find().sort({_id:-1}).limit(limit)
+            .then(result=>{
+                let hasMore = true;
+                let cursor = '';
+                if(result[result.length-1]){
+                    cursor = result[result.length - 1]._id;
+                }else{
+                    hasMore = false;
+                }
+
+                res.json({users: result, cursor,hasMore})
+            })
+            .catch(err => {
+                logger.log('error',`path: ${req.baseUrl}, ${err}`);
+                res.json({error: 'could not fetch users'})
+            });
+    }else{
+        User.find({_id:{$lt:cursor}}).sort({_id:-1}).limit(limit)
+        .then(result=>{
+            let hasMore = true;
+            let cursor = '';
+            if(result[result.length-1]){
+                cursor = result[result.length - 1]._id;
+            }else{
+                hasMore = false;
+            }
+            res.json({users: result, cursor, hasMore})
         })
         .catch(err => {
-            logger.log('error',`path: ${req.path} , ${err}`);
-            res.json({error: 'could not get users'});
-        })
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
+            res.json({error: 'could not fetch users'})
+        });
+    }
 })
+
+// router.get('/',adminAuth(['all']),(req,res)=>{
+//     let {page,limit} = req.query;
+//     if(!page){
+//         page = 1;
+//     }
+//     if(!limit){
+//         limit = 1;
+//     }
+//     limit = parseInt(limit);
+//     skip = (page - 1) * limit;
+//     User.find().skip(skip).limit(limit).sort({"createdAt": -1})
+//         .then(result =>{
+//             res.json({users: result, page,limit});
+//         })
+//         .catch(err => {
+//             logger.log('error',`path: ${req.baseUrl} , ${err}`);
+//             res.json({error: 'could not get users'});
+//         })
+// })
 
 
 //admin route - find user by id
@@ -52,7 +93,7 @@ router.get('/find/:id',adminAuth(['all']),(req,res)=>{
             return res.json({user: result});
         })
         .catch(err => {
-            logger.log('error',`path: ${req.path} , ${err}`);
+            logger.log('error',`path: ${req.baseUrl} , ${err}`);
             res.json({error: 'an error occured'});
         });
 })
@@ -75,7 +116,7 @@ router.get('/find-user',adminAuth(['all']),(req,res)=>{
             return res.json({user:result});
         })
         .catch(err => {
-            logger.log('error',`path: ${req.path} , ${err}`);
+            logger.log('error',`path: ${req.baseUrl} , ${err}`);
             res.json({error: 'an error occurred'});
         });
 })
@@ -111,7 +152,7 @@ router.post('/signup',async (req,res)=>{
             if(err.code === 11000){
                 errors.email = 'email already exists';
             }else{
-                logger.log('error',`path: ${req.path} , ${err}`);
+                logger.log('error',`path: ${req.baseUrl} , ${err}`);
             }
             res.json({errors}); 
         })
@@ -139,7 +180,7 @@ router.post('/login',(req,res)=>{
             })
         })
         .catch(err => {
-            logger.log('error',`path: ${req.path} , ${err}`);
+            logger.log('error',`path: ${req.baseUrl} , ${err}`);
             res.json({errors: {email: 'email does not exist',password: ''}})
         });
 })
@@ -176,10 +217,10 @@ router.post('/forgotpassword',(req,res)=>{
             transporter.sendMail(mailOptions, function(error, info){
                 if (error) {
                     //if email is not sent email id will be logged in error log
-                    logger.log('error',`path: ${req.path}, email: ${result.email}, ${err}`);
+                    logger.log('error',`path: ${req.baseUrl}, email: ${result.email}, ${err}`);
                     res.json({error: 'could not send email'});
                 } else {
-                    logger.log('info',`path:${req.path}, email sent: ${info.response}`);
+                    logger.log('info',`path:${req.baseUrl}, email sent: ${info.response}`);
                     res.json({success: 'email sent'});
                 }
             });
@@ -214,7 +255,7 @@ router.post('/update-password',async (req,res)=>{
             })
         })
         .catch(err => {
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'an error occurred'});
         });
 
@@ -250,7 +291,7 @@ router.post('/mergecart',requireAuth,(req,res)=>{
                 })
         })
         .catch(err =>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'could not update cart'})
         });
 })
@@ -270,7 +311,7 @@ router.post('/cart',requireAuth, (req,res)=>{
             res.json(result);
         })
         .catch(err =>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'an error occured while updating cart'})
         });
 })
@@ -293,7 +334,7 @@ router.get('/cart',requireAuth, (req,res)=>{
         })
         .catch(err =>{
                 res.json([]);    
-                logger.log('error',`path: ${req.path}, ${err}`);
+                logger.log('error',`path: ${req.baseUrl}, ${err}`);
         });
 })
 
@@ -314,7 +355,7 @@ router.get('/orders',requireAuth,(req,res)=>{
             res.json({orders: []});
         })
         .catch(err => {
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'something went wrong'})
         });
 })
@@ -337,7 +378,7 @@ router.get('/account/address',requireAuth,(req,res)=>{
             res.json({success:'address found',address: result.address,email: result.email,username: result.username});
         })
         .catch(err => {
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'something went wrong'})
         });
 });
@@ -361,7 +402,7 @@ router.post('/account/address',requireAuth,(req,res)=>{
             res.json({success:'address updated'});
         })
         .catch(err =>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'an error occured while updating address'});
         });
 })

@@ -107,7 +107,7 @@ const Order = () => {
                         })}
                     </tbody>
                 </table>
-                {orderHasMore?
+                {orderHasMore && orderQuery ==''?
                 <div className="btn-wrapper">
                     <button onClick={showNextOrderPage} className="btn paginate-btn">show more</button>
                 </div>

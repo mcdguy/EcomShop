@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const {handleAdminAuth} = require('../utils/handleAdminAuth');
 const {forgotPassword,transporter} = require('../utils/nodemailer');
 const adminAuth = require('../middleware/admin-middleware');
+const logger = require('../utils/logger');
 
 const maxAge = 3 * 24 * 60 * 60; //3 days in seconds
 
@@ -21,7 +22,7 @@ router.get('/',adminAuth(['admin']),(req,res)=>{
             res.json({admin: result});
         })
         .catch(err =>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'an error occurred'});
         })
 })
@@ -34,7 +35,7 @@ router.get('/find/:id',adminAuth(['admin']),(req,res)=>{
             res.json({admin: result});
         })
         .catch(err =>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'an  error occurred'})
         });
 })
@@ -60,12 +61,12 @@ router.post('/login',(req,res)=>{
                 res.send({success: 'admin logged in',type:result.role});
             })
             .catch(err=>{
-                logger.log('error',`path: ${req.path}, ${err}`);
+                logger.log('error',`path: ${req.baseUrl}, ${err}`);
                 res.json({errors: {email: '',password: 'an error occurred'}});
             })
         })
         .catch(err => {
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({errors: {email: 'email does not exist',password: ''}})
         });
 })
@@ -95,7 +96,7 @@ router.get('/status',(req,res)=>{
                         return res.json({success: 'admin logged in',type: result.role})
                     })
                     .catch(err =>{
-                        logger.log('error',`path: ${req.path}, ${err}`);
+                        logger.log('error',`path: ${req.baseUrl}, ${err}`);
                         res.json({error: 'an error occurred'})
                     });
             }
@@ -125,10 +126,10 @@ router.post('/forgotpassword',(req,res)=>{
             }
             transporter.sendMail(mailOptions, function(error, info){
                 if (error) {
-                    logger.log('error',`path: ${req.path}, email: ${result.email}, ${err}`);
+                    logger.log('error',`path: ${req.baseUrl}, email: ${result.email}, ${err}`);
                     res.json({error: 'could not send email'});
                 } else {
-                    logger.log('info',`path:${req.path}, email sent: ${info.response}`);
+                    logger.log('info',`path:${req.baseUrl}, email sent: ${info.response}`);
                     res.json({success: 'email sent'});
                 }
             });
@@ -165,7 +166,7 @@ router.post('/update-password',async (req,res)=>{
             })
         })
         .catch(err =>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'an error occurred'});
         });
 })
@@ -197,7 +198,7 @@ router.post('/',adminAuth(['admin']),async (req,res)=>{
             if(err.code === 11000){
                 return res.json({error: 'email already exists'}); 
             }else{
-                logger.log('error',`path: ${req.path}, ${err}`);
+                logger.log('error',`path: ${req.baseUrl}, ${err}`);
             }
             return res.json({error: 'an error occurred'});
         })
@@ -217,7 +218,7 @@ router.patch('/edit-role/:id',adminAuth(['admin']),(req,res)=>{
             res.json({success: 'admin updated successfully'});
         })
         .catch(err =>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'could not update admin'});
         })
 })
@@ -231,7 +232,7 @@ router.delete('/delete-admin/:id',adminAuth(['admin']),(req,res)=>{
             res.json({success: 'admin deleted successfully'});
         })
         .catch(err =>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'could not delete admin'});
         })
 })

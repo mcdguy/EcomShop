@@ -2,6 +2,7 @@ const express = require('express');
 const Gallery = require('../models/gallery');
 const router = express.Router();
 const adminAuth = require('../middleware/admin-middleware');
+const logger = require('../utils/logger');
 
 
 //getting all videos
@@ -12,7 +13,7 @@ router.get('/',(req,res)=>{
             res.json({videos: result});
         })
         .catch(err =>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error:err})
         });
 })
@@ -27,7 +28,7 @@ router.get('/:id',(req,res)=>{
             res.json({video: result});
         })
         .catch(err => {
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'an error occured'})
         });
 })
@@ -41,7 +42,7 @@ router.post('/',adminAuth(['admin','edit admin']),(req,res)=>{
             res.json({success: 'video created successfully'});
         })
         .catch(err=>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'an error occured'});
         })
 })
@@ -54,7 +55,7 @@ router.delete('/:id',adminAuth(['admin','edit admin']),(req,res)=>{
             res.json({success: 'video deleted successfully'});
         })
         .catch((err)=>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'could not delete video'})
         });
 })
@@ -71,7 +72,7 @@ router.patch('/:id',adminAuth(['admin','edit admin']),(req,res)=>{
             res.json({success: 'video updated successfully'});
         })
         .catch((err)=>{    
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'could not update video'})
         });
 })

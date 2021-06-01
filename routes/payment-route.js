@@ -11,6 +11,7 @@ const User = require('../models/user');
 const {orderEmail,transporter} = require('../utils/nodemailer');
 const Coupon = require('../models/coupon');
 const crypto = require('crypto');
+const logger = require('../utils/logger');
 
 const instance = new razorpay({
     key_id:process.env.KEY_ID,
@@ -161,7 +162,7 @@ router.post('/makepayment',(req,res)=>{
                                     resolve(updatedProduct);
                                 })
                                 .catch((err)=>{
-                                    logger.log('error',`path: ${req.path}, ${err}`);
+                                    logger.log('error',`path: ${req.baseUrl}, ${err}`);
                                     reject(err);
                                 })
                         })
@@ -209,7 +210,7 @@ router.post('/makepayment',(req,res)=>{
                                                         resolve(result);
                                                     })
                                                     .catch((err)=>{
-                                                        logger.log('error',`path: ${req.path}, ${err}`);
+                                                        logger.log('error',`path: ${req.baseUrl}, ${err}`);
                                                         reject(err);
                                                     })
                                             })
@@ -230,7 +231,7 @@ router.post('/makepayment',(req,res)=>{
                     })
             })
             .catch(err =>{
-                logger.log('error',`path: ${req.path}, ${err}`);
+                logger.log('error',`path: ${req.baseUrl}, ${err}`);
                 return res.status(500).json({error: 'an error occurred'});
             })
 })
@@ -250,7 +251,11 @@ router.post('/webhook',(req,res)=>{
             console.log('webhook running');
             Order.findOne({orderId:order_id})
                 .then(result =>{
-
+                    //before updating i can check if order exists and if not it means timer deleted it and this is late authorization so i should issue refund                    
+                    // if(!result){
+                        //issue refund
+                    //     return;
+                    // }
 
                     //or send order confirmation mail here
                     Order.findOneAndUpdate({orderId:order_id},{pending:false,paymentId:payment_id,$unset: {validity: 1}},{new:true})
@@ -278,12 +283,12 @@ router.delete('/deleteorder',(req,res)=>{
                 return res.json({success: 'order deleted successfully'});
             }
             else{
-                logger.log('error',`path: ${req.path}, ${err}`);
+                logger.log('error',`path: ${req.baseUrl}, ${err}`);
                 return res.json({error: 'could not delete order'});
             }
         })
         .catch(err => {
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             return res.json({error: 'could not delete order'});
         });
 });
@@ -305,12 +310,12 @@ router.post('/verify',(req,res)=>{
                 return res.json({success: 'order deleted successfully'});
             }
             else{
-                logger.log('error',`path: ${req.path}, ${err}`);
+                logger.log('error',`path: ${req.baseUrl}, ${err}`);
                 return res.json({error: 'could not delete order'});
             }
         })
         .catch(err => {
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             return res.json({error: 'could not delete order'});
         });
     }
@@ -344,9 +349,9 @@ router.post('/verify',(req,res)=>{
         }
         transporter.sendMail(mailOptions, function(error, info){
             if (error) {
-                logger.log('error',`path: ${req.path}, email: ${result.buyer.email}, ${err}`);
+                logger.log('error',`path: ${req.baseUrl}, email: ${result.buyer.email}, ${err}`);
             } else {
-                logger.log('info',`path:${req.path}, email sent: ${info.response}`);
+                logger.log('info',`path:${req.baseUrl}, email sent: ${info.response}`);
             }
         });
 
@@ -354,7 +359,7 @@ router.post('/verify',(req,res)=>{
         return res.json({success:'singature matched, updated record'});
     })
     .catch((err)=>{
-        logger.log('error',`path: ${req.path}, ${err}`);
+        logger.log('error',`path: ${req.baseUrl}, ${err}`);
         res.json({error: err})
     });
 })

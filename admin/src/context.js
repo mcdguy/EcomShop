@@ -34,6 +34,9 @@ export const AppProvider = ({children}) => {
     const [videos,setVideos] = useState([]);
     const [admin,setAdmin] = useState([]);
     
+    //for pagination
+    const [orderCursor,setOrderCursor] = useState('');
+    const [userCursor,setUserCursor] = useState(''); 
     const [userPage,setUserPage] = useState(1);
     const [userHasMore,setUserHasMore] = useState(true);
     const [orderPage,setOrderPage] = useState(1);
@@ -179,12 +182,14 @@ export const AppProvider = ({children}) => {
     const fetchUser = () =>{
         setIsUserLoading(true);
         setUserError(false);
-        axios.get(`${baseUrl}/user?page=${userPage}&limit=20`)
+        axios.get(`${baseUrl}/user?cursor=${userCursor}`)
             .then(res=>{
+                console.log(res.data);
                 if(res.data.users){
                     setUser((oldUser)=>{return[...oldUser,...res.data.users]});
+                    setUserCursor(res.data.cursor);
+                    setUserHasMore(res.data.hasMore);
                 }
-                setUserHasMore(res.data.users.length > 0);
                 setIsUserLoading(false);
             })
             .catch(err => {
@@ -200,18 +205,18 @@ export const AppProvider = ({children}) => {
     const fetchOrder = () =>{
         setIsOrderLoading(true);
         setOrderError(false);
-        axios.get(`${baseUrl}/order?page=${orderPage}&limit=20`)
+        axios.get(`${baseUrl}/order?cursor=${orderCursor}`)
             .then(res=>{
                 if(res.data.orders){
                     setOrder(oldOrders =>{
                         return([...oldOrders,...res.data.orders]);
                     });
+                    setOrderCursor(res.data.cursor);
+                    setOrderHasMore(res.data.hasMore);
                 }
                 setIsOrderLoading(false);
-                setOrderHasMore(res.data.orders.length > 0);
             })
             .catch(err => {
-                console.log(err);
                 setOrderError(true);
             })
     }

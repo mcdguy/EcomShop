@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Location = require('../models/location');
 const adminAuth = require('../middleware/admin-middleware');
+const logger = require('../utils/logger');
 
 //getting all locations
 router.get('/',(req,res)=>{
@@ -11,7 +12,7 @@ router.get('/',(req,res)=>{
             res.json({locations: result});
         })
         .catch(err =>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'could not fetch locations'});
         })
 })
@@ -24,7 +25,7 @@ router.get('/:id',(req,res)=>{
             res.json({location:result});
         })
         .catch(err =>{ 
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
         });
 })
 
@@ -37,7 +38,7 @@ router.delete('/:id',adminAuth(['admin','edit admin']),(req,res)=>{
             res.json({success: 'location deleted successfully'});
         })
         .catch(err =>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'could not delete location'});
         })
 })
@@ -51,7 +52,7 @@ router.post('/',adminAuth(['admin','edit admin']),(req,res)=>{
             res.json({success: 'location created successfully'});
         })
         .catch(err => {
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'could not create location'})
         });
 })
@@ -65,7 +66,7 @@ router.patch('/:id',adminAuth(['admin','edit admin']),(req,res)=>{
             res.json({success: 'location updated successfully'});
         })
         .catch(err=>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'could not update location'});
         })
 })

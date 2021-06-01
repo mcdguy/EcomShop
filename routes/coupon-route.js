@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Coupon = require('../models/coupon');
 const adminAuth = require('../middleware/admin-middleware');
+const logger = require('../utils/logger');
 
 //admin route - get all coupons
 router.get('/',adminAuth(['all']),(req,res)=>{
@@ -13,7 +14,7 @@ router.get('/',adminAuth(['all']),(req,res)=>{
             res.json({coupon: result});
         })
         .catch(err =>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'could not fetch coupons'});
         })
 })
@@ -28,7 +29,7 @@ router.post('/check',(req,res)=>{
             res.json({success: 'coupon matched',discount: coupon.discount});
         })
         .catch(err =>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: ' an error occured'});
         })
 })
@@ -44,7 +45,7 @@ router.get('/:id',(req,res)=>{
             return res.json({coupon: result});
         })
         .catch(err =>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'an error occured'});
         })
 })
@@ -58,7 +59,7 @@ router.post('/',adminAuth(['admin','edit admin']),(req,res)=>{
             res.json({success: 'coupon created successfully'});
         })
         .catch(err => {
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({erorr: 'could not create coupon'})
         });
 })
@@ -77,7 +78,7 @@ router.patch('/:id',adminAuth(['admin','edit admin']),(req,res)=>{
             res.json({success: 'coupon updated successfully'});
         })
         .catch(err =>{
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'could not update coupon'});
         })
     
@@ -91,7 +92,7 @@ router.delete('/:id',adminAuth(['admin','edit admin']),(req,res)=>{
             res.json({success: 'coupon deleted successfully'});
         })
         .catch(err => { 
-            logger.log('error',`path: ${req.path}, ${err}`);
+            logger.log('error',`path: ${req.baseUrl}, ${err}`);
             res.json({error: 'an error occured'})
         });
 })

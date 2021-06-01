@@ -95,7 +95,7 @@ const User = () => {
                         })}
                     </tbody>
                 </table>
-                {userHasMore?
+                {userHasMore && userQuery == ''?
                     <div className="btn-wrapper">
                         <button onClick={showNextUserPage} className="btn paginate-btn">show more</button>
                     </div>
