@@ -40,9 +40,6 @@ if(process.env.NODE_ENV === 'production'){
 }
 
 
-    
-
-
 app.use(cookieParser());
 
 //logger for every incoming req
