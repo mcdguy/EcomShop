@@ -4,7 +4,7 @@ const Admin = require('../models/admin');
 
 const adminAuth = (roles) =>{//because i wanted this middleware to accept parameters
     return function(req,res,next){
-        const token = req.cookies.jwt;
+        const token = req.cookies.jtk;
         if(token){
             jwt.verify(token,process.env.AD_SEC,(err,decodedToken)=>{
                 if(err){

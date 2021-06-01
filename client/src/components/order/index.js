@@ -43,7 +43,7 @@ const Order = () => {
                     {o.order.map((item,index) => {
                         return(
                             <Link key={index} to={`/shop/${item.itemId}`} className="order__item">
-                                <img src={`/${item.img}`} alt=""/>
+                                <img src={`https://sbcoffeecompany.herokuapp.com/${item.img}`} alt=""/>
                                 <span>{item.name}</span>
                                 <span>{formatPrice(item.price)}</span>
                                 <span>{item.pqty}</span>

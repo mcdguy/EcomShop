@@ -53,9 +53,9 @@ router.post('/login',(req,res)=>{
 
                 //this is to access cookies in cors
                 if(process.env.NODE_ENV === 'production'){
-                    res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true,sameSite: 'None', secure: true, path:'/'});
+                    res.cookie('jtk',token,{maxAge: maxAge*1000, httpOnly: true,sameSite: 'None', secure: true, path:'/'});
                 }else{
-                    res.cookie('jwt',token,{maxAge: maxAge*1000, httpOnly: true});
+                    res.cookie('jtk',token,{maxAge: maxAge*1000, httpOnly: true});
                 }
                 logger.log('info',`${email} logged in`)
                 res.send({success: 'admin logged in',type:result.role});
@@ -74,16 +74,16 @@ router.post('/login',(req,res)=>{
 //admin logout
 router.post('/logout',(req,res)=>{
     if(process.env.NODE_ENV === 'production'){
-        res.clearCookie('jwt',{httpOnly: true,sameSite: 'None', secure: true, path:'/'});//had to pass options for it to work also some said put domain too but i guess that does not work for heroku
+        res.clearCookie('jtk',{httpOnly: true,sameSite: 'None', secure: true, path:'/'});//had to pass options for it to work also some said put domain too but i guess that does not work for heroku
     }else{
-        res.clearCookie('jwt');
+        res.clearCookie('jtk');
     }
     res.json({success: 'admin logged out'});
 })
 
 //checks admin login status
 router.get('/status',(req,res)=>{
-    const token = req.cookies.jwt;
+    const token = req.cookies.jtk;
     if(token){
         jwt.verify(token,process.env.AD_SEC,(err,decodedToken)=>{
             if(err){

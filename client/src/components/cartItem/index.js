@@ -12,8 +12,8 @@ const CartItem = ({img,name,price,pqty,_id,cartProducts,stock}) => {
     const cartItem = () =>{
         return (
             <div className="cart__item">
-                <Link to={`https://sbcoffeecompany.herokuapp.com/shop/${_id}`}>
-                    <img src={img[0]} alt=""/>
+                <Link to={`/shop/${_id}`}>
+                    <img src={`https://sbcoffeecompany.herokuapp.com/${img[0]}`} alt=""/>
                 </Link>
                 <div className="cart__item__info">
                     <p className="cart__item__name">{name}</p>
