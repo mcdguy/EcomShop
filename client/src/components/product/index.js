@@ -21,7 +21,7 @@ const Product = ({img,name,price,stock,_id}) => {
         <Link to={`/shop/${_id}`} ref={productRef} className="product">
             <article className="product__content">
                 <div className="product__img__container">
-                    <img className="product__img" src={`/${img[0]}`} alt={name}/>
+                    <img className="product__img" src={`https://sbcoffeecompany.herokuapp.com/${img[0]}`} alt={name}/>
                     {!stock?<div className="product__outofstock"><p>out of stock</p></div>:null}
                 </div>
                 <div className="product__info">

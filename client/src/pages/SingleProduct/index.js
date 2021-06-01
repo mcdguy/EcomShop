@@ -59,12 +59,12 @@ const SingleProduct = () => {
                             <div className="item__slider__wrapper">
                                 <div className="item__img">
                                     {item.img && item.img.map((image,index)=>{
-                                        return <img  key={index} className={`${currentImage===index?'active':null}`} src={`/${image}`} alt={item && item.name}/>
+                                        return <img  key={index} className={`${currentImage===index?'active':null}`} src={`https://sbcoffeecompany.herokuapp.com/${image}`} alt={item && item.name}/>
                                     })}
                                 </div>
                                 <div className="item__thumb__bar">
                                     {item.img && item.img.map((image,index)=>{
-                                        return <span className={`item__thumb ${currentImage===index?'active':null}`} key={index} onClick={()=>setCurrentImage(index)}><img className="item__thumb__image" src={`/${image}`} alt=""/></span>
+                                        return <span className={`item__thumb ${currentImage===index?'active':null}`} key={index} onClick={()=>setCurrentImage(index)}><img className="item__thumb__image" src={`https://sbcoffeecompany.herokuapp.com/${image}`} alt=""/></span>
                                     })}
                                 </div>
                             </div>
