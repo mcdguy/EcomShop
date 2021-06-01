@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));  
 app.use('/images',express.static('images'));
 
-// //using * for cors will not let accept cookies thus auth will not work 
+// //using * for cors will not accept cookies thus auth will not work 
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build')); 
 
