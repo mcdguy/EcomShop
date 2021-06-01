@@ -25,7 +25,8 @@ app.use('/images',express.static('images'));
 // //using * for cors will not accept cookies thus auth will not work 
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build')); 
-
+    //only using this middleware is not enough i need to set withCredentials: true with every axios request for cookie to work
+    //we need to pass origin and not * for cookies to work
     var whitelist = ['https://tender-swartz-02e579.netlify.app','https://goofy-liskov-da3de5.netlify.app']//pass domains you wanna whitelist
     var corsOptions = {
       origin: (origin, callback) => {
