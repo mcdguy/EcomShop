@@ -7,9 +7,9 @@ import {CheckoutProvider} from './checkoutContext';
 import {CartProvider} from './cartContext';
 import App from './App';
 import axios from 'axios';
-// if(process.env.NODE_ENV === 'production'){
-//   axios.defaults.baseURL = 'https://sbcoffeecompany.herokuapp.com';
-// }
+if(process.env.NODE_ENV === 'production'){
+  axios.defaults.baseURL = 'https://sbcoffeecompany.herokuapp.com';
+}
 axios.defaults.withCredentials = true
 ReactDOM.render(
   <React.StrictMode>
