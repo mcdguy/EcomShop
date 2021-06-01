@@ -1,0 +1,15 @@
+{"level":"info","message":"connected to mongodb","timestamp":"2021-06-01T17:09:13.111Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-06-01T17:10:47.387Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-06-01T17:13:20.766Z"}
+{"level":"info","message":"path:/user/status","timestamp":"2021-06-01T17:13:20.888Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-06-01T17:13:20.906Z"}
+{"level":"info","message":"path:/product","timestamp":"2021-06-01T17:13:21.156Z"}
+{"level":"info","message":"path:/gallery","timestamp":"2021-06-01T17:13:21.188Z"}
+{"level":"info","message":"path:/location","timestamp":"2021-06-01T17:13:21.194Z"}
+{"level":"info","message":"path:/user/status","timestamp":"2021-06-01T17:25:48.182Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-06-01T17:25:48.186Z"}
+{"level":"info","message":"path:/product","timestamp":"2021-06-01T17:25:48.227Z"}
+{"level":"info","message":"path:/gallery","timestamp":"2021-06-01T17:25:48.482Z"}
+{"level":"info","message":"path:/location","timestamp":"2021-06-01T17:25:48.485Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-06-01T17:45:54.307Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-06-01T17:46:12.907Z"}
