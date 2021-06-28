@@ -42,12 +42,12 @@ const Order = () => {
                     <h1> <span>total : </span> {formatPrice(o.amount)}</h1>
                     {o.order.map((item,index) => {
                         return(
-                            <Link key={index} to={`/shop/${item.itemId}`} className="order__item">
-                                <img src={`https://sbcoffeecompany.herokuapp.com/${item.img}`} alt=""/>
+                            <div key={index}className="order__item">
+                                <Link to={`/shop/${item.itemId}`}><img src={`https://sbcoffeecompany.herokuapp.com/${item.img}`} alt=""/></Link>
                                 <span>{item.name}</span>
                                 <span>{formatPrice(item.price)}</span>
                                 <span>{item.pqty}</span>
-                            </Link>
+                            </div>
                         );
                     })}
                 </div>

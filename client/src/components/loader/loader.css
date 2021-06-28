@@ -10,15 +10,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(248, 248, 248, 0.623);
+    background-color: var(--clr-bg);
+    /* background-color: rgba(248, 248, 248, 0.623); */
 }
 
 .loader__spinner{
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 3px solid rgb(214, 212, 212);
-    border-top-color: rgb(109, 106, 106);
+    border: 3px solid rgb(231, 206, 206);
+    border-top-color: rgb(190, 133, 133);
     animation: spin 1.4s linear infinite;
 }
 @keyframes spin{

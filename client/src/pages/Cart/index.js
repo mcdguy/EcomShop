@@ -6,6 +6,7 @@ import { useCartContext } from '../../cartContext';
 import CartSummary from '../../components/cartSummary';
 import Loader from '../../components/loader';
 import Error from '../../components/error';
+import Footer from '../../components/footer';
 
 const Cart = () => {
     const {cart,productError,productLoading} = useGlobalContext();
@@ -20,16 +21,22 @@ const Cart = () => {
 
     if(!cart.length){
         return(
-            <div className="cart__empty">
-                <p>There is nothing in cart </p>
+            <div className="cart__empty__wrapper">
+                <div className="cart__empty">
+                    <p>There is nothing in cart </p>
+                </div>
+                <Footer/>
             </div>
         )
     }
 
     if(!cartProducts.length){
         return(
-            <div className="cart__empty">
-                <p>There is nothing in cart </p>
+            <div className="cart__empty__wrapper">
+                <div className="cart__empty">
+                    <p>There is nothing in cart </p>
+                </div>
+                <Footer/>
             </div>
         )
     }
@@ -41,8 +48,8 @@ const Cart = () => {
                         <CartComponent source={'cart'}/>
                         <CartSummary source={'cart'}/>
                     </div>
-                
             </div>
+            <Footer/>
         </div>
     )
 }

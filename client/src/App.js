@@ -6,6 +6,7 @@ import Loader from './components/loader';
 import Login from './components/login';
 import Error from './pages/Error';
 import ScrollToTop from './components/scrollToTop';
+import Shop from './pages/Shop';
 const Gallery = lazy(()=>import('./pages/Gallery'));
 const Cart = lazy(()=> import('./pages/Cart'));
 const About = lazy(()=> import('./pages/About'));
@@ -14,8 +15,7 @@ const Checkout = lazy(()=> import('./pages/Checkout'));
 const SingleProduct = lazy(()=> import('./pages/SingleProduct'));
 const Account = lazy(()=> import('./pages/Account'));
 const Forgot = lazy(()=> import('./pages/Forgot'));
-const Shop = lazy(()=> import('./pages/Shop'));
-// import Shop from './pages/Shop';
+// const Shop = lazy(()=> import('./pages/Shop'));
 // import SingleProduct from './pages/SingleProduct';
 // import Account from './pages/Account';
 // import Forgot from './pages/Forgot';
@@ -31,13 +31,13 @@ const App = () => {
       <ScrollToTop />
       <Navbar></Navbar>
       <Login></Login>
+            <Suspense fallback={<Loader/>}>
           <Switch>
               <Route path="/" exact>
                 <Home/>
               </Route>
 
 
-            <Suspense fallback={<Loader/>}>
               
                 <Route path="/shop" exact>
                   <Shop/>
@@ -70,12 +70,12 @@ const App = () => {
                 <Route path="/account" exact>
                   <Account/>
                 </Route>
-            </Suspense>
-
               <Route path="*">
                 <Error/>
               </Route>
           </Switch>
+            </Suspense>
+
     </Router>
   )
 }

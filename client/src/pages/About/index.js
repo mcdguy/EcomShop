@@ -60,15 +60,15 @@ const About = () => {
                             </div>
                         </div>
                         <div className="about__row__content">
-                        <p> Sardar-Ji-Bakhsh, founded in 2015 as SardarBuksh Coffee & Coffee, is an Indian specialty coffee brand that aims to cater to every Indian coffee drinker’s taste.</p>
+                        <p>Brewing 100% single origin Arabica coffee at 14 outlets across Delhi, Gurgaon and Chandigarh.</p>
                         </div>
                     </div>
                 </div>
 
                 <div className="about__flex">
                     <div className="about__flex__text">
-                        <p>Sardar-Ji-Bakhsh, founded in 2015 as SardarBuksh Coffee & Coffee, is an Indian specialty cofee brand that aims to cater to every Indian coffee drinker’s taste.</p>
-                        <p>Since renaming the brand and becoming recognised as a specialty café for great coffee, SJB has continued to expand their experience, from their signature coffee to bottled cold brews, and of course expanding to locations around the country</p>
+                        <p>We have visited numerous estates around the country to bring you the best from the coffee estates of Chikmagalur. With a cosy ambience at all of our cafés, we offer the perfect setting to sit back and relax with a freshly brewed cup of coffee, or choose takeaway or home delivery to enjoy it at home.</p>
+                        {/* <p>Since renaming the brand and becoming recognised as a specialty café for great coffee, SJB has continued to expand their experience, from their signature coffee to bottled cold brews, and of course expanding to locations around the country</p> */}
                     </div>
                     <div className="about__flex__img">
                         <div className="img-design">

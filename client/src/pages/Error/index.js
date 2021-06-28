@@ -11,7 +11,8 @@ const Error = () => {
                     <h1>not </h1>
                     <h1>found</h1>
                 </div>      
-                <Link className="error__btn btn" to="/">Back To Home</Link>
+                <Link className="home__btn error__btn" to="/">Back To Home</Link>
+                {/* <Link className="error__btn btn" to="/">Back To Home</Link> */}
             </div>
         </div>
     )

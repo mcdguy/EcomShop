@@ -1,7 +1,8 @@
 .single__order{
-    background-color: rgb(254, 254, 254);
+    /* background-color: rgb(254, 254, 254); */
+    background-color: rgba(var(--clr-light-rgb),.6);
     padding: 20px;
-    border: 1px solid rgb(240, 240, 240);
+    /* border: 1px solid rgb(240, 240, 240); */
     margin: 20px 0;
 }
 .single__order h1{
@@ -21,7 +22,7 @@
     justify-content: space-between;
     padding: 10px 0;
     align-items: center;
-    border-bottom: 1px solid rgb(219, 216, 216);
+    border-bottom: 1px solid var(--clr-bg);
     color: black;
 }
 .order__item img{

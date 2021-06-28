@@ -19,17 +19,12 @@
     margin: 0;
 }
 .error__btn{
-    color: black;
-    background-color: var(--clr-btn);
-    padding: 8px 30px;
-    border-radius: 50px;
-    text-align: center;
+    padding: 9px 15px;
+    font-size: 16px;
     position: absolute;
     bottom: 5%;
 }
-.error__btn:active{
-    background-color: rgb(211, 209, 209);
-}
+
 
 @media screen and (max-width: 420px){
     .error__info{

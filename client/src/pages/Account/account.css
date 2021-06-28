@@ -5,8 +5,15 @@
     height: 100vh;
     letter-spacing: 1px;
     font-size: 20px;
+    background-color: var(--clr-bg);
+}
+.account,
+.address__save{
+  background-color: var(--clr-bg);
+  border-bottom: 1px solid var(--clr-bg);
 }
 .address__center{
+  min-height: 100vh;
   padding-top: 100px;
 }
 

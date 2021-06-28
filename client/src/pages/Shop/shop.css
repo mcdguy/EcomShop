@@ -4,8 +4,10 @@
 }
 
 .shop__center{
+    min-height: 100vh;
     display: flex;
     flex-wrap: wrap;
+    align-items: flex-start;
 }
 
 .shop__filter{
@@ -76,11 +78,12 @@
 }
 
 .shop-empty{
-    height: 100vh;
     background-color: var(--clr-bg);
+    letter-spacing: 1px;
 }
 .shop__empty__center{
-    height: 100%;
+    min-height: 100vh;
+    /* height: 100%; */
     display: flex;
     align-items: center;
     justify-content: center;

@@ -1,13 +1,22 @@
+.cart{
+    background-color: var(--clr-bg);
+    border-top: 1px solid var(--clr-bg);
+}
+/* .cart__empty__wrapper{
+} */
 .cart__empty{
-    min-height: 100vh;
+    min-height: 90vh;
     display: flex;
     align-items: center;
     justify-content: center;
     letter-spacing: 1px;
+    background-color: var(--clr-bg);
 }
 
 .cart__center{
+    min-height: 100vh;
     margin-top: 90px;
+    /* margin-bottom: 140px; */
 }
 .cart__products__number{
     padding: 15px 10px;

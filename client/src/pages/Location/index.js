@@ -4,6 +4,7 @@ import './location.css';
 import axios from 'axios';
 import Loader from '../../components/loader';
 import Error from '../../components/error';
+import Footer from '../../components/footer';
 const Location = () => {
     const [map,setMap] = useState(null);
     const [selectedMarker,setSelectedMarker] = useState(null);
@@ -67,7 +68,7 @@ const Location = () => {
         return null;
     }
     return (
-        <div>
+        <div className="location">
             <div className="map__center center">
                 <div className="map__info">
                     <div>
@@ -98,10 +99,10 @@ const Location = () => {
                     {locations.length?
                         <MapContainer whenCreated={map=>{setMap(map)}} center={[28.55919136650141, 77.16127199503]} zoom={11}>
                             <TileLayer
-                            attribution= '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-                            //    attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                            //    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                               url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
+                            // attribution= '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+                               attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            //    url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
                             />
                             {locations.length && locations.map(shop =>{
                                 return(
@@ -119,6 +120,7 @@ const Location = () => {
                     :'no locations available' }
                 </div>
             </div>
+            <Footer/>
         </div>
     )
 }

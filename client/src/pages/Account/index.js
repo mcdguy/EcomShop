@@ -5,7 +5,7 @@ import './account.css';
 import Order from '../../components/order';
 import Loader from '../../components/loader';
 import Error from '../../components/error';
-
+import Footer from '../../components/footer';
 const Account = () => {
     const {address,setAddress,saveAddress,error,setError,editMode,setEditMode,isLoading,loadingError} = useAddressContext();
     const {isLoggedIn} = useGlobalContext();
@@ -93,6 +93,7 @@ const Account = () => {
                 <h1 className="order__head">previous orders</h1>
                 <Order/>
             </div>
+            <Footer/>
         </div>
     }
 
@@ -171,6 +172,7 @@ const Account = () => {
                 <h1 className="order__head">previous orders</h1>
                 <Order/>
             </div>
+            <Footer/>
         </div>
     )
 }

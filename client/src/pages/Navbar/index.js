@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
+import {BsBag} from 'react-icons/bs';
+import { VscAccount } from "react-icons/vsc";
 import { useGlobalContext } from '../../context';
 import './navbar.css';
 import axios from 'axios';
@@ -26,24 +28,33 @@ const Navbar = () => {
                 
                 <ul onClick={()=>setOpenMenu(false)} className={`${openMenu?'nav__links open':'nav__links'}`}>
                     <li>
-                        <Link to="/shop" onClick={()=>setFilterName('none')} >shop</Link>
+                        <Link to="/shop" onClick={()=>setFilterName('cold brew')} >cold brew</Link>
+                    </li>
+                    <li className="nav__brew">
+                        <Link to="/shop" onClick={()=>setFilterName('coffee')} >BREWYourOwn!</Link>
                     </li>
                     <li>
-                        <Link to="/findastore">find a store</Link>
+                        <Link to="/findastore">stores</Link>
                     </li>
-                    <li className="gallery__link">
+                    {/* <li className="gallery__link">
                         <Link to="/video-gallery">gallery</Link>
-                    </li>
+                    </li> */}
                     <li>
                         <Link to="/about">about</Link>
                     </li>
-                    <li>
-                        <Link to="/cart">cart</Link>
+                    <li className="nav__ico">
+                        <Link to="/cart">
+                            <BsBag/>
+                            <span>cart</span>
+                        </Link>
                     </li>
                     {isLoggedIn?
                         <>
-                            <li>
-                                <Link to = '/account'>account</Link>
+                            <li className="nav__ico">
+                                <Link to = '/account'>
+                                    <VscAccount/>
+                                    <span>account</span>
+                                </Link>
                             </li>
                             <li>
                                 <a onClick={handleLogout}>log out</a>

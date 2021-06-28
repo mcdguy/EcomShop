@@ -1,3 +1,8 @@
+.checkout{
+    min-height: 100vh;
+    background-color: var(--clr-bg);
+    --clr-inp: rgb(0,0,0);
+}
 .checkout__notlogged{
     height: 100vh;
     display: flex;
@@ -16,7 +21,8 @@
     flex-shrink: 0;
     padding: 20px;
     box-sizing: border-box;
-    border: 1px solid rgb(235, 235, 235);
+    /* border: 1px solid rgb(235, 235, 235); */
+    box-shadow: 0 0 4px 1px rgba(var(--clr-sec-rgb),.2);
     border-radius: 4px;
 }
 
@@ -31,10 +37,10 @@
     height: 100%;
     width: 100%;
 }
-.state__option__head{
+.state__option__head{ 
     height: 100%;
     width: calc(100% - 16px);
-    border: 3px solid rgb(177, 168, 168);
+    border: 2px solid var(--clr-inp);
     border-radius: 4px;
     padding: 0 5px;
     color: rgb(46, 44, 44);
@@ -47,11 +53,13 @@
 }
 
 .state__options{
-    background-color: white;
+    background-color: rgb(247, 239, 234);
     height: 180px;
     overflow-y: scroll;
-    border: 1px solid rgb(201, 201, 201);
-    box-shadow: 0 0 5px 3px rgb(238, 238, 238);
+    /* border: 1px solid rgb(201, 201, 201); */
+    border: 1px solid rgba(var(--clr-sec-rgb),.3);
+    box-shadow: 0 0 5px 2px rgba(var(--clr-sec-rgb),.2);
+    /* box-shadow: 0 0 5px 3px rgb(238, 238, 238); */
     position: absolute;
     width: 100%;
     top: calc(100% + 8px);
@@ -67,21 +75,26 @@
     text-transform: uppercase;
 }
 .state__op:hover{
-    background-color: rgb(243, 243, 243);
+    /* background-color: rgb(243, 243, 243); */
+    background-color: rgb(245, 231, 231);
 }
 .anim--inp{
+    background-color: var(--clr-bg);
     position: relative;
     width: calc(100% - 16px);
     height: 100%;
-    border: 3px solid rgb(177, 168, 168);
+    border: 2px solid var(--clr-inp);
     border-radius: 4px;
     padding: 0 5px;
     color: rgb(46, 44, 44);
     font-family: inherit;
     letter-spacing: 1px;
+    outline: none;
+    background-color: var(--clr-bg);
     font-size: 14px;
 }
 .anim--inp--label{
+    outline: none;
     position: absolute;
     z-index: 1;
     top: 50%;
@@ -94,6 +107,7 @@
     font-size: 17px ;
     text-transform: lowercase;
     letter-spacing: 1px;
+    background-color: var(--clr-bg);
 }
 .anim--inp--error{
     position: absolute;
@@ -123,10 +137,12 @@
 .anim__text__head__label,
 .anim--inp:focus + .anim--inp--label,
 .anim--inp:valid + .anim--inp--label{
+    outline: none;
     top: 0;
-    background: white;
+    background: var(--clr-bg);
     font-size: 13px;
-    color: gray;
+    /* color: gray; */
+    color: var(--clr-inp)
 }
 
 
@@ -153,7 +169,7 @@
 }
 .checkout__checkbox label{
     font-size: 12px;
-    color: gray;
+    color: black;
 }
 .checkout__btn{
     color: var(--clr-bg);
@@ -199,7 +215,8 @@
 }
 
 .promo__code input{
-    border: 3px solid rgb(177, 168, 168);
+    border: 2px solid var(--clr-inp);
+    background-color: var(--clr-bg);
     padding: 8px 45px 8px 5px;
     outline: none;
     font-size: 16px;

@@ -1,7 +1,10 @@
+.location{
+    background-color: var(--clr-bg);
+}
 .map__center{
     padding-top: 80px;
     display: flex;
-
+    min-height: 90vh;
 }
 .map__info,
 #mapid{
@@ -25,7 +28,7 @@
     width: 100%;
     height: 80%;
     z-index: 7;
-    box-shadow: 0 0 6px var(--clr-sec);
+    box-shadow: 0 0 6px rgba(var(--clr-sec-rgb),.6);
 }
 /* .leaflet-control-attribution{
     display: none;
@@ -62,7 +65,7 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     cursor: pointer;
-    box-shadow: 0 0 3px 2px var(--clr-light);
+    box-shadow: 0 0 4px 2px rgba(var(--clr-sec-rgb),.3);
     color: white;
 }
 .custom__select__head::after{
@@ -79,9 +82,9 @@
     user-select: none;
 }
 .custom__select__options{
-    background-color: white;
-    border: 1px solid rgb(216, 213, 213);
-    box-shadow: 0 0 0 2px rgba(236, 236, 236, 0.726);
+    background-color: rgb(247, 239, 234);
+    border: 1px solid rgba(var(--clr-sec-rgb),.3);
+    box-shadow: 0 0 3px 2px rgba(var(--clr-sec-rgb),.1);
     border-radius: 4px;
     position: absolute;
     box-sizing: border-box;
@@ -97,7 +100,7 @@
     cursor: pointer;
 }
 .custom__select__options div:hover{
-   background-color: rgb(245, 245, 245);
+   background-color: rgb(245, 231, 231);
 }
 
 .location__address{
@@ -110,7 +113,7 @@
     transition: 200ms border;
 }
 .location__address:hover{
-    border: 2px solid rgb(223, 220, 220);
+    border: 2px solid rgba(var(--clr-sec-rgb),.4);
 }
 .location__address.selected{
     border: 2px solid var(--clr-sec);
@@ -124,11 +127,11 @@
 }
 .location__address h4{
     font-size: 10px;
-    font-weight: 400;
+    font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
     margin: 6px 0;
-    color: rgb(146, 143, 143);
+    color: rgb(37, 35, 35);
 }
 .location__address p{
     font-size: 14px;
@@ -136,7 +139,7 @@
     letter-spacing: 1px;
     margin: 6px 0;
     line-height: 1.6;
-    color: rgb(100, 97, 97);
+    color: rgb(53, 51, 51);
 }
 @media screen and (max-width:768px){
     #mapid{
