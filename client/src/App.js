@@ -15,6 +15,7 @@ const Checkout = lazy(()=> import('./pages/Checkout'));
 const SingleProduct = lazy(()=> import('./pages/SingleProduct'));
 const Account = lazy(()=> import('./pages/Account'));
 const Forgot = lazy(()=> import('./pages/Forgot'));
+const Menu = lazy(()=> import('./pages/Menu'));
 // const Shop = lazy(()=> import('./pages/Shop'));
 // import SingleProduct from './pages/SingleProduct';
 // import Account from './pages/Account';
@@ -63,6 +64,10 @@ const App = () => {
                   <Location/>
                 </Route>
 
+                <Route path="/menu" exact>
+                  <Menu/>
+                </Route>
+                
                 <Route path="/shop/:id" children={<SingleProduct/>} exact></Route>
                 
                 <Route path="/reset-password/:id/:token" children={<Forgot/>} exact></Route>

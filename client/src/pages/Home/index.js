@@ -69,7 +69,7 @@ const Home = () => {
                                 Sip on to our cold brew and lattes, order in beans & learn how to brew or best come to ours Cafes, we love coffee and coffee drinkers alike. 
                             </p>
                             <div className="link__wrapper">
-                                <Link className="home__btn" to='/shop'>see menus</Link>
+                                <Link className="home__btn" to='/menu'>see menus</Link>
                             </div>
                         </div>
 

@@ -178,7 +178,8 @@ export const CheckoutProvider = ({children}) =>{
                     return;
                 } 
                 const options = {
-                "key": "rzp_test_qlKfA8K3Z1aaLP", //put this in .env file
+                "key": process.env.REACT_APP_RP_KEY, //put this in .env file
+                // "key": "rzp_test_qlKfA8K3Z1aaLP", //put this in .env file
                 "amount": res.data.amount, 
                 "currency": "INR",
                 "name": "bakhsh",
