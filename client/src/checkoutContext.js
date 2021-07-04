@@ -177,8 +177,9 @@ export const CheckoutProvider = ({children}) =>{
                  if(res.status !==200){
                     return;
                 } 
+                console.log(res.data.id);
                 const options = {
-                "key": process.env.REACT_APP_RP_KEY, //put this in .env file
+                "key": 'rzp_live_7bCKU4rXBI4b1K', //put this in .env file
                 // "key": "rzp_test_qlKfA8K3Z1aaLP", //put this in .env file
                 "amount": res.data.amount, 
                 "currency": "INR",
@@ -186,7 +187,7 @@ export const CheckoutProvider = ({children}) =>{
                 "timeout": 600,
                 "description": "payment for beans",
                 // "image": "https://example.com/your_logo",
-                "order_id": res.data.id, 
+                // "order_id": res.data.id, 
                 "handler": function (response){
                     axios.post('/verify',{order_id:res.data.id,payment_id:response.razorpay_payment_id,payment_sign:response.razorpay_signature})
                         .then(res => {

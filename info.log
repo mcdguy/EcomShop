@@ -2072,3 +2072,105 @@
 {"level":"info","message":"path:/location","timestamp":"2021-07-03T16:25:52.218Z"}
 {"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T16:25:55.783Z"}
 {"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T16:25:59.368Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-07-03T16:38:57.101Z"}
+{"level":"info","message":"path:/user/status","timestamp":"2021-07-03T16:39:15.337Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T16:39:15.357Z"}
+{"level":"info","message":"path:/product","timestamp":"2021-07-03T16:39:15.375Z"}
+{"level":"info","message":"path:/gallery","timestamp":"2021-07-03T16:39:15.626Z"}
+{"level":"info","message":"path:/user/account/address","timestamp":"2021-07-03T16:39:15.706Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T16:39:15.790Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T16:55:45.281Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T16:55:47.092Z"}
+{"level":"info","message":"path:/makepayment","timestamp":"2021-07-03T16:55:48.737Z"}
+{"level":"info","message":"path:/deleteorder","timestamp":"2021-07-03T16:55:53.007Z"}
+{"level":"info","message":"path:/makepayment","timestamp":"2021-07-03T16:58:58.111Z"}
+{"level":"info","message":"path:/deleteorder","timestamp":"2021-07-03T16:59:02.798Z"}
+{"level":"info","message":"path:/makepayment","timestamp":"2021-07-03T16:59:04.461Z"}
+{"level":"info","message":"path:/deleteorder","timestamp":"2021-07-03T16:59:08.132Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-07-03T17:00:14.364Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-07-03T17:00:23.054Z"}
+{"level":"info","message":"path:/makepayment","timestamp":"2021-07-03T17:00:35.538Z"}
+{"level":"info","message":"path:/user/status","timestamp":"2021-07-03T17:00:45.899Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T17:00:45.905Z"}
+{"level":"info","message":"path:/product","timestamp":"2021-07-03T17:00:46.195Z"}
+{"level":"info","message":"path:/gallery","timestamp":"2021-07-03T17:00:46.203Z"}
+{"level":"info","message":"path:/user/account/address","timestamp":"2021-07-03T17:00:46.206Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T17:00:46.266Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T17:00:46.625Z"}
+{"level":"info","message":"path:/makepayment","timestamp":"2021-07-03T17:00:47.310Z"}
+{"level":"info","message":"removed pending orders","timestamp":"2021-07-03T17:06:21.395Z"}
+{"level":"info","message":"removed pending orders","timestamp":"2021-07-03T17:10:21.466Z"}
+{"level":"info","message":"path:/deleteorder","timestamp":"2021-07-03T17:10:50.022Z"}
+{"level":"info","message":"path:/user/status","timestamp":"2021-07-03T17:47:32.801Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T17:47:32.806Z"}
+{"level":"info","message":"path:/product","timestamp":"2021-07-03T17:47:33.100Z"}
+{"level":"info","message":"path:/gallery","timestamp":"2021-07-03T17:47:33.121Z"}
+{"level":"info","message":"path:/user/account/address","timestamp":"2021-07-03T17:47:33.125Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T17:47:33.177Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T17:47:33.525Z"}
+{"level":"info","message":"path:/makepayment","timestamp":"2021-07-03T17:47:35.583Z"}
+{"level":"info","message":"path:/user/status","timestamp":"2021-07-03T17:47:51.055Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T17:47:51.057Z"}
+{"level":"info","message":"path:/product","timestamp":"2021-07-03T17:47:51.061Z"}
+{"level":"info","message":"path:/gallery","timestamp":"2021-07-03T17:47:51.064Z"}
+{"level":"info","message":"path:/user/account/address","timestamp":"2021-07-03T17:47:51.094Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T17:47:51.446Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T17:47:51.489Z"}
+{"level":"info","message":"path:/makepayment","timestamp":"2021-07-03T17:47:52.842Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-07-03T17:59:42.773Z"}
+{"level":"info","message":"path:/user/status","timestamp":"2021-07-03T17:59:50.694Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T17:59:50.707Z"}
+{"level":"info","message":"path:/product","timestamp":"2021-07-03T17:59:50.719Z"}
+{"level":"info","message":"path:/gallery","timestamp":"2021-07-03T17:59:50.981Z"}
+{"level":"info","message":"path:/user/account/address","timestamp":"2021-07-03T17:59:51.010Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T17:59:51.039Z"}
+{"level":"info","message":"path:/user/status","timestamp":"2021-07-03T17:59:57.089Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T17:59:57.092Z"}
+{"level":"info","message":"path:/product","timestamp":"2021-07-03T17:59:57.339Z"}
+{"level":"info","message":"path:/gallery","timestamp":"2021-07-03T17:59:57.393Z"}
+{"level":"info","message":"path:/user/account/address","timestamp":"2021-07-03T17:59:57.395Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T17:59:57.464Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T17:59:57.662Z"}
+{"level":"info","message":"path:/makepayment","timestamp":"2021-07-03T18:00:15.863Z"}
+{"level":"info","message":"removed pending orders","timestamp":"2021-07-03T18:01:41.415Z"}
+{"level":"info","message":"removed pending orders","timestamp":"2021-07-03T18:01:41.423Z"}
+{"level":"info","message":"path:/verify","timestamp":"2021-07-03T18:02:49.326Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-07-03T18:08:23.136Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-07-03T18:08:41.186Z"}
+{"level":"info","message":"path:/user/status","timestamp":"2021-07-03T18:09:01.583Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T18:09:01.597Z"}
+{"level":"info","message":"path:/product","timestamp":"2021-07-03T18:09:01.769Z"}
+{"level":"info","message":"path:/gallery","timestamp":"2021-07-03T18:09:01.889Z"}
+{"level":"info","message":"path:/user/account/address","timestamp":"2021-07-03T18:09:01.892Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T18:09:01.940Z"}
+{"level":"info","message":"path:/user/orders","timestamp":"2021-07-03T18:09:02.156Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-07-03T18:09:51.702Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-07-03T18:09:59.618Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-07-03T18:10:04.179Z"}
+{"level":"info","message":"path:/user/status","timestamp":"2021-07-03T18:25:54.434Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T18:25:54.451Z"}
+{"level":"info","message":"path:/product","timestamp":"2021-07-03T18:25:54.598Z"}
+{"level":"info","message":"path:/gallery","timestamp":"2021-07-03T18:25:54.643Z"}
+{"level":"info","message":"path:/user/account/address","timestamp":"2021-07-03T18:25:54.647Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-03T18:25:54.768Z"}
+{"level":"info","message":"removed pending orders","timestamp":"2021-07-03T18:40:55.901Z"}
+{"level":"info","message":"path:/location","timestamp":"2021-07-03T18:58:10.862Z"}
+{"level":"info","message":"path:/user/status","timestamp":"2021-07-04T08:57:36.786Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-04T08:57:36.803Z"}
+{"level":"info","message":"path:/product","timestamp":"2021-07-04T08:57:37.096Z"}
+{"level":"info","message":"path:/gallery","timestamp":"2021-07-04T08:57:37.101Z"}
+{"level":"info","message":"path:/user/account/address","timestamp":"2021-07-04T08:57:37.144Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-04T08:57:37.172Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-04T08:57:37.589Z"}
+{"level":"info","message":"path:/user/logout","timestamp":"2021-07-04T09:01:19.674Z"}
+{"level":"info","message":"path:/user/login","timestamp":"2021-07-04T09:01:27.846Z"}
+{"level":"info","message":"path:/user/login","timestamp":"2021-07-04T09:01:32.426Z"}
+{"level":"info","message":"path:/user/mergecart","timestamp":"2021-07-04T09:01:32.953Z"}
+{"level":"info","message":"path:/user/account/address","timestamp":"2021-07-04T09:01:33.268Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-04T09:01:33.821Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-04T09:01:37.790Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-04T09:01:40.545Z"}
+{"level":"info","message":"path:/makepayment","timestamp":"2021-07-04T09:03:00.841Z"}
+{"level":"info","message":"path:/deleteorder","timestamp":"2021-07-04T09:03:12.052Z"}
+{"level":"info","message":"path:/makepayment","timestamp":"2021-07-04T09:03:14.142Z"}
+{"level":"info","message":"path:/deleteorder","timestamp":"2021-07-04T09:03:20.213Z"}

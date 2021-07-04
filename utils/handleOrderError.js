@@ -12,6 +12,10 @@ const handleOrderError = (order) =>{
         orderError = 'please enter contact number';
         return orderError
     }
+    // if(order.buyer.contact.toString().length < 10){
+    //     orderError = 'please enter contact number';
+    //     return orderError
+    // }
     if(order.billingAddress.addressLine === ''){
         orderError = 'please enter street'
         return orderError;

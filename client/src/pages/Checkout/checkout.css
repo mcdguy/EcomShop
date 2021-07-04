@@ -370,6 +370,7 @@
     .checkout__form{
         border: none;
         padding: 0;
+        box-shadow: none;
     }
 
     .billing,

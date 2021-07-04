@@ -348,8 +348,8 @@ router.post('/verify',(req,res)=>{
             text: orderEmail(result.buyer.name,result.orderId)
         }
         transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
-                logger.log('error',`path: ${req.baseUrl}, email: ${result.buyer.email}, ${err}`);
+            if (error) {//This statement threw error
+                logger.log('error',`path: ${req.baseUrl}, email: ${result.buyer.email}, ${error}`);
             } else {
                 logger.log('info',`path:${req.baseUrl}, email sent: ${info.response}`);
             }
