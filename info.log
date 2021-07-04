@@ -2174,3 +2174,29 @@
 {"level":"info","message":"path:/deleteorder","timestamp":"2021-07-04T09:03:12.052Z"}
 {"level":"info","message":"path:/makepayment","timestamp":"2021-07-04T09:03:14.142Z"}
 {"level":"info","message":"path:/deleteorder","timestamp":"2021-07-04T09:03:20.213Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-07-04T10:04:02.847Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-04T10:04:12.532Z"}
+{"level":"info","message":"path:/user/status","timestamp":"2021-07-04T10:04:12.561Z"}
+{"level":"info","message":"path:/product","timestamp":"2021-07-04T10:04:12.577Z"}
+{"level":"info","message":"path:/gallery","timestamp":"2021-07-04T10:04:12.805Z"}
+{"level":"info","message":"path:/user/account/address","timestamp":"2021-07-04T10:04:12.808Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-04T10:04:12.843Z"}
+{"level":"info","message":"path:/user/logout","timestamp":"2021-07-04T10:04:15.798Z"}
+{"level":"info","message":"path:/user/forgotpassword","timestamp":"2021-07-04T10:04:40.996Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-07-04T10:05:46.366Z"}
+{"level":"info","message":"path:/user/status","timestamp":"2021-07-04T10:05:49.099Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-04T10:05:49.109Z"}
+{"level":"info","message":"path:/product","timestamp":"2021-07-04T10:05:49.161Z"}
+{"level":"info","message":"path:/gallery","timestamp":"2021-07-04T10:05:49.385Z"}
+{"level":"info","message":"path:/user/forgotpassword","timestamp":"2021-07-04T10:05:57.654Z"}
+{"level":"error","message":"path: /user, email: hritiksharma@gmail.com, Error: Invalid login: 535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials r9sm17367808pjf.52 - gsmtp","timestamp":"2021-07-04T10:05:58.840Z"}
+{"level":"info","message":"path:/user/forgotpassword","timestamp":"2021-07-04T10:07:17.509Z"}
+{"level":"error","message":"path: /user, email: hritiksharma@gmail.com, Error: Invalid login: 535-5.7.8 Username and Password not accepted. Learn more at\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials x17sm9055994pfa.26 - gsmtp","timestamp":"2021-07-04T10:07:18.890Z"}
+{"level":"info","message":"path:/user/status","timestamp":"2021-07-04T10:12:10.526Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-04T10:12:10.529Z"}
+{"level":"info","message":"path:/product","timestamp":"2021-07-04T10:12:10.532Z"}
+{"level":"info","message":"path:/gallery","timestamp":"2021-07-04T10:12:10.806Z"}
+{"level":"info","message":"path:/user/forgotpassword","timestamp":"2021-07-04T10:12:16.804Z"}
+{"level":"info","message":"path:/user, email sent: 250 2.0.0 OK  1625393537 j15sm4091135pjl.15 - gsmtp","timestamp":"2021-07-04T10:12:19.534Z"}
+{"level":"info","message":"path:/user/forgotpassword","timestamp":"2021-07-04T10:14:02.785Z"}
+{"level":"info","message":"path:/user, email sent: 250 2.0.0 OK  1625393643 nr12sm17107610pjb.1 - gsmtp","timestamp":"2021-07-04T10:14:05.420Z"}

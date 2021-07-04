@@ -222,7 +222,7 @@ router.post('/forgotpassword',(req,res)=>{
             transporter.sendMail(mailOptions, function(error, info){
                 if (error) {
                     //if email is not sent email id will be logged in error log
-                    logger.log('error',`path: ${req.baseUrl}, email: ${result.email}, ${err}`);
+                    logger.log('error',`path: ${req.baseUrl}, email: ${result.email}, ${error}`);
                     res.json({error: 'could not send email'});
                 } else {
                     logger.log('info',`path:${req.baseUrl}, email sent: ${info.response}`);
