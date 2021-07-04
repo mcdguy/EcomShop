@@ -2208,3 +2208,14 @@
 {"level":"info","message":"path:/user/forgotpassword","timestamp":"2021-07-04T10:23:33.952Z"}
 {"level":"info","message":"path:/user, email sent: 250 2.0.0 OK  1625394215 b65sm9023458pfa.32 - gsmtp","timestamp":"2021-07-04T10:23:36.766Z"}
 {"level":"info","message":"connected to mongodb","timestamp":"2021-07-04T10:24:37.502Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-07-04T10:46:24.274Z"}
+{"level":"info","message":"path:/user/status","timestamp":"2021-07-04T10:46:40.892Z"}
+{"level":"info","message":"path:/user/cart","timestamp":"2021-07-04T10:46:40.910Z"}
+{"level":"info","message":"path:/product","timestamp":"2021-07-04T10:46:40.913Z"}
+{"level":"info","message":"path:/gallery","timestamp":"2021-07-04T10:46:41.153Z"}
+{"level":"info","message":"path:/user/forgotpassword","timestamp":"2021-07-04T10:46:45.425Z"}
+{"level":"info","message":"path:/user, email sent: 250 2.0.0 OK  1625395606 v4sm9767522pgr.65 - gsmtp","timestamp":"2021-07-04T10:46:48.352Z"}
+{"level":"info","message":"path:/user/forgotpassword","timestamp":"2021-07-04T10:47:29.609Z"}
+{"level":"info","message":"path:/user, email sent: 250 2.0.0 OK  1625395650 194sm9102540pfy.51 - gsmtp","timestamp":"2021-07-04T10:47:32.230Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-07-04T10:50:50.904Z"}
+{"level":"info","message":"connected to mongodb","timestamp":"2021-07-04T10:52:00.715Z"}

@@ -87,7 +87,9 @@ const Login = () => {
             }
             if(res.data.error){
                 if(spinnerRef.current) spinnerRef.current.classList.remove('show');
-                setForgotMessage(res.data.error);
+                console.log(res.data.error);
+                setForgotMessage('could not send email');
+                // setForgotMessage(res.data.error);
                 setShowForgot(true);
             }
         })
